@@ -39,7 +39,15 @@ rule blast_genes:
         indexed_db="protein_annotation/index/UniRef.lba.gz",
         query="protein_annotation/de_genes.fa",
     output:
-        "protein_annotation/blast_results.m8",
+        lambda_results=report(
+            "protein_annotation/blast_results.m8",
+            category="Protein Annotation Results",
+            subcategory="Lambda Results",
+            caption="../report/lambda_results.rst",
+            labels={
+                "list": "lambda_results",
+            },
+        ),
     params:
         num_matches=f'{config["protein_annotation"]["num_matches"]}',
     log:
@@ -54,7 +62,15 @@ rule get_protein_names:
     input:
         "protein_annotation/blast_results.m8",
     output:
-        "protein_annotation/proteins.csv",
+        protein_names=report(
+            "protein_annotation/proteins.csv",
+            category="Protein Annotation Results",
+            subcategory="Identified Proteins",
+            caption="../report/protein_annotation.rst",
+            labels={
+                "list": "protein_names",
+            },
+        ),
     log:
         "logs/lambda/get_protein_names.log",
     conda:
