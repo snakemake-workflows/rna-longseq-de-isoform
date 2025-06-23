@@ -11,7 +11,7 @@ authors:
     orcid: 0009-0003-9103-5689
     affiliation: "1, 2"
   - name: Sören Lukas Hellmann
-    orcid: 000-003-4958-1419
+    orcid: 0000-0003-4958-1419
     affiliation: 2
   - name: Christiane Krämer
     orcid: XXX ?
