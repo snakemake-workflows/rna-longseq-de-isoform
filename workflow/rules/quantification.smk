@@ -2,7 +2,7 @@ import os
 
 
 localrules:
-    merge_counts,
+    merge_read_counts,
 
 
 rule count_reads:
@@ -30,7 +30,7 @@ rule count_reads:
         """
 
 
-rule merge_counts:
+rule merge_read_counts:
     input:
         count_tsvs=expand("counts/{sample}_salmon/quant.sf", sample=samples["sample"]),
     output:

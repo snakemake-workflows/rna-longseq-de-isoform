@@ -2,11 +2,11 @@ import os
 
 
 localrules:
-    qm_report,
+    alignment_qa_report,
 
 
 # QC and metadata with NanoPlot
-rule plot_samples:
+rule sample_qa_plot:
     input:
         fastq=lambda wildcards: get_mapped_reads_input(
             samples["sample"][wildcards.sample]
@@ -38,7 +38,7 @@ rule plot_samples:
         "--fastq {input.fastq} --outdir {params.outdir} 2> {log}"
 
 
-rule plot_all_samples:
+rule total_sample_qa_plot:
     input:
         aggregate_input(samples["sample"]),
     output:
@@ -64,7 +64,7 @@ rule plot_all_samples:
         "--fastq {input} --outdir {params.outdir} 2> {log}"
 
 
-rule map_qc:
+rule alignment_qa:
     input:
         bam="sorted_alignments/{sample}_sorted.bam",
     output:
@@ -76,9 +76,9 @@ rule map_qc:
 
 
 # this is a dummy rule to create input for the report because the QualiMap wrapper only accepts directories as valid output
-rule qm_report:
+rule alignment_qa_report:
     input:
-        map_qc=rules.map_qc.output,
+        map_qc=rules.alignment_qa.output,
     output:
         qm_report=report(
             "qualimap/{sample}/qualimapReport.html",

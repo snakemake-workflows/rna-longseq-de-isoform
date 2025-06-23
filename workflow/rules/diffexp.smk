@@ -1,4 +1,4 @@
-rule de_analysis:
+rule diffexp_analysis:
     input:
         all_counts="merged/all_counts.tsv",
     output:

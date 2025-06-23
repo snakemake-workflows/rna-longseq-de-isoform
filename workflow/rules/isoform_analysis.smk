@@ -2,7 +2,7 @@ localrules:
     reads_manifest,
     gff_to_gtf,
     concatenate_beds,
-    plot_isoforms,
+    flair_plot_isoforms,
     iso_analysis_report,
 
 
@@ -197,7 +197,7 @@ rule flair_diffexp:
         """
 
 
-rule plot_isoforms:
+rule flair_plot_isoforms:
     input:
         genes=expand(
             "iso_analysis/diffexp/genes_deseq2_{condition_value1}_v_{condition_value2}.tsv",
@@ -219,7 +219,7 @@ rule plot_isoforms:
 # dummy rule for output generation
 rule iso_analysis_report:
     input:
-        in_dir=rules.plot_isoforms.output,
+        in_dir=rules.flair_plot_isoforms.output,
     output:
         isoforms=report(
             directory("iso_analysis/report/isoforms"),

@@ -4,7 +4,7 @@ localrules:
     get_protein_names,
 
 
-rule get_indexed_db:
+rule get_indexed_protein_db:
     output:
         "protein_annotation/index/UniRef.lba.gz",
     params:
@@ -34,7 +34,7 @@ rule generate_gene_query:
         "../scripts/get_de_genes.py"
 
 
-rule blast_genes:
+rule lambda_gene_annotation:
     input:
         indexed_db="protein_annotation/index/UniRef.lba.gz",
         query="protein_annotation/de_genes.fa",
