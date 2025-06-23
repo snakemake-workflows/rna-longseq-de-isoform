@@ -36,10 +36,10 @@ bibliography: paper.bib
 Long-read RNA sequencing technologies enable the characterization of full-length transcripts and complex splicing patterns. While offering new opportunities for transcriptomic analysis, these data come with substantial computational demands, especially when scaling to multiple samples, replicates, and experimental conditions.
 
 We present a modular, reproducible workflow tailored for differential expression and alternative splicing analysis from long-read RNA sequencing data.
-The workflow is designed for use on high-performance computing (HPC) or cloud systems, enabling efficient parallel execution of computationally intensive steps such as read alignment, quantification, and isoform detection.
+The workflow is designed for use on high-performance compute (HPC) clusters or cloud systems, enabling efficient parallel execution of computationally intensive steps such as read alignment, quantification, and isoform detection.
 
-It supports quality filtering, statistical analysis of gene expression across conditions, and isoform-level splicing analysis. For under-annotated or novel genomes, it includes an optional annotation step based on local similarity searches to assign putative gene functions.
-Reference data can be supplied via local files or retrieved automatically using accession numbers.
+It supports quality filtering, statistical analysis of gene expression across conditions, and isoform-level splicing analysis. For ill-annotated or novel genomes, it includes an optional annotation step based on local similarity searches to assign putative gene functions.
+Reference data can be supplied via local files or retrieved automatically using NCBI accession numbers.
 
 It is well-suited for researchers working with large datasets and complex experimental designs who require transparent, reproducible, and HPC-compatible analysis pipelines.
 
@@ -73,24 +73,31 @@ This allows users to flexibly apply the workflow to well-characterized model org
 
 ## Quality Filtering and Assessment
 
-Prioar downstream analysis, reads undergo a configurable quality control step. Users can specify minimum average read quality and read length thresholds. For this we make use of the BioPython library [@cock_biopython_2009] Quality statistics and read length distributions are assessed using NanoPlot [@de_coster_nanopack_2018], which generates interactive and publication-ready QC plots. Those are included in the workflow report and ensures high-confidence input for downstream expression and splicing analysis.
+Prioar downstream analysis, reads undergo a configurable quality control step. Users can specify a read length threshold. For this we make use of the BioPython library [@cock_biopython_2009]. To ensure sufficient quality, we rely on the ONT basecaller for filtering out low quality reads. Sample quality statistics and read length distributions are assessed using NanoPlot [@de_coster_nanopack_2018], which generates interactive and publication-ready QC plots. Those are included in the workflow report and ensures high-confidence input for downstream expression and splicing analysis.
 
 ## Transcriptome Alignment and Differential Expression Analysis
 
-Reads passing quality filters are aligned to the reference transcriptome minimap2 [@li_minimap2_2018]. Following alignment, read counts per transcript are computed and used for differential expression analysis using pyDESeq2 [@zhu_heavy-tailed_2019;@love_moderated_2014], a Python-native implementation of the DESeq2 method.
+Reads passing quality filters are aligned to the reference transcriptome by `minimap2` [@li_minimap2_2018]. Following alignment, read counts per transcript are computed and used for differential expression analysis using pyDESeq2 [@zhu_heavy-tailed_2019;@love_moderated_2014], a Python-native implementation of the DESeq2 method.
 
 This enables statistical analysis of gene expression changes across experimental conditions while staying within a Python-based workflow ecosystem.
 
 ## Alternative Splicing Analysis
 
-For isoform-level analysis, the pipeline integrates a modified version of the FLAIR toolkit [@tang_full-length_2020-1]. We adapted key alignment and postprocessing steps to improve compatibility with Snakemake and enhance robustness for HPC use. Isoforms are collapsed, quantified, and categorized to identify splicing patterns and events across conditions.
-Optional Functional Annotation via Local Alignment
+For isoform-level analysis, the workflow integrates the FLAIR toolkit [@tang_full-length_2020-1]. We adapted the plotting script to improve compatibility with Snakemake. Isoforms are collapsed, quantified, and categorized to identify splicing patterns and events across conditions.
 
-When reference data are incomplete, unannotated, or of uncertain quality, the workflow offers optional functional annotation. Transcripts or isoforms can be locally aligned against curated protein or nucleotide databases using BLAST or lambda. This provides putative gene product functions that support biological interpretation in non-model organisms or exploratory studies.
+## Optional Functional Annotation via Local Alignment
 
-ADD rulegraph and caption, here.
+When reference data are incomplete, unannotated, or of uncertain quality, the workflow offers optional functional annotation. Transcripts or isoforms can be locally aligned against curated UniRef protein data bases using BLAST or lambda. This provides putative gene product functions that support biological interpretation in non-model organisms or exploratory studies.
+
+## Workflow at a Glance
+
+![caption](rulegraph.svg)
 
 # Usage
+
+explain configuration - workflow profile
+
+example CLI line, reference to catalog
 
 
 # Acknowledgements
