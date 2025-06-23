@@ -1,11 +1,11 @@
 ---
-title: 'A Snakemake workflow for differential expression analyis with alternative splicing detection using long read data'
+title: 'A Snakemake workflow for differential expression analysis with alternative splicing detection using long-read data'
 tags:
   - Snakemake
   - Nanopore
   - HPC
   - differential gene expression
-  - alterternative splicing detection
+  - alternative splicing detection
 authors:
   - name: Yannic Eising
     orcid: 0009-0003-9103-5689
@@ -21,10 +21,10 @@ authors:
     orcid: 0000-0003-2408-7588
     affiliation: 1
 affiliations:
- - name: Nucleic Acids Core Facility, Johannes Gutenberg-University Mainz, Germany
-   index: 1
- - name: NHR-SouthWest / High Performance Computing Group, Johannes Gutenberg-University Mainz, Germany
-   index: 2
+  - name: Nucleic Acids Core Facility, Johannes Gutenberg-University Mainz, Germany
+    index: 1
+  - name: NHR-SouthWest / High Performance Computing Group, Johannes Gutenberg-University   Mainz, Germany
+    index: 2
    
 date: 04 April 2025 <- update
 bibliography: paper.bib
