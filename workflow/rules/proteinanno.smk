@@ -15,8 +15,8 @@ rule get_indexed_protein_db:
         "../envs/wget.yml"
     shell:
         """
-        wget -nv -q -O UniRef.lba.gz {params.ref} && \
-        mv UniRef.lba.gz {output} 2> {log}
+        mkdir -p $(dirname {output}) && \
+        wget -nv -O {output} {params.ref} 2> {log}
         """
 
 
