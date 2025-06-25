@@ -1,8 +1,7 @@
 localrules:
     generate_gene_query,
-    get_indexed_db,
+    get_indexed_protein_db,
     get_protein_names,
-
 
 rule get_indexed_protein_db:
     output:
