@@ -3,6 +3,7 @@ localrules:
     get_indexed_protein_db,
     get_protein_names,
 
+
 rule get_indexed_protein_db:
     output:
         "protein_annotation/index/UniRef.lba.gz",
