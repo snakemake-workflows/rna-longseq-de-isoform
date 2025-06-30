@@ -41,7 +41,7 @@ The workflow is designed for use on high-performance compute (HPC) clusters or c
 It supports quality filtering, statistical analysis of gene expression across conditions, and isoform-level splicing analysis. For ill-annotated or novel genomes, it includes an optional annotation step based on local similarity searches to assign putative gene functions.
 Reference data can be supplied via local files or retrieved automatically using NCBI accession numbers.
 
-It is well-suited for researchers working with large datasets and complex experimental designs who require transparent, reproducible, and HPC-compatible analysis pipelines.
+It is well-suited for researchers working with large datasets and complex experimental designs who require transparent, reproducible, and HPC-compatible analysis workflows.
 
 # Statement of Need
 
@@ -49,18 +49,17 @@ Long-read sequencing technologies, such as Oxford Nanopore Technologies (ONT), h
 This advancement facilitates more accurate analyses of differential gene expression [@dong_long_2021] and alternative splicing events, both of which are essential for understanding transcriptomic complexity and functional genomics.
 However, analyzing long-read transcriptomic data remains technically challenging due to the intricacies of read preprocessing, isoform-level quantification, and the need for reproducible and scalable computational workflows.
 
-Several existing tools—such as FLAIR [@tang_full-length_2020-1] —provide frameworks for analyzing long-read transcriptomic data.
+Several existing tools, such as FLAIR [@tang_full-length_2020-1], provide frameworks for isoform-level analysis of long-read transcriptomic data.
 While these tools offer powerful features, they often rely on manual configuration, may not fully support reproducible execution across computing environments, and frequently lack integration with high-performance computing (HPC) infrastructure.
-Furthermore, in our evaluation of available tools, we identified limitations in the alignment and quantification steps, prompting us to re-implement and optimize the alignment procedures originally provided by FLAIR to improve performance and maintainability within our workflow.
 
 To address these gaps, we present a Snakemake-based workflow that automates the analysis of Nanopore long-read sequencing data with a focus on differential gene expression and alternative splicing detection.
-While other workflows exist that support either differential expression analysis or isoform-level analysis, our workflow integrates both in a modular and reproducible pipeline designed for scalability across local machines, HPC clusters, and cloud environments.
+While other workflows exist that support either differential expression analysis or isoform-level analysis, our workflow integrates both in a modular and reproducible workflow designed for scalability across local machines, HPC clusters, and cloud environments.
 
 A distinctive feature of our workflow is its capability to operate on ill-annotated or completely unannotated genomes.
-To support these cases, the workflow includes optional local alignments using tools such as BLAST [@altschul_basic_1990;@camacho_blast_2009] or lambda [@hauswedell_lambda_2014], enabling the functional annotation of transcripts by identifying putative gene functions.
+To support these cases, the workflow includes optional local alignments using tools such as BLAST [@altschul_basic_1990;@camacho_blast_2009] or lambda [@Hauswedell2024-ph], enabling the functional annotation of transcripts by identifying putative gene functions.
 This enhances interpretability in non-model organisms and supports exploratory analyses in less-characterized transcriptomes.
 
-By leveraging Snakemake’s robust workflow management capabilities [@molder_sustainable_2021], our pipeline offers transparent provenance tracking, efficient resource handling, and reproducible execution.
+By leveraging Snakemake’s robust workflow management capabilities [@molder_sustainable_2021], our workflow offers transparent provenance tracking, efficient resource handling, and reproducible execution.
 It provides a flexible foundation for advanced long-read transcriptomic analyses and fills a critical gap in the ecosystem of accessible, reproducible, and extensible workflows for Nanopore RNA sequencing data.
 
 ## Implementation
@@ -72,7 +71,7 @@ This allows users to flexibly apply the workflow to well-characterized model org
 
 ## Quality Filtering and Assessment
 
-Prior to downstream analysis, reads undergo a configurable quality control step. Users can specify a read length threshold. For this we make use of the BioPython library [@cock_biopython_2009]. To ensure sufficient quality, we rely on the ONT basecaller for filtering out low quality reads. Sample quality statistics and read length distributions are assessed using NanoPlot [@de_coster_nanopack_2018], which generates interactive and publication-ready QC plots. Those are included in the workflow report and ensures high-confidence input for downstream expression and splicing analysis.
+Prior to downstream analysis, reads undergo a configurable quality control step. Users can specify a read length threshold. For this we make use of the BioPython library [@cock_biopython_2009]. To ensure sufficient quality, we rely on the ONT basecaller for filtering out low quality reads. Sample quality statistics and read length distributions are assessed using NanoPlot [@de_coster_nanopack_2018], which generates interactive and publication-ready QC plots. These are included in the workflow report and ensure high-confidence input for downstream expression and splicing analysis.
 
 ## Transcriptome Alignment and Differential Expression Analysis
 
@@ -82,22 +81,47 @@ This enables statistical analysis of gene expression changes across experimental
 
 ## Alternative Splicing Analysis
 
-For isoform-level analysis, the workflow integrates the FLAIR toolkit [@tang_full-length_2020-1]. We adapted the plotting script to improve compatibility with Snakemake. Isoforms are collapsed, quantified, and categorized to identify splicing patterns and events across conditions.
+For isoform-level analysis, the workflow integrates the FLAIR toolkit [@tang_full-length_2020-1]. We adapted the FLAIR plotting script to improve Snakemake compatibility and enable automated per-gene isoform visualization. Isoforms are collapsed, quantified, and categorized to identify splicing patterns and events across conditions.
 
-## Optional Functional Annotation via Local Alignment
+# Optional Functional Annotation via Local Alignment
 
 When reference data are incomplete, unannotated, or of uncertain quality, the workflow offers optional functional annotation. Transcripts or isoforms can be locally aligned against curated UniRef protein data bases using BLAST or lambda. This provides putative gene product functions that support biological interpretation in non-model organisms or exploratory studies.
 
-## Workflow at a Glance
+# Workflow at a Glance
 
 ![The Directed Acyclic Graph (DAG) of the complete long-read RNA-Seq workflow. The graph was generated by the Snakemake command: 'snakemake --rulegraph | dot -Tsvg > rulegraph.svg'.](rulegraph.svg)
 
+## Example Dataset
+
+A complete example run using six cDNA Nanopore sequencing datasets from human H9 and HCT 116 cell lines is provided below. The data originate from the SG-NEx project [@Chen2025-yk] and were accesed on 31 March 2025 from [registry.opendata.aws/sg-nex-data](registry.opendata.aws/sg-nex-data). This example illustrates the workflows capabilities in isoform analysis and functional annotation.
+
+[]() # Add report HTML
+
 # Usage
 
-explain configuration - workflow profile
+### Configuration
+The workflow uses three configuration files to enable its full functionality:
+1. **`samples.csv`**
+contains sample metadata, including sample IDs and experimental conditions.
+2. **`config/config.yaml`**
+Defines general workflow behavior, rule-specific options, and paths to input data.
+3. **`profile/config.yaml`**
+Stores cluster-specific variables, enabling resource allocation settings tailored to your computing environment.
 
-example CLI line, reference to catalog
 
+### Running the workflow
+The workflow can be started by executing the following Snakemake command:
+
+```
+snakemake -j unlimited \                    # Run snakemake with no job limit
+--workflow-profile <profile_dir> \          # Use a specific Snakemake profile
+--configfile ../config/<config_file> \      # Specify the main config file
+--directory <results_dir> \                 # Set working directory
+--sdm_conda \                               # Enable conda software deployment
+--conda_prefix <conda_envs_dir>             # Custom prefix for conda environments
+```
+
+For detailed information about these and additional options, see the [Snakemake command-line options](https://snakemake.readthedocs.io/en/stable/executing/cli.html#all-options).
 
 # Acknowledgements
 
