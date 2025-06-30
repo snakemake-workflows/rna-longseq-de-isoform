@@ -12,14 +12,14 @@ authors:
     affiliation: [1, 2]
   - name: Sören Lukas Hellmann
     orcid: 0000-0003-4958-1419
-    affiliation: 2
+    affiliation: 1
   - name: Christiane Krämer
     orcid: XXX ?
-    affiliation: 2
+    affiliation: 1
   - name: Christian Meesters
     corresponding: true
     orcid: 0000-0003-2408-7588
-    affiliation: 1
+    affiliation: 2
 affiliations:
   - name: Nucleic Acids Core Facility, Johannes Gutenberg-University Mainz, Germany
     index: 1
