@@ -14,7 +14,7 @@ authors:
     orcid: 0000-0003-4958-1419
     affiliation: 1
   - name: Christiane Krämer
-    orcid: XXX ?
+    orcid: 0009-0000-6220-076X
     affiliation: 1
   - name: Christian Meesters
     corresponding: true
