@@ -46,7 +46,7 @@ set-resources:
         runtime: "2h"
     flair_diffexp:
         mem_mb_per_cpu: 5000
-        runtime: "4h"
+        runtime: "6h"
     lambda_gene_annotation:
         mem_mb_per_cpu: 7200
 
