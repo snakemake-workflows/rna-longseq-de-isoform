@@ -26,8 +26,8 @@ set-resources:
         runtime: "90m"
     count_reads:
         runtime: "1h"
-    de_analysis:
-        mem_mb_per_cpu: 5000
+    diffexp_analysis:
+        mem_mb_per_cpu: 3600
         runtime: "1h"
     build_flair_genome_index:
         mem_mb_per_cpu: 3600
@@ -46,7 +46,7 @@ set-resources:
     flair_diffexp:
         mem_mb_per_cpu: 5000
         runtime: "2h"
-    blast_genes:
+    lambda_gene_annotation:
         mem_mb_per_cpu: 7200
 
 
@@ -67,4 +67,4 @@ set-threads:
     flair_collapse: 32
     flair_quantify: 32
     flair_diffexp: 8
-    blast_genes: 32
+    lambda_gene_annotation: 32
