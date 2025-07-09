@@ -2,4 +2,4 @@ channels:
     - conda-forge
     - bioconda
 dependencies:
-    - flair>=2.0.0
+    - flair=2.0.0
