@@ -1,0 +1,2 @@
+For each gene identified as differentially expressed, the top UniRef50 matches obtained from `Lambda <https://github.com/seqan/lambda>`_ alignments are queried using the UniProt API.  
+This results in a table linking gene IDs to UniRef identifiers and their corresponding protein names, providing functional annotations for the differentially expressed genes.

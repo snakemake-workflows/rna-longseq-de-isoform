@@ -104,6 +104,35 @@ isoform_analysis:
       minimum: 0
     col_opts:
       type: string
+  required:
+    - FLAIR
+  allOf:
+    - if:
+        properties:
+          FLAIR:
+            const: true
+      then:
+        required: ["qscore","exp_thresh","col_opts"]
+
+protein_annotation:
+  type: object
+  properties:
+    lambda:
+      type: boolean
+    uniref:
+      type: string
+    num_matches:
+      type: integer
+      minimum: 1
+  required:
+    - lambda
+  allOf:
+    - if:
+        properties:
+          lambda:
+            const: true
+      then:
+        required: ["uniref","num_matches"]
 
 required:
   - samples
@@ -115,3 +144,4 @@ required:
   - quant 
   - deseq2
   - isoform_analysis
+  - protein_annotation

@@ -107,9 +107,22 @@ deseq2:
 isoform_analysis:
     # Enables FLAIR Isoform Analysis if 'true'
     FLAIR: true
-    # Minimum MAPQ of read assignment to an isoform (default 1).
+    # Minimum MAPQ of read assignment to an isoform (default: 1).
     qscore: 1
     # min read count expression threshold. Isoforms which contain fewer than 'exp_thresh' (Default=10) reads in both conditions are filtered out.
     exp_thresh: 10
-    # 'flair_collapse' options. '--stringent' for full-length supporting reads (>=80% coverage)
+    # 'flair_collapse' options
+    # '--annotation-reliant' makes FLAIR align reads to the annotation before identifying novel transcripts for the remaining reads
+    # '--generate-map' to generate a txt file of read-isoform assignments
+    # '--stringent' for full-length supporting reads (>=80% coverage)
     col_opts: "--annotation_reliant generate --generate_map --stringent"
+
+
+# Query genes to identify similar proteins using "lambda"
+protein_annotation:
+    # Enables lambda sequence alignment if 'true'
+    lambda: true
+    # UniProt Reference Cluster database (default: UniRef50)
+    uniref: "http://ftp.imp.fu-berlin.de/pub/lambda/index/lambda3/gen_0/uniref50_20230713.lba.gz"
+    # maximum number of protein matches returned per sequence (default: 3)
+    num_matches: 3

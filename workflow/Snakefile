@@ -24,6 +24,7 @@ include: "rules/alignmod.smk"
 include: "rules/quantification.smk"
 include: "rules/diffexp.smk"
 include: "rules/isoform_analysis.smk"
+include: "rules/proteinanno.smk"
 
 
 inputdir = config["inputdir"]

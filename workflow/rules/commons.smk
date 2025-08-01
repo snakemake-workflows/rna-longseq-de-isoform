@@ -148,4 +148,6 @@ def rule_all_input():
         )
         all_input.append("iso_analysis/report/isoforms")
         all_input.append("iso_analysis/report/usage")
+    if config["protein_annotation"]["lambda"] == True:
+        all_input.append("protein_annotation/proteins.csv")
     return all_input

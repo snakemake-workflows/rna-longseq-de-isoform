@@ -74,6 +74,7 @@ Transcripts are quantified using Salmon in alignment-based mode. TO ensure accur
 ### Differential Expression Analysis (DESeq2)
 
 Differential expression analysis is performed using PyDESeq2 to model raw read counts wtih a negative binomial distribution, estimating dispersion parameters to identify differentially expressed genes. See the [PyDESeq2 documentation](https://pydeseq2.readthedocs.io/en/stable/index.html) for more details.
+
 - **deseq2**:
   - `fit_type`: Type of fitting of dispersions to the mean intensity. `parametric`: fit a dispersion-mean relation via a robust gamma-family GLM. `mean`: use the mean of gene-wise dispersion estimates. Will set the fit type for the DEA and the vst transformation. If needed, it can be set separately for each method.
   - `design_factors`: List of design factors for the analysis.
@@ -95,4 +96,13 @@ FLAIR is used to identify alternative splice isoforms in full-length transcripts
   - `qscore`: Minimum MAPQ for read alignment. `--quality` for FLAIR modules.
   - `exp_thresh`: Minimum read count expression threshold for differential expression analysis. Genes with less counts will be removed form analysis.
   - `col_opts`: Additional options for flair collapse module.
+
+### Protein Annotation (lambda)
+
+Lambda aligns sequences of differentially expressed genes or transcripts against indexed protein databases (e.g. UniProt). This process is similar to BLAST, enabling identification of similar proteins and functional annotation of transcripts.
+
+- **Protein Annotation**:
+  - `lambda`: Enable lambda Sequence alignment (`true` or `false`).
+  - `uniref`: URL of the indexed UniRef database from the lambda wiki.
+  - `num_matches`: Maximum number of proteins that have been identififed per sequence.
 
