@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.2.1...v2.3.0) (2025-08-01)
+
+
+### Features
+
+* autotomated protein annotation ([#115](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/115)) ([3770dff](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/3770dff5c923c77d346a94181df4c47ddad15e29))
+
 ## [2.2.1](https://github.com/snakemake-workflows/transcriptome-differential-expression/compare/v2.2.0...v2.2.1) (2025-06-12)
 
 
