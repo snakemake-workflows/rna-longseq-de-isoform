@@ -16,7 +16,6 @@ report: "report/workflow.rst"
 
 include: "rules/commons.smk"
 include: "rules/qc.smk"
-include: "rules/utils.smk"
 include: "rules/ref.smk"
 include: "rules/datamod.smk"
 include: "rules/alignment.smk"
