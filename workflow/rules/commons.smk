@@ -121,7 +121,6 @@ def aggregate_input(samples):
 
 def rule_all_input():
     all_input = list()
-    all_input.append("versions.txt")
     all_input.extend(
         expand("NanoPlot/{sample}/NanoPlot-report.html", sample=samples["sample"])
     )
