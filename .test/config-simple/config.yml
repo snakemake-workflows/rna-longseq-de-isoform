@@ -1,17 +1,10 @@
-samples: samples.csv
-
-
 ## General Workflow Parameters:
 
-# Name of the Workflow:
-workflow: "workflow-transcriptome-de_phe"
-
+# sample information and experimental design
+samples: samples.csv
 # this is the input directory. All samples are looked for in this directory
 inputdir: "./ngs-test-data/reads"
-# Repository URL:
-repo: "https://github.com/snakemake-workflows/transcriptome-differential-expression"
-# Maximum number of CPUs in your partition/PC/server
-max_cpus: 40
+
 
 ## Workflow-specific Parameters:
 
@@ -35,13 +28,10 @@ read_filter:
 minimap2:
     # Minimap2 indexing options
     index_opts: ""
-
     # Minimap2 mapping options
     opts: ""
-
     # Maximum secondary alignments
     maximum_secondary: 100
-
     # Secondary score ratio (-p for minimap2)
     secondary_score_ratio: 1.0
 
@@ -130,7 +120,7 @@ isoform_analysis:
 protein_annotation:
     # Enables lambda sequence alignment if 'true'
     lambda: true
-    # UniProt Reference Cluster database (default: UniRef50)
+    # Pre-formatted UniProt Reference Cluster database (default: UniRef50)
     uniref: "http://ftp.imp.fu-berlin.de/pub/lambda/index/lambda3/gen_0/uniprot_sprot_20230713.lba.gz"
     # maximum number of protein matches returned per sequence (default: 3)
     num_matches: 3

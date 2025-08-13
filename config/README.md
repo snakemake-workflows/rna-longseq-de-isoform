@@ -103,6 +103,6 @@ Lambda aligns sequences of differentially expressed genes or transcripts against
 
 - **Protein Annotation**:
   - `lambda`: Enable lambda Sequence alignment (`true` or `false`).
-  - `uniref`: URL of the indexed UniRef database from the lambda wiki.
+  - `uniref`: URL of the pre-formatted indexed UniRef database from the [lambda wiki](https://github.com/seqan/lambda/wiki/Pre%E2%80%90built-Database-Indexes).
   - `num_matches`: Maximum number of proteins that have been identififed per sequence.
 
