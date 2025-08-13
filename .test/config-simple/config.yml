@@ -56,14 +56,14 @@ quant:
 deseq2:
     # normalization fit type, must be 'parametric' or 'mean'
     fit_type: "mean"
-    # the "design factors" are the confounding variables to be adjusted fr
+    # the "design factors" are the confounding variables to be adjusted for
     # during normalization. They must be given in the configuration (samples.csv).
-    design_factors: 
+    design_factors:
         - "condition"
     #
     # the "continous factors" are non-categorial factors to be considered
     #continuous_factors:
-    #    - 
+    #    -
     #
     # The (log2) log fold change under the null hypothesis. (default: 0).
     lfc_null: 0
