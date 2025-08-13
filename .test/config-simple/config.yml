@@ -121,6 +121,6 @@ protein_annotation:
     # Enables lambda sequence alignment if 'true'
     lambda: true
     # Pre-formatted UniProt Reference Cluster database (default: UniRef50)
-    uniref: "http://ftp.imp.fu-berlin.de/pub/lambda/index/lambda3/gen_0/uniprot_sprot_20230713.lba.gz"
+    uniref: "https://ftp.imp.fu-berlin.de/pub/lambda/index/lambda3/gen_0/uniprot_sprot_20230713.lba.gz"
     # maximum number of protein matches returned per sequence (default: 3)
     num_matches: 3
