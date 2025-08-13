@@ -3,7 +3,7 @@
 # sample information and experimental design
 samples: samples.csv
 # this is the input directory. All samples are looked for in this directory
-inputdir: "/lustre/project/nhr-zdvhpc/transcriptome_data"
+inputdir: "/path/to/input"
 
 
 ## Workflow-specific Parameters:
@@ -14,17 +14,17 @@ ref:
     # Local reference data
     # Genome file path (supported extensions: .fa, .fna, .fasta, case-insensitive)
     # may be a path or left empty, if download using an accession number is preferred
-    genome: "/lustre/project/nhr-zdvhpc/transcriptome_data/GCA_917627325.4_PGI_CHIRRI_v4_genomic.fa"
+    genome: "/path/to/genome"
     # Annotation file (supported extensions: .gff, .gtf, case-insensitive)
     # may be a path or left empty, if download using an accession number is preferred
-    annotation: "/lustre/project/nhr-zdvhpc/transcriptome_data/GCA_917627325.4_PGI_CHIRRI_v4_genomic.gff"
+    annotation: "/path/to/annotation"
     # Remote reference data
     # NCBI accession number of the reference data set; can be left empty if both reference files are available locally"
-    accession: "GCA_917627325.4"
+    accession: "NCBI_ACCESSION_PLACEHOLDER"
 
 read_filter:
     # Minimum read length; set 0 to keep all reads.
-    min_length: 200
+    min_length: 0
 
 # minimap2 alignment parameters
 minimap2:
@@ -62,12 +62,12 @@ deseq2:
     design_factors:
         - "condition"
     #
-    # the "continous factors" are non-categorial factors to be considered
+    # the "continuous factors" are non-categorical factors to be considered
     #continuous_factors:
     #    -
     #
     # The (log2) log fold change under the null hypothesis. (default: 0).
-    lfc_null: 0.5
+    lfc_null: 1.0
     #
     # The alternative hypothesis for computing wald p-values. By default,
     # the normal Wald test assesses deviation of the estimated log fold
@@ -105,8 +105,8 @@ deseq2:
 #     2. In 'samples.csv: Refrain from using underscores when naming samples. The 'sample' column may contain underscores, but be aware that underscores will be removed from the name for isoform quantification steps.
 #     3. In this file: the variable 'FLAIR' below must be:'true'. This is a check to determine if users are aware of the constraints and wish to proceed.
 isoform_analysis:
-    # Enables FLAIR Isoform Analysis if 'true'
-    FLAIR: true
+    # Enables FLAIR Isoform Analysis if 'true' (Default:'false').
+    FLAIR: false
     # Minimum MAPQ of read assignment to an isoform (default: 1).
     qscore: 1
     # min read count expression threshold. Isoforms which contain fewer than 'exp_thresh' (Default=10) reads in both conditions are filtered out.
@@ -120,8 +120,8 @@ isoform_analysis:
 
 # Query genes to identify similar proteins using "lambda"
 protein_annotation:
-    # Enables lambda sequence alignment if 'true'
-    lambda: true
+    # Enables lambda sequence alignment if 'true' (Default: 'false').
+    lambda: false
     # Pre-formatted UniProt Reference Cluster database (default: UniRef50)
     uniref: "https://ftp.imp.fu-berlin.de/pub/lambda/index/lambda3/gen_0/uniref50_20230713.lba.gz"
     # maximum number of protein matches returned per sequence (default: 3)
