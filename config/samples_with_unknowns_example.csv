@@ -1,0 +1,13 @@
+sample,condition,condition2,batch_effect,platform,purity
+sample_A1,male,young,batch1,NANOPORE,0.98
+sample_A2,female,young,batch1,NANOPORE,0.97
+sample_A3,male,old,batch1,NANOPORE,0.96
+sample_A4,female,old,batch1,NANOPORE,0.99
+sample_B1,unknown,middle,batch2,NANOPORE,0.95
+sample_B2,male,unknown,batch2,NANOPORE,0.98
+sample_B3,female,na,batch2,NANOPORE,0.97
+sample_B4,male,young,batch2,NANOPORE,0.96
+sample_C1,female,young,batch1,NANOPORE,0.99
+sample_C2,male,old,batch1,NANOPORE,0.98
+sample_C3,not available,middle,batch1,NANOPORE,0.95
+sample_C4,female,old,batch1,NANOPORE,0.97

@@ -15,6 +15,10 @@ properties:
     type: string
     description: description of a first sample condition
     pattern: "^[a-zA-Z_0-9-]+$"
+  condition2:
+    type: string
+    description: description of a second sample condition (can contain unknown, na, not available values)
+    pattern: "^[a-zA-Z_0-9 -]+$"
   platform:
     type: string
     enum:

@@ -1,0 +1,90 @@
+## Example configuration for multi-factor differential expression analysis
+
+# sample information and experimental design
+samples: samples.csv
+inputdir: "/path/to/input"
+
+# Reference genome/transcriptome
+ref:
+    species: "Chironomus riparius"
+    genome: "/path/to/genome"
+    annotation: "/path/to/annotation"
+
+# Multi-factor DESeq2 analysis configuration
+deseq2:
+    # normalization fit type, must be 'parametric' or 'mean'
+    fit_type: "mean"
+    
+    # The design factors for the model - include ALL factors you want to control for
+    design_factors:
+        - "condition"
+        - "condition2" 
+        - "batch_effect"
+    
+    # Continuous factors (non-categorical) to be considered
+    continuous_factors:
+        - "purity"
+    
+    # ENABLE UNKNOWN VALUE HANDLING (NEW!)
+    # Set to true to handle unknown/NA/not available values with multiple scenarios
+    handle_unknown_values: true
+    
+    # ENABLE MULTI-FACTOR ANALYSIS
+    # Set to true to perform pairwise comparisons for multiple categorical factors
+    multi_factor_analysis: true
+    
+    # ENABLE CROSS-FACTOR ANALYSIS (NEW!)
+    # Set to true to analyze combinations of factors (e.g., condition_A+treatment_X vs condition_B+treatment_Y)
+    cross_factor_analysis: true
+    
+    # Maximum number of factors to combine (default: 2)
+    # Setting to 3+ will analyze 3-way, 4-way, etc. combinations
+    # WARNING: This grows exponentially! Use with caution.
+    max_cross_factors: 2
+    
+    # OPTIONAL: Specify which factors to analyze 
+    # If not specified, all categorical factors (excluding continuous_factors) will be analyzed
+    factors_to_analyze:
+        - "condition"
+        - "condition2"
+        - "batch_effect"
+    # Alternative: leave empty to analyze all categorical factors automatically
+    # factors_to_analyze: []
+    
+    # Standard DESeq2 parameters
+    lfc_null: 1.0
+    alt_hypothesis: "greaterAbs"
+    point_width: 20
+    mincount: 10
+    alpha: 0.05
+    threshold_plot: 10
+    colormap: "flare"
+    figtype: "png"
+
+# For comparison: Traditional binary analysis configuration
+# (when multi_factor_analysis is false or not specified)
+deseq2_traditional:
+    fit_type: "mean"
+    design_factors:
+        - "condition"  # Only one factor for binary comparison
+    multi_factor_analysis: false  # or omit this line
+    lfc_null: 1.0
+    alt_hypothesis: "greaterAbs"
+    point_width: 20
+    mincount: 10
+    alpha: 0.05
+    threshold_plot: 10
+    colormap: "flare"
+    figtype: "png"
+
+## Other workflow sections remain the same...
+isoform_analysis:
+    FLAIR: false
+    qscore: 1
+    exp_thresh: 10
+    col_opts: "--annotation_reliant generate --generate_map --stringent"
+
+protein_annotation:
+    lambda: false
+    uniref: "https://ftp.imp.fu-berlin.de/pub/lambda/index/lambda3/gen_0/uniref50_20230713.lba.gz"
+    num_matches: 3
