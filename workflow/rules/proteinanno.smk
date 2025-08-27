@@ -6,7 +6,7 @@ localrules:
 
 rule get_indexed_protein_db:
     output:
-        "protein_annotation/index/UniRef.lba.gz",
+        temp("protein_annotation/index/UniRef.lba.gz"),
     params:
         ref=f'{config["protein_annotation"]["uniref"]}',
     log:
@@ -25,7 +25,7 @@ rule generate_gene_query:
         sorted_lfc_counts="de_analysis/sorted_normalized_counts.csv",
         transcriptome="transcriptome/transcriptome.fa",
     output:
-        "protein_annotation/de_genes.fa",
+        temp("protein_annotation/de_genes.fa"),
     log:
         "logs/lambda/generate_gene_query.log",
     conda:

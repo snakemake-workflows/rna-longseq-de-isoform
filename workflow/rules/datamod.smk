@@ -7,7 +7,7 @@ rule standardize_gff:
     input:
         "references/genomic.gff",
     output:
-        "references/standardized_genomic.gff",
+        temp("references/standardized_genomic.gff"),
     log:
         "logs/agat.log",
     conda:
@@ -26,7 +26,7 @@ rule genome_to_transcriptome:
         genome="references/genomic.fa",
         annotation="references/standardized_genomic.gff",
     output:
-        transcriptome="transcriptome/transcriptome.fa",
+        transcriptome=temp("transcriptome/transcriptome.fa"),
         index=temp("references/genomic.fa.fai"),
     log:
         "logs/gffread/genome_to_transcriptome.log",
@@ -45,7 +45,7 @@ rule filter_reads:
             samples["sample"][wildcards.sample]
         ),
     output:
-        "filter/{sample}_filtered.fq",
+        temp("filter/{sample}_filtered.fq"),
     message:
         f"Filtering with read length >= {config['read_filter']['min_length']}."
     log:

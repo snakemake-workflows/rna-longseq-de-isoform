@@ -2,7 +2,7 @@ rule sam_to_bam:
     input:
         sam="alignments/{sample}.sam",
     output:
-        "alignments/{sample}.bam",
+        temp("alignments/{sample}.bam"),
     log:
         "logs/samtools/samtobam_{sample}.log",
     params:
@@ -15,7 +15,7 @@ rule bam_sort:
     input:
         bam="alignments/{sample}.bam",
     output:
-        "sorted_alignments/{sample}_sorted.bam",
+        temp("sorted_alignments/{sample}_sorted.bam"),
     log:
         "logs/samtools/bamsort_{sample}.log",
     params:
@@ -29,7 +29,7 @@ rule bam_index:
     input:
         sbam="sorted_alignments/{sample}_sorted.bam",
     output:
-        bai="sorted_alignments/{sample}_sorted.bam.bai",
+        bai=temp("sorted_alignments/{sample}_sorted.bam.bai"),
     log:
         "logs/samtools/samindex_{sample}.log",
     params:

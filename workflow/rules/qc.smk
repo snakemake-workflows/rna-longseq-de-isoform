@@ -68,7 +68,7 @@ rule alignment_qa:
     input:
         bam="sorted_alignments/{sample}_sorted.bam",
     output:
-        directory("QC/qualimap/{sample}"),
+        temp(directory("QC/qualimap/{sample}")),
     log:
         "logs/qualimap/{sample}.log",
     wrapper:
@@ -102,7 +102,7 @@ rule bam_stats:
     input:
         bam="alignments/{sample}.bam",
     output:
-        "QC/bamstats/{sample}.txt",
+        temp("QC/bamstats/{sample}.txt"),
     log:
         "logs/samtools/bamstats_{sample}.log",
     params:
