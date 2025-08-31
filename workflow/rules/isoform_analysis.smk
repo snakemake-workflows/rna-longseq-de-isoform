@@ -32,7 +32,7 @@ rule gff_to_gtf:
         "../envs/gffread.yml"
     shell:
         """
-        gffread -t {threads} -E {input} -T -o {output} &> {log}    
+        gffread -E {input} -T -o {output} &> {log}    
         """
 
 

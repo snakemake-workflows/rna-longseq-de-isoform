@@ -35,7 +35,7 @@ rule genome_to_transcriptome:
     threads: 1
     shell:
         """
-        gffread -t {threads} -w {output} -g {input.genome} {input.annotation} &> {log}
+        gffread -w {output} -g {input.genome} {input.annotation} &> {log}
         """
 
 
