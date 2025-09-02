@@ -46,7 +46,7 @@ set-resources:
         runtime: "2h"
     flair_diffexp:
         mem_mb_per_cpu: 5000
-        runtime: "6h"
+        runtime: "10h"
     lambda_gene_annotation:
         mem_mb_per_cpu: 7200
 
@@ -67,5 +67,5 @@ set-threads:
     flair_correct: 8
     flair_collapse: 32
     flair_quantify: 32
-    flair_diffexp: 8
+    flair_diffexp: 1
     lambda_gene_annotation: 32
