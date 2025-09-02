@@ -1,0 +1,100 @@
+## Complete example configuration for multi-factor DE analysis with unknown value handling
+
+# sample information and experimental design
+samples: samples_with_unknowns_example.csv
+inputdir: "/path/to/input"
+
+# Reference genome/transcriptome
+ref:
+    species: "Example species"
+    genome: "/path/to/genome"
+    annotation: "/path/to/annotation"
+
+# Complete DESeq2 analysis configuration
+deseq2:
+    # normalization fit type, must be 'parametric' or 'mean'
+    fit_type: "mean"
+    
+    # The design factors for the model - include ALL factors you want to control for
+    design_factors:
+        - "condition"      # Can have: male, female, unknown, not available
+        - "condition2"     # Can have: young, old, middle, unknown, na
+        - "batch_effect"   # Control variable
+    
+    # Continuous factors (non-categorical) to be considered
+    continuous_factors:
+        - "purity"
+    
+    # ENABLE UNKNOWN VALUE HANDLING
+    # Set to true to create three analysis scenarios for each factor with unknowns:
+    # 1. Group unknowns with first known level
+    # 2. Group unknowns with second known level  
+    # 3. Exclude unknowns entirely
+    handle_unknown_values: true
+    
+    # ENABLE MULTI-FACTOR ANALYSIS
+    # Set to true to perform pairwise comparisons for multiple categorical factors
+    multi_factor_analysis: true
+    
+    # ENABLE CROSS-FACTOR ANALYSIS
+    # Set to true to analyze combinations of factors (uses exclude_unknown scenario)
+    cross_factor_analysis: true
+    
+    # Maximum number of factors to combine (default: 2)
+    # WARNING: 3+ factors create exponentially more comparisons!
+    max_cross_factors: 2
+    
+    # SPECIFY FACTORS TO ANALYZE 
+    # If not specified, all categorical factors (excluding continuous_factors) will be analyzed
+    factors_to_analyze:
+        - "condition"    # Will handle: male, female, unknown, not available
+        - "condition2"   # Will handle: young, old, middle, unknown, na
+    
+    # Standard DESeq2 parameters
+    lfc_null: 1.0
+    alt_hypothesis: "greaterAbs"
+    point_width: 20
+    mincount: 10
+    alpha: 0.05
+    threshold_plot: 10
+    colormap: "flare"
+    figtype: "png"
+
+## Expected output files with this configuration:
+
+# For condition factor (male, female, unknown, not available):
+# - de_analysis_condition_unknown_as_male_male_vs_female_*.csv/png
+# - de_analysis_condition_unknown_as_female_male_vs_female_*.csv/png  
+# - de_analysis_condition_exclude_unknown_male_vs_female_*.csv/png
+
+# For condition2 factor (young, old, middle, unknown, na):
+# - de_analysis_condition2_unknown_as_young_young_vs_old_*.csv/png
+# - de_analysis_condition2_unknown_as_young_young_vs_middle_*.csv/png
+# - de_analysis_condition2_unknown_as_young_old_vs_middle_*.csv/png
+# - de_analysis_condition2_unknown_as_old_young_vs_old_*.csv/png
+# - de_analysis_condition2_unknown_as_old_young_vs_middle_*.csv/png
+# - de_analysis_condition2_unknown_as_old_old_vs_middle_*.csv/png
+# - de_analysis_condition2_exclude_unknown_young_vs_old_*.csv/png
+# - de_analysis_condition2_exclude_unknown_young_vs_middle_*.csv/png
+# - de_analysis_condition2_exclude_unknown_old_vs_middle_*.csv/png
+
+# Cross-factor analysis (using exclude_unknown scenarios):
+# - de_analysis_cross_condition_condition2_male_young_vs_male_old_*.csv/png
+# - de_analysis_cross_condition_condition2_male_young_vs_female_young_*.csv/png
+# - de_analysis_cross_condition_condition2_male_young_vs_female_old_*.csv/png
+# - etc. for all pairwise combinations
+
+# Summary:
+# - de_analysis_summary.csv
+
+## Other workflow sections...
+isoform_analysis:
+    FLAIR: false
+    qscore: 1
+    exp_thresh: 10
+    col_opts: "--annotation_reliant generate --generate_map --stringent"
+
+protein_annotation:
+    lambda: false
+    uniref: "https://ftp.imp.fu-berlin.de/pub/lambda/index/lambda3/gen_0/uniref50_20230713.lba.gz"
+    num_matches: 3
