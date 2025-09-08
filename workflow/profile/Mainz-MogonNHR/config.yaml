@@ -3,7 +3,7 @@ default-resources:
     slurm_partition: "smallcpu"
     mem_mb_per_cpu: 1800
     runtime: "30m"
-
+    clusters: "mogonnhr"
 
 set-resources:
     filter_reads:
@@ -46,7 +46,7 @@ set-resources:
         runtime: "2h"
     flair_diffexp:
         mem_mb_per_cpu: 5000
-        runtime: "6h"
+        runtime: "12h"
     lambda_gene_annotation:
         mem_mb_per_cpu: 7200
 
