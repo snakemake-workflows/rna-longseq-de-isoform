@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.1](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.4.0...v2.4.1) (2025-09-08)
+
+
+### Bug Fixes
+
+* runtime est. for flair diffexp rule ([#131](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/131)) ([16f2206](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/16f2206461280b331a62f74b0aa0f5c06f265251))
+
 ## [2.4.0](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.3.0...v2.4.0) (2025-09-01)
 
 
