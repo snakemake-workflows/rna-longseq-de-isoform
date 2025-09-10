@@ -20,7 +20,6 @@ rule standardize_gff:
         cat genomic.agat.log >> {log} && rm genomic.agat.log
         """
 
-
 rule genome_to_transcriptome:
     input:
         genome="references/genomic.fa",
@@ -38,6 +37,18 @@ rule genome_to_transcriptome:
         gffread -w {output.transcriptome} -g {input.genome} {input.annotation} &> {log}
         """
 
+rule correct_transcriptome:
+    input:
+        "transcriptome/transcriptome.fa",
+    output:
+        temp("transcriptome/corrected_transcriptome.fa"),
+    log:
+        "logs/correct_transcriptome.log",
+    threads: 1
+    shell:
+        """
+        sed 's/ /_/g' {input} > {output} 2> {log}
+        """ 
 
 rule filter_reads:
     input:

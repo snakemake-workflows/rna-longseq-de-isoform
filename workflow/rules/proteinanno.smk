@@ -23,7 +23,7 @@ rule get_indexed_protein_db:
 rule generate_gene_query:
     input:
         sorted_lfc_counts="de_analysis/sorted_normalized_counts.csv",
-        transcriptome="transcriptome/transcriptome.fa",
+        transcriptome="transcriptome/corrected_transcriptome.fa",
     output:
         temp("protein_annotation/de_genes.fa"),
     log:
