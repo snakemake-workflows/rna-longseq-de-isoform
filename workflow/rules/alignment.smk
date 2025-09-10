@@ -1,6 +1,6 @@
 rule build_minimap_index:  ## build minimap2 index
     input:
-        target="transcriptome/transcriptome.fa",
+        target="transcriptome/corrected_transcriptome.fa",
     output:
         index=temp("index/transcriptome_index.mmi"),
     params:

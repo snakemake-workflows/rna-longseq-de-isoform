@@ -1,6 +1,7 @@
 localrules:
     genome_to_transcriptome,
     standardize_gff,
+    correct_transcriptome,
 
 
 rule standardize_gff:
@@ -36,6 +37,22 @@ rule genome_to_transcriptome:
     shell:
         """
         gffread -w {output.transcriptome} -g {input.genome} {input.annotation} &> {log}
+        """
+
+
+rule correct_transcriptome:
+    input:
+        "transcriptome/transcriptome.fa",
+    output:
+        temp("transcriptome/corrected_transcriptome.fa"),
+    log:
+        "logs/gffreadcorrect_transcriptome.log",
+    threads: 1
+    conda:
+        "../envs/gffread.yml"
+    shell:
+        """
+        sed 's/ /_/g' {input} > {output} 2> {log}
         """
 
 
