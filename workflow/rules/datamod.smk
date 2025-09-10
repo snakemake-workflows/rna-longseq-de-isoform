@@ -1,6 +1,7 @@
 localrules:
     genome_to_transcriptome,
     standardize_gff,
+    correct_transcriptome
 
 
 rule standardize_gff:
