@@ -46,7 +46,7 @@ rule correct_transcriptome:
     output:
         temp("transcriptome/corrected_transcriptome.fa"),
     log:
-        "logs/correct_transcriptome.log",
+        "logs/gffreadcorrect_transcriptome.log",
     threads: 1
     conda:
         "../envs/gffread.yml"
