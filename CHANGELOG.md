@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.2](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.4.1...v2.4.2) (2025-09-10)
+
+
+### Bug Fixes
+
+* dealing with whitespace in transcriptome ids ([#133](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/133)) ([582ea7d](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/582ea7d6fdc2a9747ba2a38de740ffa75449ce43))
+
 ## [2.4.1](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.4.0...v2.4.1) (2025-09-08)
 
 
