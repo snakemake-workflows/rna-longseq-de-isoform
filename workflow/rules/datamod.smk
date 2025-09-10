@@ -52,7 +52,7 @@ rule correct_transcriptome:
         "../envs/gffread.yml"
     shell:
         """
-        sed -E '/^>/ s/[[:space:]]+/_/g' {input} > {output} 2> {log}
+        sed 's/ /_/g' {input} > {output} 2> {log}
         """
 
 
