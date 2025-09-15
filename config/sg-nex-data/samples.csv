@@ -1,0 +1,5 @@
+sample  condition   condition2	batch_effect    platform    purity
+A       treated     condition2	batch1          NANOPORE    1
+B       untreated   condition2	batch1          NANOPORE    1
+C       treated     condition2	batch2          NANOPORE    1
+D       untreated   condition2	batch2          NANOPORE    1
