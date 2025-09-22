@@ -1,25 +1,37 @@
 localrules:
-    get_references,
+    download_genome,
+    download_annotation,
     get_annotation,
     get_genome,
 
 
-rule get_references:
+rule download_genome:
     output:
-        # we need two different output, to ensure simultaneous access
-        # by the two downstream rules:
-        a=temp("references/ncbi_dataset_a.zip"),
-        b=temp("references/ncbi_dataset_b.zip"),
+        temp("references/ncbi_dataset_genome.zip"),
     params:
         accession=config["ref"]["accession"],
     log:
-        "logs/refs/get_references.log",
+        "logs/refs/download_genome.log",
     conda:
         "../envs/reference.yml"
     shell:
         """
-        datasets download genome accession {params.accession} --include gff3,genome &> {log} && mv ncbi_dataset.zip {output.a};
-        cp {output.a} {output.b}
+        datasets download genome accession {params.accession} --include genome &> {log} && mv ncbi_dataset.zip {output}
+        """
+
+
+rule download_annotation:
+    output:
+        temp("references/ncbi_dataset_annotation.zip"),
+    params:
+        accession=config["ref"]["accession"],
+    log:
+        "logs/refs/download_annotation.log",
+    conda:
+        "../envs/reference.yml"
+    shell:
+        """
+        datasets download genome accession {params.accession} --include gff3 &> {log} && mv ncbi_dataset.zip {output}
         """
 
 
@@ -28,7 +40,6 @@ rule get_genome:
         lambda wildcards: get_reference_files(config).get("genome"),
     output:
         temp("references/genomic.fa"),
-    priority: 10
     params:
         accession=config["ref"]["accession"],
     log:

@@ -75,13 +75,13 @@ def get_reference_files(config):
         files["genome"] = genome
     else:
         if accession:
-            files["genome"] = "references/ncbi_dataset_a.zip"
+            files["genome"] = "references/ncbi_dataset_genome.zip"
 
     if annotation:
         files["annotation"] = annotation
     else:
         if accession:
-            files["annotation"] = "references/ncbi_dataset_b.zip"
+            files["annotation"] = "references/ncbi_dataset_annotation.zip"
 
     # ValueError: If reference configuration is invalid or missing
     if not files:
