@@ -3,7 +3,7 @@
 # sample information and experimental design
 samples: samples.csv
 # this is the input directory. All samples are looked for in this directory
-inputdir: "/path/to/input"
+inputdir: "/lustre/project/nhr-zdvhpc/yeising/human_data/"
 
 
 ## Workflow-specific Parameters:
@@ -14,17 +14,21 @@ ref:
     # Local reference data
     # Genome file path (supported extensions: .fa, .fna, .fasta, case-insensitive)
     # may be a path or left empty, if download using an accession number is preferred
-    genome: "/path/to/genome"
+    genome: ""
     # Annotation file (supported extensions: .gff, .gtf, case-insensitive)
     # may be a path or left empty, if download using an accession number is preferred
-    annotation: "/path/to/annotation"
+    annotation: ""
     # Remote reference data
-    # NCBI accession number of the reference data set; can be left empty if both reference files are available locally"
-    accession: "NCBI_ACCESSION_PLACEHOLDER"
+    # NCBI GenBank accession number of the reference data set; can be left empty if both reference files are available locally"
+    accession: "GCF_000001405.40"
+    # Ensembl-specific parameters; must provide ensembl_species, build, and release to enable Ensembl downloads
+    ensembl_species: ""  # e.g., "homo_sapiens"; defaults to species.lower().replace(" ", "_") if empty
+    build: ""  # e.g., "GRCh38"
+    release: ""  # e.g., "105"
 
 read_filter:
     # Minimum read length; set 0 to keep all reads.
-    min_length: 0
+    min_length: 200
 
 # minimap2 alignment parameters
 minimap2:
