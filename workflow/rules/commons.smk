@@ -84,7 +84,7 @@ def get_reference_files(config):
     if annotation:
         files["annotation"] = annotation
     elif ensembl_species:
-        files["annotation"] = "references/ensembl.annotation.gff"
+        files["annotation"] = "references/ensembl_annotation.gff3"
     elif accession:
         files["annotation"] = "references/ncbi_dataset_annotation.zip"
     else:
