@@ -39,7 +39,7 @@ rule download_ncbi_annotation:
 
 rule download_ensembl_genome:
     output:
-        "references/ensembl_genome.fa",
+        temp("references/ensembl_genome.fa"),
     params:
         species=config["ref"]["ensembl_species"],
         datatype="dna",
@@ -54,7 +54,7 @@ rule download_ensembl_genome:
 
 rule download_ensembl_annotation:
     output:
-        "references/ensembl_annotation.gff3",
+        temp("references/ensembl_annotation.gff3"),
     params:  
         species=config["ref"]["ensembl_species"],
         build=config["ref"]["build"],
