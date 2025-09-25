@@ -12,7 +12,7 @@ output = snakemake.output[0]
 accession = snakemake.params.accession
 
 genome_exts = {".fa", ".fna", ".fasta"}
-annotation_exts = {".gff", ".gtf"}
+annotation_exts = {".gff", ".gtf", "gff3"}
 
 is_genome = output.endswith(".fa")
 is_annotation = output.endswith(".gff")

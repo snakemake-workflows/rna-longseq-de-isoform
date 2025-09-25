@@ -70,22 +70,26 @@ def get_reference_files(config):
         return {"genome": genome, "annotation": annotation}
 
     accession = ref.get("accession")
+    ensembl_species = ref.get("ensembl_species")
     files = {}
     if genome:
         files["genome"] = genome
+    elif ensembl_species:
+        files["genome"] = "references/ensembl_genome.fa"
+    elif accession:
+        files["genome"] = "references/ncbi_dataset_genome.zip"
     else:
-        if accession:
-            files["genome"] = "references/ncbi_dataset_genome.zip"
+        raise ValueError("No valid genome source: provide local genome path, Ensembl parameters, or NCBI accession.")
 
     if annotation:
         files["annotation"] = annotation
+    elif ensembl_species:
+        files["annotation"] = "references/ensembl.annotation.gff"
+    elif accession:
+        files["annotation"] = "references/ncbi_dataset_annotation.zip"
     else:
-        if accession:
-            files["annotation"] = "references/ncbi_dataset_annotation.zip"
+        raise ValueError("No valid annotation source: provide local annotation path, Ensembl parameters, or NCBI accession.")
 
-    # ValueError: If reference configuration is invalid or missing
-    if not files:
-        raise ValueError("No valid reference files or accession number provided.")
     return files
 
 
