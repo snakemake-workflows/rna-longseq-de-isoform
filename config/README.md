@@ -35,7 +35,10 @@ Since Salmon requires transcriptomic alignments for quantification, a transcript
   - `species`: Name of the species.
   - `genome`: Path to the genome file (FASTA format, can be omitted if remote retrieval through accession number is prefered).
   - `annotation`: Path to the annotation file (GFF or GTF format, can be omitted if remote retrieval through accession number is prefered).
-  - `accession`: NCBI accession number (used if local files are not provided).
+  - `accession`: NCBI accession number (used if remote NCBI data is prefered).
+  - `ensembl_species`: Ensembl species identifier (used if remote Ensembl data is prefered).
+  - `build`: Ensembl data release build(only required if using Ensembl download)
+  - `release`: Ensembl data release number (only required if using Ensembl download)
 
 ### Read Filtering
 

@@ -22,6 +22,20 @@ properties:
         type: string
       accession:
         type: string
+      ensembl_species:
+        type: string
+      build:
+        type: string
+      release:
+        type: string
+  allOf:
+    - if:
+        properties:
+          ensembl_species:
+            "type": string,
+            "min_length": 1
+      then:
+        required: ["build","release"]
 
   read_filter:
     type: object
