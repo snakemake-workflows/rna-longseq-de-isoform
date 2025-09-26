@@ -55,7 +55,7 @@ rule download_ensembl_genome:
 rule download_ensembl_annotation:
     output:
         temp("references/ensembl_annotation.gff3"),
-    params:  
+    params:
         species=config["ref"]["ensembl_species"],
         build=config["ref"]["build"],
         release=config["ref"]["release"],
