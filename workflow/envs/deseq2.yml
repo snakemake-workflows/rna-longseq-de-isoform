@@ -1,0 +1,7 @@
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - bioconductor-deseq2 =1.46.0
+  - r-stringr =1.5.1
+  - r-ashr =2.2_63

@@ -56,7 +56,7 @@ quant:
 # This section defines the pyDESeq2 plot and data handling parameters
 deseq2:
     # normalization fit type, must be 'parametric' or 'mean'
-    fit_type: "mean"
+    fit_type: ""
     # the "design factors" are the confounding variables to be adjusted for
     # during normalization. They must be given in the configuration (samples.csv).
     design_factors:
@@ -66,6 +66,9 @@ deseq2:
     #continuous_factors:
     #    -
     #
+
+    batch_effect:
+        - "batch"
     # The (log2) log fold change under the null hypothesis. (default: 0).
     lfc_null: 0.5
     #

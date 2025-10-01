@@ -28,6 +28,13 @@ samples = (
     .set_index("sample", drop=False)
     .sort_index()
 )
+
+# full path to samples.csv relative to config.yml
+samples_file = os.path.join(
+    os.path.dirname(os.path.realpath(workflow.configfiles[0])),  # config.yaml dir
+    config["samples"]  # 'samples.csv'
+)
+
 # validation of config files
 validate(samples, schema="../schemas/samples.schema.yaml")
 validate(config, schema="../schemas/config.schema.yaml")
@@ -119,6 +126,20 @@ def aggregate_input(samples):
     return valids
 
 
+# Obtain contrasts from config for deseq2 
+# https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#contrasts
+contrasts = []
+for factor in config["deseq2"]["design_factors"]:
+    levels = samples[factor].unique().tolist()
+    for i in range(len(levels)):
+        for j in range(i + 1, len(levels)):
+            contrasts.append({
+                "factor": factor,
+                "num": levels[i],
+                "den": levels[j]
+            })
+
+
 def rule_all_input():
     all_input = list()
     all_input.extend(
@@ -133,10 +154,12 @@ def rule_all_input():
         expand("counts/{sample}_salmon/quant.sf", sample=samples["sample"])
     )
     all_input.append("merged/all_counts.tsv")
-    all_input.append(f"de_analysis/dispersion_graph.{config['deseq2']['figtype']}")
-    all_input.append(f"de_analysis/ma_graph.{config['deseq2']['figtype']}")
-    all_input.append(f"de_analysis/heatmap.{config['deseq2']['figtype']}")
-    all_input.append("de_analysis/lfc_analysis.csv")
+    all_input.extend([
+        expand("de_analysis/{factor}_{num}_vs_{den}_l2fc.tsv", **c)[0] for c in contrasts
+    ])
+    all_input.extend([
+        expand("de_analysis/{factor}_{num}_vs_{den}_MA_plot.svg", **c)[0] for c in contrasts
+    ])
     if config["isoform_analysis"]["FLAIR"] == True:
         all_input.extend(
             expand(
