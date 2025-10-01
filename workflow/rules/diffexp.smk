@@ -98,6 +98,9 @@ rule deseq2:
         numerator="{num}",
         denominator="{den}",
         colormap=config["deseq2"]["colormap"],
+        alpha=config["deseq2"]["alpha"],
+        lfc_null=config["deseq2"]["lfc_null"],
+        alt_hypothesis=config["deseq2"]["alt_hypothesis"],
     log:
         "logs/deseq2_{factor}_{num}_vs_{den}.log",
     conda:

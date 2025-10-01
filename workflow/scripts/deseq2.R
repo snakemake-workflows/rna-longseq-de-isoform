@@ -24,14 +24,17 @@ contrast <- c(factor, numerator, denominator)
 res <- results(
     dds,
     contrast = contrast,
-    parallel = parallel
+    parallel = parallel,
+    alpha = snakemake@params[["alpha"]],
+    lfcThreshold = as.numeric (snakemake@params[["lfc_null"]]),
+    altHypothesis = snakemake@params[["alt_hypothesis"]]
 )
 
 res <- lfcShrink(
     dds,
     contrast = contrast,
     res = res,
-    type = "ashr"
+    type = "ashr",
 )
 
 res <- res[order(res$padj), ]
