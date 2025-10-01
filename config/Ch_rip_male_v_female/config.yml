@@ -97,7 +97,7 @@ deseq2:
     #
     # the heatmap color map
     # see https://seaborn.pydata.org/tutorial/color_palettes.htm for an overview
-    colormap: "flare"
+    colormap: "Blues"
     #plot figure type
     figtype: "png"
 

@@ -63,6 +63,6 @@ pheatmap(
   sampleDistMatrix,
   clustering_distance_rows = sampleDists,
   clustering_distance_cols = sampleDists,
-  col = colorRampPalette(rev(brewer.pal(9, "Blues")))(255)
+  col = colorRampPalette(rev(brewer.pal(9, snakemake@params[["colormap"]])))(255)
 )
 dev.off()
