@@ -66,3 +66,16 @@ pheatmap(
   col = colorRampPalette(rev(brewer.pal(9, snakemake@params[["colormap"]])))(255)
 )
 dev.off()
+
+topVarGenes <- head(order(rowVars(assay(vsd)), decreasing = TRUE), 500)
+
+svg(snakemake@output[["count_heatmap"]])
+pheatmap(
+    assay(vsd)[topVarGenes, ],
+    scale ="row",
+    clustering_distance_rows = "correlation",
+    clustering_distance_cols = "correlation",
+    show_rownames = FALSE,
+    col = colorRampPalette(rev(brewer.pal(9, snakemake@params[["colormap"]])))(255)
+)
+dev.off()

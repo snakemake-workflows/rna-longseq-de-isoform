@@ -89,8 +89,9 @@ rule deseq2:
         "de_analysis/all.rds",
     output:
         table="de_analysis/{factor}_{num}_vs_{den}_l2fc.tsv",
-        ma_plot="de_analysis/{factor}_{num}_vs_{den}_MA_plot.{config['deseq2']['figtype']}",
-        sample_heatmap="de_analysis/{factor}_{num}_vs_{den}_sample_heatmap.{config['deseq2']['figtype']}",
+        ma_plot="de_analysis/{factor}_{num}_vs_{den}_MA_plot.svg",
+        sample_heatmap="de_analysis/{factor}_{num}_vs_{den}_sample_heatmap.svg",
+        count_heatmap="de_analysis/{factor}_{num}_vs_{den}_count_heatmap.svg",
     params:
         factor="{factor}",
         numerator="{num}",
