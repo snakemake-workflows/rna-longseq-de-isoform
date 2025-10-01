@@ -88,13 +88,14 @@ rule deseq2:
     input:
         "de_analysis/all.rds",
     output:
-        table = "de_analysis/{factor}_{num}_vs_{den}_l2fc.tsv",
-        ma_plot = "de_analysis/{factor}_{num}_vs_{den}_MA_plot.svg",
+        table="de_analysis/{factor}_{num}_vs_{den}_l2fc.tsv",
+        ma_plot="de_analysis/{factor}_{num}_vs_{den}_MA_plot.svg",
+        sample_heatmap="de_analysis/{factor}_{num}_vs_{den}_sample_heatmap.svg",
     params:
         factor="{factor}",
         numerator="{num}",
         denominator="{den}",
-        colormap={config["deseq2"]["colormap"]},
+        colormap=config["deseq2"]["colormap"],
     log:
         "logs/deseq2_{factor}_{num}_vs_{den}.log",
     conda:

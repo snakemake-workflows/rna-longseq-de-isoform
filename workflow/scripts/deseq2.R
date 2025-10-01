@@ -50,3 +50,19 @@ write.table(
     sep = "\t",
     quote = FALSE
 )
+
+vsd <- vst(dds, blind = FALSE)
+
+sampleDists <- dist(t(assay(vsd)))
+sampleDistMatrix <- as.matrix(sampleDists)
+rownames(sampleDistMatrix) <- colnames(vsd)
+colnames(sampleDistMatrix) <- colnames(vsd)
+
+svg(snakemake@output[["sample_heatmap"]])
+pheatmap(
+  sampleDistMatrix,
+  clustering_distance_rows = sampleDists,
+  clustering_distance_cols = sampleDists,
+  col = colorRampPalette(rev(brewer.pal(9, "Blues")))(255)
+)
+dev.off()
