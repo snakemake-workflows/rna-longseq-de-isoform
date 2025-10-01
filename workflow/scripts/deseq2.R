@@ -79,3 +79,7 @@ pheatmap(
     col = colorRampPalette(rev(brewer.pal(9, snakemake@params[["colormap"]])))(255)
 )
 dev.off()
+
+svg(snakemake@output[["dispersion_plot"]])
+plotDispEsts(dds)
+dev.off()

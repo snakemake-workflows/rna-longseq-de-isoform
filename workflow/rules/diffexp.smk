@@ -92,6 +92,7 @@ rule deseq2:
         ma_plot="de_analysis/{factor}_{num}_vs_{den}_MA_plot.svg",
         sample_heatmap="de_analysis/{factor}_{num}_vs_{den}_sample_heatmap.svg",
         count_heatmap="de_analysis/{factor}_{num}_vs_{den}_count_heatmap.svg",
+        dispersion_plot="de_analysis/{factor}_{num}_vs_{den}_dispersion_plot.svg",
     params:
         factor="{factor}",
         numerator="{num}",
