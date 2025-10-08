@@ -1,7 +1,0 @@
-sample  condition   condition2	batch    platform    purity
-SGNex_H9_cDNA_replicate2_run4       lung   condition2	batch1  NANOPORE    1
-SGNex_H9_cDNA_replicate3_run4       lung   condition2	batch1  NANOPORE    1
-SGNex_H9_cDNA_replicate4_run4       lung   condition2	batch1  NANOPORE    1
-SGNex_Hct116_cDNA_replicate3_run5   colon  condition2	batch2  NANOPORE    1
-SGNex_Hct116_cDNA_replicate4_run4   colon  condition2	batch1  NANOPORE    1
-SGNex_Hct116_cDNA_replicate4_run5   colon  condition2	batch2  NANOPORE    1
