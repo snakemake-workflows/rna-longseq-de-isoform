@@ -57,14 +57,16 @@ def get_reference_files(config):
     genome_path = ref.get("genome")
     genome = (
         genome_path
-        if Path(genome_path).exists()
+        if genome_path
+        and Path(genome_path).exists()
         and Path(genome_path).suffix.lower() in genome_exts
         else None
     )
     annotation_path = ref.get("annotation")
     annotation = (
         annotation_path
-        if Path(annotation_path).exists()
+        if annotation_path
+        and Path(annotation_path).exists()
         and Path(annotation_path).suffix.lower() in annotation_exts
         else None
     )
