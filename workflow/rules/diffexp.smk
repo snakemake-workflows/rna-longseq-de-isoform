@@ -67,8 +67,6 @@ localrules:
 #         "../envs/pydeseq2.yml"
 #     script:
 #         "../scripts/de_analysis.py"
-
-
 rule deseq2_init:
     input:
         all_counts="merged/all_counts.tsv",
@@ -89,10 +87,34 @@ rule deseq2:
         "de_analysis/all.rds",
     output:
         table="de_analysis/{factor}_{num}_vs_{den}_l2fc.tsv",
-        ma_plot="de_analysis/{factor}_{num}_vs_{den}_MA_plot.svg",
-        sample_heatmap="de_analysis/{factor}_{num}_vs_{den}_sample_heatmap.svg",
-        count_heatmap="de_analysis/{factor}_{num}_vs_{den}_count_heatmap.svg",
-        dispersion_plot="de_analysis/{factor}_{num}_vs_{den}_dispersion_plot.svg",
+        ma_plot=report(f"de_analysis/{{factor}}_{{num}}_vs_{{den}}_MA_plot.svg",
+             category="DGE Results",
+             caption="../report/ma_graph.rst",
+             labels={
+                "figure": "MA plot",
+             },
+         ),
+        sample_heatmap=report(f"de_analysis/{{factor}}_{{num}}_vs_{{den}}_sample_heatmap.svg",
+             category="DGE Results",
+             caption="../report/correlation_matrix.rst",
+             labels={
+                 "figure": "Correlation matrix",
+             },
+         ),
+        count_heatmap=report(f"de_analysis/{{factor}}_{{num}}_vs_{{den}}_count_heatmap.svg",
+             category="DGE Results",
+             caption="../report/heatmap.rst",
+             labels={
+                 "figure": "Gene heatmap",
+             },
+         ),
+        dispersion_plot=report(f"de_analysis/{{factor}}_{{num}}_vs_{{den}}_dispersion_plot.svg",
+             category="DGE Results",
+             caption="../report/dispersion_graph.rst",
+             labels={
+                 "figure": "Dispersion graph",
+             },
+         ),
     params:
         factor="{factor}",
         numerator="{num}",
