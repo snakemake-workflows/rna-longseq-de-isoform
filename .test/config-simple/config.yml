@@ -18,11 +18,11 @@ ref:
     annotation: "./ngs-test-data/ref/annotation.chr21.gtf"    
     # NCBI accession number of the reference data set.
     # empty, because every real reference is too big.
-    accession: None
+    accession: ""
     # Ensembl-specific parameters
-    ensembl_species: None
-    build: None
-    release: None
+    ensembl_species: ""
+    build: ""
+    release: ""
 
 
 read_filter:
