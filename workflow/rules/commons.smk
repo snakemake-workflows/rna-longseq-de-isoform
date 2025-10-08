@@ -81,7 +81,9 @@ def get_reference_files(config):
     elif accession:
         files["genome"] = "references/ncbi_dataset_genome.zip"
     else:
-        raise ValueError("No valid genome source: provide local genome path, Ensembl parameters, or NCBI accession.")
+        raise ValueError(
+            "No valid genome source: provide local genome path, Ensembl parameters, or NCBI accession."
+        )
 
     if annotation:
         files["annotation"] = annotation
@@ -90,7 +92,9 @@ def get_reference_files(config):
     elif accession:
         files["annotation"] = "references/ncbi_dataset_annotation.zip"
     else:
-        raise ValueError("No valid annotation source: provide local annotation path, Ensembl parameters, or NCBI accession.")
+        raise ValueError(
+            "No valid annotation source: provide local annotation path, Ensembl parameters, or NCBI accession."
+        )
 
     return files
 
