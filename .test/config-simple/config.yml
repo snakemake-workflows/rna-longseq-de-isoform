@@ -19,6 +19,10 @@ ref:
     # NCBI accession number of the reference data set.
     # empty, because every real reference is too big.
     accession: None
+    # Ensembl-specific parameters
+    ensembl_species: None
+    build: None
+    release: None
 
 
 read_filter:
