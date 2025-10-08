@@ -1,26 +1,69 @@
 localrules:
-    get_references,
+    download_ncbi_genome,
+    download_ncbi_annotation,
+    download_ensembl_genome,
+    download_ensembl_annotation,
     get_annotation,
     get_genome,
 
 
-rule get_references:
+rule download_ncbi_genome:
     output:
-        # we need two different output, to ensure simultaneous access
-        # by the two downstream rules:
-        a=temp("references/ncbi_dataset_a.zip"),
-        b=temp("references/ncbi_dataset_b.zip"),
+        temp("references/ncbi_dataset_genome.zip"),
     params:
         accession=config["ref"]["accession"],
     log:
-        "logs/refs/get_references.log",
+        "logs/refs/download_ncbi_genome.log",
     conda:
         "../envs/reference.yml"
     shell:
         """
-        datasets download genome accession {params.accession} --include gff3,genome &> {log} && mv ncbi_dataset.zip {output.a};
-        cp {output.a} {output.b}
+        datasets download genome accession {params.accession} --include genome &> {log} && mv ncbi_dataset.zip {output}
         """
+
+
+rule download_ncbi_annotation:
+    output:
+        temp("references/ncbi_dataset_annotation.zip"),
+    params:
+        accession=config["ref"]["accession"],
+    log:
+        "logs/refs/download_ncbi_annotation.log",
+    conda:
+        "../envs/reference.yml"
+    shell:
+        """
+        datasets download genome accession {params.accession} --include gff3 &> {log} && mv ncbi_dataset.zip {output}
+        """
+
+
+rule download_ensembl_genome:
+    output:
+        temp("references/ensembl_genome.fa"),
+    params:
+        species=config["ref"]["ensembl_species"],
+        datatype="dna",
+        build=config["ref"]["build"],
+        release=config["ref"]["release"],
+    log:
+        "logs/refs/download_ensembl_genome.log",
+    cache: "omit-software"  # save space and time with between workflow caching (see docs)
+    wrapper:
+        "v7.5.0/bio/reference/ensembl-sequence"
+
+
+rule download_ensembl_annotation:
+    output:
+        temp("references/ensembl_annotation.gff3"),
+    params:
+        species=config["ref"]["ensembl_species"],
+        build=config["ref"]["build"],
+        release=config["ref"]["release"],
+    log:
+        "logs/refs/download_ensembl_annotation.log",
+    cache: "omit-software"  # save space and time with between workflow caching (see docs)
+    wrapper:
+        "v7.5.0/bio/reference/ensembl-annotation"
 
 
 rule get_genome:
@@ -28,7 +71,6 @@ rule get_genome:
         lambda wildcards: get_reference_files(config).get("genome"),
     output:
         temp("references/genomic.fa"),
-    priority: 10
     params:
         accession=config["ref"]["accession"],
     log:
