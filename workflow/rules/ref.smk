@@ -46,7 +46,7 @@ rule download_ensembl_genome:
         build=config["ref"]["build"],
         release=config["ref"]["release"],
     log:
-        "logs/references/download_ensembl_genome.log",
+        "logs/refs/download_ensembl_genome.log",
     cache: "omit-software"  # save space and time with between workflow caching (see docs)
     wrapper:
         "v7.5.0/bio/reference/ensembl-sequence"
@@ -60,7 +60,7 @@ rule download_ensembl_annotation:
         build=config["ref"]["build"],
         release=config["ref"]["release"],
     log:
-        "logs/references/download_ensembl_annotation.log",
+        "logs/refs/download_ensembl_annotation.log",
     cache: "omit-software"  # save space and time with between workflow caching (see docs)
     wrapper:
         "v7.5.0/bio/reference/ensembl-annotation"
