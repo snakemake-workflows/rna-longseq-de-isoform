@@ -18,9 +18,13 @@ ref:
     # Annotation file (supported extensions: .gff, .gtf, case-insensitive)
     # may be a path or left empty, if download using an accession number is preferred
     annotation: "/lustre/project/nhr-zdvhpc/transcriptome_data/GCA_917627325.4_PGI_CHIRRI_v4_genomic.gff"
-    # Remote reference data
-    # NCBI accession number of the reference data set; can be left empty if both reference files are available locally"
+    # Remote reference data, choose either NCBI or ensembl
+    # NCBI GenBank accession number of the reference data set; can be left empty if both reference files are available locally
     accession: "GCA_917627325.4"
+    # Ensembl-specific parameters; must provide ensembl_species, build, and release to enable Ensembl downloads
+    ensembl_species: ""  # e.g., "homo_sapiens"
+    build: ""  # e.g., "GRCh38"
+    release: ""  # e.g., "105"
 
 read_filter:
     # Minimum read length; set 0 to keep all reads.

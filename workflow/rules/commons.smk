@@ -59,40 +59,52 @@ def get_reference_files(config):
     """
     ref = config.get("ref", {})
     genome_exts = (".fa", ".fna", ".fasta")
-    annotation_exts = (".gtf", ".gff")
+    annotation_exts = (".gtf", ".gff", ".gff3")
     # Validate genome and annotation files
+    genome_path = ref.get("genome")
     genome = (
-        ref.get("genome")
-        if Path(ref["genome"]).exists()
-        and Path(ref["genome"]).suffix.lower() in genome_exts
+        genome_path
+        if genome_path
+        and Path(genome_path).exists()
+        and Path(genome_path).suffix.lower() in genome_exts
         else None
     )
+    annotation_path = ref.get("annotation")
     annotation = (
-        ref.get("annotation")
-        if Path(ref["annotation"]).exists()
-        and Path(ref["annotation"]).suffix.lower() in annotation_exts
+        annotation_path
+        if annotation_path
+        and Path(annotation_path).exists()
+        and Path(annotation_path).suffix.lower() in annotation_exts
         else None
     )
     if genome and annotation:
         return {"genome": genome, "annotation": annotation}
 
     accession = ref.get("accession")
+    ensembl_species = ref.get("ensembl_species")
     files = {}
     if genome:
         files["genome"] = genome
+    elif ensembl_species:
+        files["genome"] = "references/ensembl_genome.fa"
+    elif accession:
+        files["genome"] = "references/ncbi_dataset_genome.zip"
     else:
-        if accession:
-            files["genome"] = "references/ncbi_dataset_a.zip"
+        raise ValueError(
+            "No valid genome source: provide local genome path, Ensembl parameters, or NCBI accession."
+        )
 
     if annotation:
         files["annotation"] = annotation
+    elif ensembl_species:
+        files["annotation"] = "references/ensembl_annotation.gff3"
+    elif accession:
+        files["annotation"] = "references/ncbi_dataset_annotation.zip"
     else:
-        if accession:
-            files["annotation"] = "references/ncbi_dataset_b.zip"
+        raise ValueError(
+            "No valid annotation source: provide local annotation path, Ensembl parameters, or NCBI accession."
+        )
 
-    # ValueError: If reference configuration is invalid or missing
-    if not files:
-        raise ValueError("No valid reference files or accession number provided.")
     return files
 
 
