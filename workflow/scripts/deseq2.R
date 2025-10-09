@@ -83,6 +83,19 @@ pheatmap(
 )
 dev.off()
 
+toptopVarGenes <- head(order(rowVars(assay(vsd)), decreasing = TRUE), as.numeric(snakemake@params[["threshold_plot"]]))
+
+svg(snakemake@output[["top_count_heatmap"]])
+pheatmap(
+    assay(vsd)[toptopVarGenes, ],
+    scale ="row",
+    clustering_distance_rows = "correlation",
+    clustering_distance_cols = "correlation",
+    show_rownames = TRUE,
+    col = colorRampPalette(rev(brewer.pal(9, snakemake@params[["colormap"]])))(255)
+)
+dev.off()
+
 svg(snakemake@output[["dispersion_plot"]])
 plotDispEsts(dds)
 dev.off()
