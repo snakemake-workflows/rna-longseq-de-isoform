@@ -156,30 +156,6 @@ def rule_all_input():
             for c in contrasts
         ]
     )
-    all_input.extend(
-        [
-            expand("de_analysis/{factor}_{num}_vs_{den}_MA_plot.svg", **c)[0]
-            for c in contrasts
-        ]
-    )
-    all_input.extend(
-        [
-            expand("de_analysis/{factor}_{num}_vs_{den}_sample_heatmap.svg", **c)[0]
-            for c in contrasts
-        ]
-    )
-    all_input.extend(
-        [
-            expand("de_analysis/{factor}_{num}_vs_{den}_count_heatmap.svg", **c)[0]
-            for c in contrasts
-        ]
-    )
-    all_input.extend(
-        [
-            expand("de_analysis/{factor}_{num}_vs_{den}_dispersion_plot.svg", **c)[0]
-            for c in contrasts
-        ]
-    )
     if config["isoform_analysis"]["FLAIR"] == True:
         all_input.extend(
             expand(
