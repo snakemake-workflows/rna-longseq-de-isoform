@@ -138,11 +138,14 @@ def aggregate_input(samples):
     return valids
 
 
-# Obtain contrasts from config for deseq2
+# Obtain all pairwise contrasts from samples.csv for deseq2
 # https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#contrasts
 contrasts = []
 for factor in config["deseq2"]["design_factors"]:
+    # Extract all unique conditions for a factor
     levels = samples[factor].unique().tolist()
+    # For each combination of two conditions create a contrast dict
+    # e.g.: [{"factor": "condition", "num": "male", "den": "female"}]
     for i in range(len(levels)):
         for j in range(i + 1, len(levels)):
             contrasts.append({"factor": factor, "num": levels[i], "den": levels[j]})

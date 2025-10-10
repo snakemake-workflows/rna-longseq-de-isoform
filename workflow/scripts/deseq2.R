@@ -1,3 +1,4 @@
+# Start logging
 log <- file(snakemake@log[[1]], open="wt")
 sink(log)
 sink(log, type="message")
@@ -7,6 +8,7 @@ library("DESeq2")
 library("pheatmap")
 library("RColorBrewer")
 
+# Enable parallelization if multiple threads are available
 parallel <- FALSE
 if (snakemake@threads > 1){
     library("BiocParallel")
@@ -14,13 +16,16 @@ if (snakemake@threads > 1){
     parallel <- TRUE
 }
 
+# Load deseq2-init results
 dds <- readRDS(snakemake@input[[1]])
 
+# Get contrasts from Snakemake wildcards
 factor <- snakemake@params[["factor"]]
 numerator <- snakemake@params[["numerator"]]
 denominator <- snakemake@params[["denominator"]]
 contrast <- c(factor, numerator, denominator)
 
+# Compute diffexp results
 res <- results(
     dds,
     contrast = contrast,
@@ -30,6 +35,7 @@ res <- results(
     altHypothesis = snakemake@params[["alt_hypothesis"]]
 )
 
+# Apply lfc shrinkage to results
 res <- lfcShrink(
     dds,
     contrast = contrast,
@@ -37,12 +43,15 @@ res <- lfcShrink(
     type = "ashr",
 )
 
+# Sort results by significance
 res <- res[order(res$padj), ]
 
+# Generate MA plot
 svg(snakemake@output[["ma_plot"]])
 plotMA(res, ylim = c(-2, 2))
 dev.off()
 
+# Export diffexp results
 write.table(
     data.frame(
         gene = rownames(res),
@@ -54,13 +63,17 @@ write.table(
     quote = FALSE
 )
 
+# Variance Stabilizing Transformation
+# https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#extracting-transformed-values
 vsd <- vst(dds, blind = FALSE)
-
+# Obtain sample to smaple dists
 sampleDists <- dist(t(assay(vsd)))
+# Generate sample dist matrix
 sampleDistMatrix <- as.matrix(sampleDists)
 rownames(sampleDistMatrix) <- colnames(vsd)
 colnames(sampleDistMatrix) <- colnames(vsd)
 
+# Create sample to sample dist heatmap
 svg(snakemake@output[["sample_heatmap"]])
 pheatmap(
   sampleDistMatrix,
@@ -70,8 +83,10 @@ pheatmap(
 )
 dev.off()
 
+# Select top 500 genes by condition variance
 topVarGenes <- head(order(rowVars(assay(vsd)), decreasing = TRUE), 500)
 
+# Create gene heatmap
 svg(snakemake@output[["count_heatmap"]])
 pheatmap(
     assay(vsd)[topVarGenes, ],
@@ -83,8 +98,10 @@ pheatmap(
 )
 dev.off()
 
+# Select top config["deseq2"]["threshold_plot"] by condition variance
 toptopVarGenes <- head(order(rowVars(assay(vsd)), decreasing = TRUE), as.numeric(snakemake@params[["threshold_plot"]]))
 
+# Create top gene heatmap including gene legend
 svg(snakemake@output[["top_count_heatmap"]])
 pheatmap(
     assay(vsd)[toptopVarGenes, ],
@@ -96,6 +113,7 @@ pheatmap(
 )
 dev.off()
 
+# Create dispersion plot
 svg(snakemake@output[["dispersion_plot"]])
 plotDispEsts(dds)
 dev.off()
