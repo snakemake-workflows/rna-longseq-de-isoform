@@ -23,7 +23,7 @@ rule deseq2:
     input:
         "de_analysis/all.rds",
     output:
-        table="de_analysis/{factor}_{prop_a}}_vs_{{prop_b}_l2fc.tsv",
+        table="de_analysis/{factor}_{prop_a}_vs_{prop_b}_l2fc.tsv",
         ma_plot=report(
             f"de_analysis/{{factor}}_{{prop_a}}_vs_{{prop_b}}_MA_plot.svg",
             category="DGE Results",
