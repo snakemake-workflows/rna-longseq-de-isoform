@@ -68,7 +68,7 @@ deseq2:
     #    -
     # Factors representing batch or technical effects to correct for
     batch_effect:
-        - "batch"
+        - ""
     # If left empty ("") the design formula is constructed automatically as:
     # "batch + condition_1 * condition_2" (with all interactions)
     # Otherwise, specify manually e.g. :
@@ -89,7 +89,7 @@ deseq2:
     mincount: 10
     #
     # Type I error cutoff value:
-    alpha: 10
+    alpha: 0.99
     #
     # in addition to the full heatmap, plot the top number of different
     # values, ranked by the top ratio between the two traits
