@@ -22,15 +22,12 @@ rule get_indexed_protein_db:
 
 rule generate_gene_query:
     input:
-        sorted_lfc_counts=[
-            expand("de_analysis/{factor}_{prop_a}_vs_{prop_b}_l2fc.tsv", **contrast)[0]
-            for contrast in contrasts
-        ],
+        sorted_lfc_counts="de_analysis/{factor}_{prop_a}_vs_{prop_b}_l2fc.tsv",
         transcriptome="transcriptome/corrected_transcriptome.fa",
     output:
-        temp("protein_annotation/de_genes.fa"),
+        temp("protein_annotation/{factor}_{prop_a}_vs_{prop_b}_de_genes.fa"),
     log:
-        "logs/lambda/generate_gene_query.log",
+        "logs/lambda/generate_gene_query_{factor}_{prop_a}_vs_{prop_b}.log",
     conda:
         "../envs/biopython.yml"
     script:
@@ -40,10 +37,10 @@ rule generate_gene_query:
 rule lambda_gene_annotation:
     input:
         indexed_db="protein_annotation/index/UniRef.lba.gz",
-        query="protein_annotation/de_genes.fa",
+        query="protein_annotation/{factor}_{prop_a}_vs_{prop_b}_de_genes.fa",
     output:
         lambda_results=report(
-            "protein_annotation/blast_results.m8",
+            "protein_annotation/blast_results_{factor}_{prop_a}_vs_{prop_b}.m8",
             category="Protein Annotation Results",
             subcategory="Lambda Results",
             caption="../report/lambda_results.rst",
@@ -54,7 +51,7 @@ rule lambda_gene_annotation:
     params:
         num_matches=f'{config["protein_annotation"]["num_matches"]}',
     log:
-        "logs/lambda/blast_genes.log",
+        "logs/lambda/blast_genes_protein_annotation/{factor}_{prop_a}_vs_{prop_b}_de_genes.fa.log",
     conda:
         "../envs/lambda3.yml"
     shell:
@@ -63,10 +60,10 @@ rule lambda_gene_annotation:
 
 rule get_protein_names:
     input:
-        "protein_annotation/blast_results.m8",
+        "protein_annotation/blast_results_{factor}_{prop_a}_vs_{prop_b}.m8",
     output:
         protein_names=report(
-            "protein_annotation/proteins.csv",
+            "protein_annotation/proteins_{factor}_{prop_a}_vs_{prop_b}.csv",
             category="Protein Annotation Results",
             subcategory="Identified Proteins",
             caption="../report/protein_annotation.rst",
@@ -75,7 +72,7 @@ rule get_protein_names:
             },
         ),
     log:
-        "logs/lambda/get_protein_names.log",
+        "logs/lambda/get_protein_names_{factor}_{prop_a}_vs_{prop_b}.log",
     conda:
         "../envs/biopython.yml"
     script:

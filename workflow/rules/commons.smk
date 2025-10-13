@@ -184,5 +184,12 @@ def rule_all_input():
         all_input.append("iso_analysis/report/isoforms")
         all_input.append("iso_analysis/report/usage")
     if config["protein_annotation"]["lambda"] == True:
-        all_input.append("protein_annotation/proteins.csv")
+        all_input.extend(
+            [
+                expand(
+                    "protein_annotation/proteins_{factor}_{prop_a}_vs_{prop_b}.csv", **c
+                )[0]
+                for c in contrasts
+            ]
+        )
     return all_input

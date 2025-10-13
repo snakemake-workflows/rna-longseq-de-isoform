@@ -7,7 +7,7 @@ import pandas as pd
 # Start logging
 sys.stderr = sys.stdout = open(snakemake.log[0], "w")
 
-sorted_lfc_counts = str(snakemake.input.sorted_lfc_counts[0])
+sorted_lfc_counts = snakemake.input.sorted_lfc_counts
 transcriptome = snakemake.input.transcriptome
 gene_list = snakemake.output[0]
 
