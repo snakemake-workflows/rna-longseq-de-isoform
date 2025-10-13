@@ -21,9 +21,9 @@ dds <- readRDS(snakemake@input[[1]])
 
 # Get contrasts from Snakemake wildcards
 factor <- snakemake@params[["factor"]]
-numerator <- snakemake@params[["numerator"]]
-denominator <- snakemake@params[["denominator"]]
-contrast <- c(factor, numerator, denominator)
+prop_a <- snakemake@params[["prop_a"]]
+prop_b <- snakemake@params[["prop_b"]]
+contrast <- c(factor, prop_a, prop_b)
 
 # Compute diffexp results
 res <- results(
