@@ -23,9 +23,9 @@ rule deseq2:
     input:
         "de_analysis/all.rds",
     output:
-        table="de_analysis/{factor}_{num}_vs_{den}_l2fc.tsv",
+        table="de_analysis/{factor}_{prop_a}}_vs_{{prop_b}_l2fc.tsv",
         ma_plot=report(
-            f"de_analysis/{{factor}}_{{num}}_vs_{{den}}_MA_plot.svg",
+            f"de_analysis/{{factor}}_{{prop_a}}_vs_{{prop_b}}_MA_plot.svg",
             category="DGE Results",
             caption="../report/ma_graph.rst",
             labels={
@@ -33,7 +33,7 @@ rule deseq2:
             },
         ),
         sample_heatmap=report(
-            f"de_analysis/{{factor}}_{{num}}_vs_{{den}}_sample_heatmap.svg",
+            f"de_analysis/{{factor}}_{{prop_a}}_vs_{{prop_b}}_sample_heatmap.svg",
             category="DGE Results",
             caption="../report/correlation_matrix.rst",
             labels={
@@ -41,7 +41,7 @@ rule deseq2:
             },
         ),
         count_heatmap=report(
-            f"de_analysis/{{factor}}_{{num}}_vs_{{den}}_count_heatmap.svg",
+            f"de_analysis/{{factor}}_{{prop_a}}_vs_{{prop_b}}_count_heatmap.svg",
             category="DGE Results",
             caption="../report/heatmap.rst",
             labels={
@@ -49,7 +49,7 @@ rule deseq2:
             },
         ),
         top_count_heatmap=report(
-            f"de_analysis/{{factor}}_{{num}}_vs_{{den}}_top_count_heatmap.svg",
+            f"de_analysis/{{factor}}_{{prop_a}}_vs_{{prop_b}}_top_count_heatmap.svg",
             category="DGE Results",
             caption="../report/heatmap_top.rst",
             labels={
@@ -57,7 +57,7 @@ rule deseq2:
             },
         ),
         dispersion_plot=report(
-            f"de_analysis/{{factor}}_{{num}}_vs_{{den}}_dispersion_plot.svg",
+            f"de_analysis/{{factor}}_{{prop_a}}_vs_{{prop_b}}_dispersion_plot.svg",
             category="DGE Results",
             caption="../report/dispersion_graph.rst",
             labels={
@@ -66,15 +66,15 @@ rule deseq2:
         ),
     params:
         factor="{factor}",
-        numerator="{num}",
-        denominator="{den}",
+        prop_a="{prop_a}",
+        prop_b="{prop_b}",
         colormap=config["deseq2"]["colormap"],
         alpha=config["deseq2"]["alpha"],
         lfc_null=config["deseq2"]["lfc_null"],
         alt_hypothesis=config["deseq2"]["alt_hypothesis"],
         threshold_plot=config["deseq2"]["threshold_plot"],
     log:
-        "logs/deseq2_{factor}_{num}_vs_{den}.log",
+        "logs/deseq2_{factor}_{prop_a}_vs_{prop_b}.log",
     conda:
         "../envs/deseq2.yml"
     script:

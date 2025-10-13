@@ -145,10 +145,12 @@ for factor in config["deseq2"]["design_factors"]:
     # Extract all unique conditions for a factor
     levels = samples[factor].unique().tolist()
     # For each combination of two conditions create a contrast dict
-    # e.g.: [{"factor": "condition", "num": "male", "den": "female"}]
+    # e.g.: [{"factor": "condition", "prop_a": "male", "prop_b": "female"}]
     for i in range(len(levels)):
         for j in range(i + 1, len(levels)):
-            contrasts.append({"factor": factor, "num": levels[i], "den": levels[j]})
+            contrasts.append(
+                {"factor": factor, "prop_a": levels[i], "prop_b": levels[j]}
+            )
 
 
 def rule_all_input():
@@ -167,7 +169,7 @@ def rule_all_input():
     all_input.append("merged/all_counts.tsv")
     all_input.extend(
         [
-            expand("de_analysis/{factor}_{num}_vs_{den}_l2fc.tsv", **c)[0]
+            expand("de_analysis/{factor}_{prop_a}_vs_{prop_b}_l2fc.tsv", **c)[0]
             for c in contrasts
         ]
     )

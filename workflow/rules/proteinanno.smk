@@ -23,7 +23,7 @@ rule get_indexed_protein_db:
 rule generate_gene_query:
     input:
         sorted_lfc_counts=[
-            expand("de_analysis/{factor}_{num}_vs_{den}_l2fc.tsv", **contrast)[0]
+            expand("de_analysis/{factor}_{prop_a}_vs_{prop_b}_l2fc.tsv", **contrast)[0]
             for contrast in contrasts
         ],
         transcriptome="transcriptome/corrected_transcriptome.fa",
