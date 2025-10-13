@@ -65,7 +65,8 @@ write.table(
 
 # Variance Stabilizing Transformation
 # https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#extracting-transformed-values
-vsd <- vst(dds, blind = FALSE)
+nsb = sum(rowMeans(counts(dds, normalized = TRUE)) > snakemake@config[["deseq2"]][["mincount"]])
+vsd <- vst(dds, blind = FALSE, nsub = nsb)
 # Obtain sample to smaple dists
 sampleDists <- dist(t(assay(vsd)))
 # Generate sample dist matrix
