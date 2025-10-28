@@ -28,6 +28,7 @@ include: "rules/proteinanno.smk"
 
 inputdir = config["inputdir"]
 
+
 onstart:
     print("\n--- Analysis started ---\n")
 
@@ -38,6 +39,7 @@ onsuccess:
 
 onerror:
     print("\n--- An error occurred! ---\n")
+
 
 rule all:
     input:
