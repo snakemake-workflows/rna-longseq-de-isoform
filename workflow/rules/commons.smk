@@ -28,6 +28,13 @@ samples = (
     .set_index("sample", drop=False)
     .sort_index()
 )
+
+# full path to samples.csv relative to config.yml
+samples_file = os.path.join(
+    os.path.dirname(os.path.realpath(workflow.configfiles[0])),  # config.yaml dir
+    config["samples"],  # 'samples.csv'
+)
+
 # validation of config files
 validate(samples, schema="../schemas/samples.schema.yaml")
 validate(config, schema="../schemas/config.schema.yaml")
@@ -131,6 +138,21 @@ def aggregate_input(samples):
     return valids
 
 
+# Obtain all pairwise contrasts from samples.csv for deseq2
+# https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#contrasts
+contrasts = []
+for factor in config["deseq2"]["design_factors"]:
+    # Extract all unique conditions for a factor
+    levels = samples[factor].unique().tolist()
+    # For each combination of two conditions create a contrast dict
+    # e.g.: [{"factor": "condition", "prop_a": "male", "prop_b": "female"}]
+    for i in range(len(levels)):
+        for j in range(i + 1, len(levels)):
+            contrasts.append(
+                {"factor": factor, "prop_a": levels[i], "prop_b": levels[j]}
+            )
+
+
 def rule_all_input():
     all_input = list()
     all_input.extend(
@@ -145,10 +167,12 @@ def rule_all_input():
         expand("counts/{sample}_salmon/quant.sf", sample=samples["sample"])
     )
     all_input.append("merged/all_counts.tsv")
-    all_input.append(f"de_analysis/dispersion_graph.{config['deseq2']['figtype']}")
-    all_input.append(f"de_analysis/ma_graph.{config['deseq2']['figtype']}")
-    all_input.append(f"de_analysis/heatmap.{config['deseq2']['figtype']}")
-    all_input.append("de_analysis/lfc_analysis.csv")
+    all_input.extend(
+        [
+            expand("de_analysis/{factor}_{prop_a}_vs_{prop_b}_l2fc.tsv", **c)[0]
+            for c in contrasts
+        ]
+    )
     if config["isoform_analysis"]["FLAIR"] == True:
         all_input.extend(
             expand(
@@ -160,5 +184,12 @@ def rule_all_input():
         all_input.append("iso_analysis/report/isoforms")
         all_input.append("iso_analysis/report/usage")
     if config["protein_annotation"]["lambda"] == True:
-        all_input.append("protein_annotation/proteins.csv")
+        all_input.extend(
+            [
+                expand(
+                    "protein_annotation/proteins_{factor}_{prop_a}_vs_{prop_b}.csv", **c
+                )[0]
+                for c in contrasts
+            ]
+        )
     return all_input

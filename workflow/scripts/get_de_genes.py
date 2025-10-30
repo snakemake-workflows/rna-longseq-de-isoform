@@ -12,14 +12,14 @@ transcriptome = snakemake.input.transcriptome
 gene_list = snakemake.output[0]
 
 # Remove genes with l2fc below lfc threshold from diffexp results
-df = pd.read_csv(sorted_lfc_counts)
+df = pd.read_csv(sorted_lfc_counts, sep="\t")
 df.drop(
     df[df["log2FoldChange"].abs() <= snakemake.config["deseq2"]["lfc_null"]].index,
     inplace=True,
 )
 
 # Create diffexp gene IDs
-gene_names = set(df["Reference"].str.strip())
+gene_names = set(df["gene"].str.strip())
 
 # Obtain gene records matching diffexp genes
 filtered_records = []

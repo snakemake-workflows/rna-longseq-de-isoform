@@ -56,19 +56,24 @@ quant:
     salmon_libtype: "U"
 
 
-# This section defines the pyDESeq2 plot and data handling parameters
+# This section defines the DESeq2 plot and data handling parameters
 deseq2:
-    # normalization fit type, must be 'parametric' or 'mean'
-    fit_type: "mean"
     # the "design factors" are the confounding variables to be adjusted for
     # during normalization. They must be given in the configuration (samples.csv).
     design_factors:
         - "condition"
     #
-    # the "continous factors" are non-categorial factors to be considered
+    # the "continuous factors" are non-categorical factors to be considered
     #continuous_factors:
     #    -
-    #
+    # Factors representing batch or technical effects to correct for
+    batch_effect:
+        - ""
+    # If left empty ("") the design formula is constructed automatically as:
+    # "batch + condition_1 * condition_2" (with all interactions)
+    # Otherwise, specify manually e.g. :
+    # fit_type: "batch + condition1 + condition2".
+    fit_type: ""
     # The (log2) log fold change under the null hypothesis. (default: 0).
     lfc_null: 0
     #
@@ -80,26 +85,19 @@ deseq2:
     # find rather than the null hypothesis. (default: None).
     alt_hypothesis: "greaterAbs"
     #
-    # The marker size in points**2 (typographic points are 1/72 in.).
-    # Default is rcParams['lines.markersize'] ** 2.# minimum count to
-    # be considered for subsequent analysis
-    point_width: 20
-    #
     # we disrecard loci with count number lower 'mincount'
     mincount: 10
     #
     # Type I error cutoff value:
-    alpha: 10
+    alpha: 0.99
     #
     # in addition to the full heatmap, plot the top number of different
     # values, ranked by the top ratio between the two traits
     threshold_plot: 10
     #
     # the heatmap color map
-    # see https://seaborn.pydata.org/tutorial/color_palettes.htm for an overview
-    colormap: "flare"
-    #plot figure type
-    figtype: "png"
+    # see https://r-graph-gallery.com/38-rcolorbrewers-palettes.html for an overview
+    colormap: "Blues"
 
 ## Differential Isoform Analysis
 

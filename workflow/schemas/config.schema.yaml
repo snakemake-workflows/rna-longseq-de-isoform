@@ -81,8 +81,11 @@ deseq2:
   properties:
     fit_type:
       type: string
-      enum: ["parametric","mean"]
     design_factors:
+      type: array
+      items:
+        type: string
+    batch_effect:
       type: array
       items:
         type: string
@@ -91,9 +94,6 @@ deseq2:
     alt_hypothesis:
       type: string
       enum: ["greaterAbs", "lessAbs", "greater", "less"]
-    point_width:
-      type: integer
-      minimum: 1
     alpha:
       type: number
       minimum: 0.0
@@ -102,8 +102,7 @@ deseq2:
       type: integer
     colormap:
       type: string
-    figtype:
-      type: string
+
 
 isoform_analysis:
   type: object
