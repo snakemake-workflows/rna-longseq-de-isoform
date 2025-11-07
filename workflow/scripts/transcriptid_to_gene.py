@@ -16,7 +16,7 @@ output = snakemake.output[0]
 counts = pd.read_csv(counts, sep="\t", dtype=str)
 
 
-# Parse gff attributes
+# Parse gff attributes into a {key: value} dictionairy
 def parse_attributes(attr_str):
     attrs = {}
     for part in attr_str.strip().split(";"):
@@ -27,12 +27,13 @@ def parse_attributes(attr_str):
 
 
 # Build mapping dictionairy {ID: gene}
+# Parses gff line by line, extracts attributes field (9th),
+# Includes entries that contain both "ID" and "gene" keys
 id_to_gene = {}
 with open(annotation) as gff:
     for line in gff:
         if line.startswith("#"):
             continue
-        # The 9th position in gff3 contains attributes
         parts = line.strip().split("\t")
         if len(parts) < 9:
             continue
@@ -41,24 +42,28 @@ with open(annotation) as gff:
             id_to_gene[attrs["ID"]] = attrs["gene"]
 
 
-# Clean transcript ID for matching
+# Clean transcript ID from region-specific suffixes
+#   - "gene-Dmel_CR6900" matches directly within annotation
+#   - "rna-Dmel_CG34063_CDS=1-1024" must be cleaned first
+# The pattern "_CDS=1-1024" is stripped before matching
 def clean_id(raw_id):
     return re.sub(r"_CDS=.*", "", raw_id)
 
 
-# Map transcript IDs to gene names
+# Map a transcript ID to its gene name
+# Try exact match using transcript ID
+# If not found, try using cleaned ID
+# If still not found, return transcript ID as fallback
 def map_id(original_ref):
     clean_ref = clean_id(original_ref)
-    # Look for matches
     if original_ref in id_to_gene:
         return f"{id_to_gene[original_ref]}::{original_ref}"
     if clean_ref in id_to_gene:
         return f"{id_to_gene[clean_ref]}::{original_ref}"
-    # Fallback: return original
     return original_ref
 
 
-# Replace transcript IDs with ID mapping results
+# Replace transcript IDs in "Reference" column with mapping results
 counts["Reference"] = counts["Reference"].apply(map_id)
 
 # Write output
