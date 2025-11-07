@@ -155,8 +155,8 @@ for factor in config["deseq2"]["design_factors"]:
 
 # load variables for pca to consider
 pca_variables = list(config["deseq2"]["design_factors"])
-if config["deseq2"]["batch_effect"]:
-    pca_variables.extend(config["deseq2"]["batch_effect"])
+batch_effects = [b for b in config["deseq2"]["batch_effect"] if b.strip()]
+pca_variables.extend(batch_effects)
 
 
 def rule_all_input():
