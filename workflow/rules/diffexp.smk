@@ -6,7 +6,7 @@ localrules:
 # TODO: add mincount from config to discard loci with fewer counts.
 rule deseq2_init:
     input:
-        all_counts="merged/all_counts.tsv",
+        all_counts="merged/all_counts_gene.tsv",
         samples=samples_file,
     output:
         "de_analysis/all.rds",
