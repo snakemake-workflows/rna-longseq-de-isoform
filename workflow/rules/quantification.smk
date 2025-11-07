@@ -3,6 +3,7 @@ import os
 
 localrules:
     merge_read_counts,
+    transcriptid_to_gene,
 
 
 rule count_reads:
@@ -41,3 +42,17 @@ rule merge_read_counts:
         "../envs/pandas.yml"
     script:
         "../scripts/merge_count_tsvs.py"
+
+
+rule transcriptid_to_gene:
+    input:
+        all_counts="merged/all_counts.tsv",
+        annotation="references/standardized_genomic.gff",
+    output:
+        "merged/all_counts_gene.tsv",
+    log:
+        "logs/transcriptid_to_gene.log",
+    conda:
+        "../envs/pandas.yml"
+    script:
+        "../scripts/transcriptid_to_gene.py"
