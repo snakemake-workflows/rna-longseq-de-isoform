@@ -38,8 +38,18 @@ with open(annotation) as gff:
         if len(parts) < 9:
             continue
         attrs = parse_attributes(parts[8])
-        if "ID" in attrs and "gene" in attrs:
-            id_to_gene[attrs["ID"]] = attrs["gene"]
+        if "ID" in attrs:
+            gene_val = (
+                attrs.get("gene")
+                or attrs.get("gene_name")
+                or attrs.get("Name")
+                or attrs.get("gene_id")
+            )
+            # Derive from Parent like "gene-XYZ" if available
+            if not gene_val and "Parent" in attrs and attrs["Parent"].startswith("gene-"):
+                gene_val = attrs["Parent"].split("gene-", 1)[1]
+            if gene_val:
+                id_to_gene[attrs["ID"]] = gene_val
 
 
 # Clean transcript ID from region-specific suffixes
