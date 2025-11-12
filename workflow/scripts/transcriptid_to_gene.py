@@ -1,6 +1,8 @@
 import re
 import sys
 import pandas as pd
+import warnings
+import matplotlib.pyplot as plt
 
 # Start logging
 log_file = open(snakemake.log[0], "w")
@@ -9,7 +11,8 @@ sys.stderr = sys.stdout = log_file
 
 counts = snakemake.input.all_counts
 annotation = snakemake.input.annotation
-output = snakemake.output[0]
+output = snakemake.output.all_counts
+output_plot = snakemake.output.plot
 
 
 # Load count data
@@ -82,5 +85,34 @@ counts["Reference"] = counts["Reference"].apply(map_id)
 
 # Write output
 counts.to_csv(output, sep="\t", index=False)
+
+# stats
+total = len(counts)
+mapped = counts["Reference"].str.contains("::", regex=True).sum()
+pct = round(mapped / total * 100, 2)
+if total > mapped:
+    warnings.warn("Some transcripts could not be named.")
+#
+print(
+    f"""
+    Num total transcripts with greater than 0 counts: {total}
+    Num renamed to include gene name: {mapped}
+    Percent renamed: ({pct}%)
+    """
+)
+
+# Generate pie chart
+sizes = [mapped, total - mapped]
+labels = [f"Named ({pct}%)", f"Unnamed ({round(100- pct,2)}%)"]
+
+plt.figure(figsize=(5, 5))
+plt.pie(sizes, autopct="%1.1f%%", colors=["#4CAF50", "#F44366"])
+plt.legend(
+    [f"Named ({mapped})", f"Unnamed ({total- mapped})"],
+    loc="upper right",
+    title="Transcripts",
+)
+plt.savefig(output_plot, format="svg")
+plt.close()
 
 log_file.close()
