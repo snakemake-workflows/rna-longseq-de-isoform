@@ -46,7 +46,11 @@ with open(annotation) as gff:
                 or attrs.get("gene_id")
             )
             # Derive from Parent like "gene-XYZ" if available
-            if not gene_val and "Parent" in attrs and attrs["Parent"].startswith("gene-"):
+            if (
+                not gene_val
+                and "Parent" in attrs
+                and attrs["Parent"].startswith("gene-")
+            ):
                 gene_val = attrs["Parent"].split("gene-", 1)[1]
             if gene_val:
                 id_to_gene[attrs["ID"]] = gene_val
