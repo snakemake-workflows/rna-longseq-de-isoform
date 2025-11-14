@@ -154,9 +154,10 @@ for factor in config["deseq2"]["design_factors"]:
 
 
 # load variables for pca to consider
-pca_variables = list(config["deseq2"]["design_factors"])
-batch_effects = [b for b in config["deseq2"]["batch_effect"] if b.strip()]
-pca_variables.extend(batch_effects)
+def get_pca_variables():
+    return config["deseq2"]["design_factors"] + [
+        b for b in config["deseq2"]["batch_effect"] if b.strip()
+    ]
 
 
 def rule_all_input():
@@ -179,7 +180,9 @@ def rule_all_input():
             for c in contrasts
         ]
     )
-    all_input.extend(expand("de_analysis/pca_{variable}.svg", variable=pca_variables))
+    all_input.extend(
+        expand("de_analysis/pca_{variable}.svg", variable=get_pca_variables())
+    )
     if config["isoform_analysis"]["FLAIR"] == True:
         all_input.extend(
             expand(
