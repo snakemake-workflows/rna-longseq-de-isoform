@@ -155,9 +155,21 @@ for factor in config["deseq2"]["design_factors"]:
 
 # load variables for pca to consider
 def get_pca_variables():
-    return config["deseq2"]["design_factors"] + [
-        b for b in config["deseq2"]["batch_effect"] if b.strip()
-    ]
+    design_factors = config["deseq2"]["design_factors"]
+    batch_effect = config["deseq2"]["batch_effect"]
+
+    # Validate and filter batch effects
+    valid_batch = [str(b).strip() for b in batch_effect if str(b).strip()]
+
+    # Combine and remove duplicates while preserving order
+    seen = set()
+    result = []
+    for var in design_factors + valid_batch:
+        if var not in seen:
+            seen.add(var)
+            result.append(var)
+
+    return result
 
 
 def rule_all_input():
