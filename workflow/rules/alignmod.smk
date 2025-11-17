@@ -8,7 +8,7 @@ rule sam_to_bam:
     params:
         extra=f'{config["samtools"]["samtobam_opts"]}',
     wrapper:
-        "v3.13.4/bio/samtools/view"
+        "v7.6.0/bio/samtools/view"
 
 
 rule bam_sort:
@@ -21,7 +21,7 @@ rule bam_sort:
     params:
         extra=f'{config["samtools"]["bamsort_opts"]}',
     wrapper:
-        "v3.13.4/bio/samtools/sort"
+        "v7.6.0/bio/samtools/sort"
 
 
 # flair bam2bed needs index files
@@ -35,4 +35,4 @@ rule bam_index:
     params:
         extra=f'{config["samtools"]["bamindex_opts"]}',
     wrapper:
-        "v4.5.0/bio/samtools/index"
+        "v7.6.0/bio/samtools/index"

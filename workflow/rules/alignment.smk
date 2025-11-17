@@ -9,7 +9,7 @@ rule build_minimap_index:  ## build minimap2 index
         "logs/minimap2/index.log",
     threads: 4
     wrapper:
-        "v3.13.4/bio/minimap2/index"
+        "v7.6.0/bio/minimap2/index"
 
 
 # mapping reads with minimap2
@@ -25,4 +25,4 @@ rule map_reads:
         extra=f"-p {config['minimap2']['secondary_score_ratio']} -N {config['minimap2']['maximum_secondary']} {config['minimap2']['opts']}",
     threads: 32
     wrapper:
-        "v3.13.4/bio/minimap2/aligner"
+        "v7.6.0/bio/minimap2/aligner"
