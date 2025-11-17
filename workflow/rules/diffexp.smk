@@ -86,7 +86,14 @@ rule pca:
     input:
         "de_analysis/all.rds",
     output:
-        "de_analysis/pca_{variable}.svg",
+        report(
+            f"de_analysis/pca_{{variable}}.svg",
+            category="DGE Results",
+            caption="../report/pca.rst",
+            labels={
+                "figure": "PCA plot: {variable}",
+            },
+        ),
     log:
         "logs/deseq2_pca_{variable}.log",
     conda:
