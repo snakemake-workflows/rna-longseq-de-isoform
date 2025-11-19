@@ -18,6 +18,19 @@ df.drop(
     inplace=True,
 )
 
+
+# Remove gene name, only include original transcript ID's that match transcriptome entries
+def original_id(ref):
+    if not isinstance(ref, str) or pd.isna(ref):
+        raise ValueError(f"Invalid reference ID encountered.")
+    if "::" in ref:
+        return ref.split("::", 1)[1]
+    else:
+        return ref
+
+
+df["gene"] = df["gene"].apply(original_id)
+
 # Create diffexp gene IDs
 gene_names = set(df["gene"].str.strip())
 

@@ -74,7 +74,7 @@ rule build_flair_genome_index:
         "logs/flair/index.log",
     threads: 4
     wrapper:
-        "v3.13.4/bio/minimap2/index"
+        "v7.6.0/bio/minimap2/index"
 
 
 rule flair_align:

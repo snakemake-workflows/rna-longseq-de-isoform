@@ -6,9 +6,9 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
 
-This workflow performs **differential gene expression** and **isoform splicing analysis** on Nanopore long-read RNA-Seq data using [minimap2](https://github.com/lh3/minimap2), [salmon](https://github.com/COMBINE-lab/salmon), and [pyDeseq2](https://github.com/owkin/PyDESeq2). 
+This workflow performs **differential gene expression** and **isoform splicing analysis** on Nanopore long-read RNA-Seq data using [minimap2](https://github.com/lh3/minimap2), [Salmon](https://github.com/COMBINE-lab/salmon), and [DESeq2](https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html).
 
-Isoform level detection, quantification, and differential expression analysis are integrated via [FLAIR](https://github.com/BrooksLabUCSC/flair). Protein annotation, for example when ontological data are missing, is performed using [lambda](https://github.com/seqan/lambda).
+Isoform-level detection, quantification, and differential expression analysis are integrated via [FLAIR](https://github.com/BrooksLabUCSC/flair). Protein annotation, for example when ontological data are missing, is performed using [Lambda](https://github.com/seqan/lambda).
 
 ## Usage
 
