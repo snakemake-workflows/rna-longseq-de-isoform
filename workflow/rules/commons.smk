@@ -37,17 +37,19 @@ samples_file = os.path.join(
 validate(samples, schema="../schemas/samples.schema.yaml")
 validate(config, schema="../schemas/config.schema.yaml")
 
+
 # flair uses the values of condition1 in its file naming scheme, therefore we extract them as wildcards from samples
 def get_conditions():
     return samples["condition"].unique().tolist()
-condition_value1, condition_value2 = condition_val[0], condition_val[1]
 
 
-if config["isoform_analysis"]["FLAIR"]:
-    if len(condition_val) != 2:
+def get_condition_values():
+    conditions = get_conditions()
+    if config["isoform_analysis"]["FLAIR"] and len(conditions) != 2:
         raise ValueError(
             "If you want to perform differential isoform analysis, 'condition' in samples.csv must have exactly two distinct values."
         )
+    return conditions[0], conditions[1]
 
 
 def get_reference_files(config):
