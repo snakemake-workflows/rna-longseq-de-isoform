@@ -40,10 +40,8 @@ validate(config, schema="../schemas/config.schema.yaml")
 # flair uses the values of condition1 in its file naming scheme, therefore we extract them as wildcards from samples
 condition_val = samples["condition"].unique().tolist()
 condition_value1, condition_value2 = condition_val[0], condition_val[1]
-condition_samples = {
-    cond: samples[samples["condition"] == cond]["sample"].tolist()
-    for cond in condition_val
-}
+
+
 if config["isoform_analysis"]["FLAIR"]:
     if len(condition_val) != 2:
         raise ValueError(
