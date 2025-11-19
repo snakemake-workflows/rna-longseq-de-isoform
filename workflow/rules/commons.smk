@@ -12,8 +12,6 @@ from snakemake.exceptions import WorkflowError
 # global list of valid suffixes
 exts = (".fastq", ".fq", ".fastq.gz", ".fq.gz")
 
-validate(config, schema="../schemas/config.schema.yaml")
-
 samples = (
     pd.read_csv(
         os.path.join(
