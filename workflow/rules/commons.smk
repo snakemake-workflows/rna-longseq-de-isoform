@@ -153,6 +153,25 @@ for factor in config["deseq2"]["design_factors"]:
             )
 
 
+# load variables for pca to consider
+def get_pca_variables():
+    design_factors = config["deseq2"]["design_factors"]
+    batch_effect = config["deseq2"]["batch_effect"]
+
+    # Validate and filter batch effects
+    valid_batch = [str(b).strip() for b in batch_effect if str(b).strip()]
+
+    # Combine and remove duplicates while preserving order
+    seen = set()
+    result = []
+    for var in design_factors + valid_batch:
+        if var not in seen:
+            seen.add(var)
+            result.append(var)
+
+    return result
+
+
 def rule_all_input():
     all_input = list()
     all_input.extend(
@@ -172,6 +191,9 @@ def rule_all_input():
             expand("de_analysis/{factor}_{prop_a}_vs_{prop_b}_l2fc.tsv", **c)[0]
             for c in contrasts
         ]
+    )
+    all_input.extend(
+        expand("de_analysis/pca_{variable}.svg", variable=get_pca_variables())
     )
     if config["isoform_analysis"]["FLAIR"] == True:
         all_input.extend(
