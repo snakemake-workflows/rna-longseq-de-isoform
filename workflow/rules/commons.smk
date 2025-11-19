@@ -173,7 +173,7 @@ def rule_all_input():
         ]
     )
     if config["isoform_analysis"]["FLAIR"] == True:
-        condition_value1, condition_value2 = get_condition_values
+        condition_value1, condition_value2 = get_condition_values()
         all_input.extend(
             expand(
                 "iso_analysis/diffexp/genes_deseq2_{condition_value1}_v_{condition_value2}.tsv",
