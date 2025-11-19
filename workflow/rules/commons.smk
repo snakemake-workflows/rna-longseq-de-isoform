@@ -166,7 +166,7 @@ def rule_all_input():
     all_input.extend(
         expand("counts/{sample}_salmon/quant.sf", sample=samples["sample"])
     )
-    all_input.append("merged/all_counts.tsv")
+    all_input.append("merged/all_counts_gene.tsv")
     all_input.extend(
         [
             expand("de_analysis/{factor}_{prop_a}_vs_{prop_b}_l2fc.tsv", **c)[0]
