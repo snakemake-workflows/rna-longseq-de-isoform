@@ -38,7 +38,8 @@ validate(samples, schema="../schemas/samples.schema.yaml")
 validate(config, schema="../schemas/config.schema.yaml")
 
 # flair uses the values of condition1 in its file naming scheme, therefore we extract them as wildcards from samples
-condition_val = samples["condition"].unique().tolist()
+def get_conditions():
+    return samples["condition"].unique().tolist()
 condition_value1, condition_value2 = condition_val[0], condition_val[1]
 
 
