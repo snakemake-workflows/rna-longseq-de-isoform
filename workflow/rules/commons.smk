@@ -62,7 +62,7 @@ def get_reference_files(config):
 
     # Validate genome and annotation files
     def valid_path(path, exts):
-        return path and Path(path).exists and Path(path).suffix.lower() in exts
+        return path and Path(path).exists() and Path(path).suffix.lower() in exts
 
     genome_path = ref.get("genome")
     annotation_path = ref.get("annotation")
