@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.5.0](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.4.2...v2.5.0) (2025-11-19)
+
+
+### Features
+
+* add ensembl reference download ([#135](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/135)) ([8992868](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/8992868f8869290dae77e899d9e10e77b0069f73))
+* adding start and end messages ([#139](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/139)) ([1f8fc48](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/1f8fc487acd5f6a857eb3ec4e6c3d21d0a94d2f6))
+* Implement DESeq2 in R instead of pyDESeq2 ([#138](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/138)) ([841cead](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/841cead106b1a40418bf81ce01ab20b59cf19b02))
+* rename transcript ids to gene names ([#141](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/141)) ([f3e643f](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/f3e643f9c1e24cfeda5758698cacbae269b457df))
+
+
+### Bug Fixes
+
+* changed batch_effect to batch in samples.csv to match config schema ([#136](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/136)) ([b20a652](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/b20a6521d39bcdd2c299d0ded51658ad6b091b8c))
+* profiles dir conformance ([#140](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/140)) ([932a899](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/932a8995bab6be1175e282bd30d42a5581f3df2f))
+
 ## [2.4.2](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.4.1...v2.4.2) (2025-09-10)
 
 
