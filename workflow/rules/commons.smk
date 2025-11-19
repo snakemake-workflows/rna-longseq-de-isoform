@@ -139,17 +139,19 @@ def aggregate_input(samples):
 
 # Obtain all pairwise contrasts from samples.csv for deseq2
 # https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#contrasts
-contrasts = []
-for factor in config["deseq2"]["design_factors"]:
-    # Extract all unique conditions for a factor
-    levels = samples[factor].unique().tolist()
-    # For each combination of two conditions create a contrast dict
-    # e.g.: [{"factor": "condition", "prop_a": "male", "prop_b": "female"}]
-    for i in range(len(levels)):
-        for j in range(i + 1, len(levels)):
-            contrasts.append(
-                {"factor": factor, "prop_a": levels[i], "prop_b": levels[j]}
-            )
+def get_contrasts():
+    contrasts = []
+    for factor in config["deseq2"]["design_factors"]:
+        # Extract all unique conditions for a factor
+        levels = samples[factor].unique().tolist()
+        # For each combination of two conditions create a contrast dict
+        # e.g.: [{"factor": "condition", "prop_a": "male", "prop_b": "female"}]
+        for i in range(len(levels)):
+            for j in range(i + 1, len(levels)):
+                contrasts.append(
+                    {"factor": factor, "prop_a": levels[i], "prop_b": levels[j]}
+                )
+    return contrasts
 
 
 def rule_all_input():
@@ -166,12 +168,10 @@ def rule_all_input():
         expand("counts/{sample}_salmon/quant.sf", sample=samples["sample"])
     )
     all_input.append("merged/all_counts.tsv")
-    all_input.extend(
-        [
+    for c in get_contrasts():
+        all_input.append(
             expand("de_analysis/{factor}_{prop_a}_vs_{prop_b}_l2fc.tsv", **c)[0]
-            for c in contrasts
-        ]
-    )
+        )
     if config["isoform_analysis"]["FLAIR"] == True:
         condition_value1, condition_value2 = get_condition_values()
         all_input.extend(
