@@ -59,30 +59,18 @@ def get_reference_files(config):
     ref = config.get("ref", {})
     genome_exts = (".fa", ".fna", ".fasta")
     annotation_exts = (".gtf", ".gff", ".gff3")
-    # Validate genome and annotation files
-    genome_path = ref.get("genome")
-    genome = (
-        genome_path
-        if genome_path
-        and Path(genome_path).exists()
-        and Path(genome_path).suffix.lower() in genome_exts
-        else None
-    )
-    annotation_path = ref.get("annotation")
-    annotation = (
-        annotation_path
-        if annotation_path
-        and Path(annotation_path).exists()
-        and Path(annotation_path).suffix.lower() in annotation_exts
-        else None
-    )
-    if genome and annotation:
-        return {"genome": genome, "annotation": annotation}
 
+    # Validate genome and annotation files
+    def valid_path(path, exts):
+        return path and Path(path).exists and Path(path).suffix.lower() in exts
+
+    genome_path = ref.get("genome")
+    annotation_path = ref.get("annotation")
     accession = ref.get("accession")
     ensembl_species = ref.get("ensembl_species")
+
     files = {}
-    if genome:
+    if valid_path(genome_path, genome_exts):
         files["genome"] = genome
     elif ensembl_species:
         files["genome"] = "references/ensembl_genome.fa"
@@ -93,7 +81,7 @@ def get_reference_files(config):
             "No valid genome source: provide local genome path, Ensembl parameters, or NCBI accession."
         )
 
-    if annotation:
+    if valid_path(annotation_path, annotation_exts):
         files["annotation"] = annotation
     elif ensembl_species:
         files["annotation"] = "references/ensembl_annotation.gff3"
