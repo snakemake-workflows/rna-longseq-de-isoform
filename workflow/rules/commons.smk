@@ -71,7 +71,7 @@ def get_reference_files(config):
 
     files = {}
     if valid_path(genome_path, genome_exts):
-        files["genome"] = genome
+        files["genome"] = genome_path
     elif ensembl_species:
         files["genome"] = "references/ensembl_genome.fa"
     elif accession:
@@ -82,7 +82,7 @@ def get_reference_files(config):
         )
 
     if valid_path(annotation_path, annotation_exts):
-        files["annotation"] = annotation
+        files["annotation"] = annotation_path
     elif ensembl_species:
         files["annotation"] = "references/ensembl_annotation.gff3"
     elif accession:
