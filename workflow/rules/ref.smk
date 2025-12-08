@@ -10,6 +10,7 @@ localrules:
 rule download_ncbi_genome:
     output:
         temp("references/ncbi_dataset_genome.zip"),
+    cache: True
     params:
         accession=config["ref"]["accession"],
     log:
@@ -25,6 +26,7 @@ rule download_ncbi_genome:
 rule download_ncbi_annotation:
     output:
         temp("references/ncbi_dataset_annotation.zip"),
+    cache: True
     params:
         accession=config["ref"]["accession"],
     log:
