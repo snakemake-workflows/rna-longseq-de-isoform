@@ -8,16 +8,21 @@ log_file = open(snakemake.log[0], "w")
 sys.stderr = sys.stdout = log_file
 
 samples_df = snakemake.params.samples[["sample", "condition", "batch"]]
-inputdir = snakemake.params.inputdir
 
 exts = (".fastq", ".fq", ".fastq.gz", ".fq.gz")
 
 
-def get_sample_path(sample_name, inputdir, exts):
-    path = Path(os.path.join(inputdir, sample_name))
-    for ext in exts:
-        if os.path.exists(str(path) + ext):
-            return str(path) + ext
+def get_sample_path(sample_name, exts):
+    # Check for 'raw' directory first, otherwise traverse all directories
+    base_path = Path.cwd()
+    raw_dir = base_path / "raw"
+    
+    search_path = raw_dir if raw_dir.exists() else base_path
+    
+    for root, dirs, files in os.walk(search_path):
+        for file in files:
+            if file.startswith(sample_name) and file.endswith(exts):
+                return os.path.join(root, file)
     return "File not found"
 
 
@@ -34,7 +39,7 @@ if samples_df["sample_clean"].duplicated().any():
 
 # get the absolute  filepath for each sample
 samples_df["sample_path"] = samples_df["sample"].apply(
-    lambda x: get_sample_path(x, snakemake.params.inputdir, exts)
+    lambda x: get_sample_path(x, exts)
 )
 
 samples_df[["sample_clean", "condition", "batch", "sample_path"]].to_csv(
