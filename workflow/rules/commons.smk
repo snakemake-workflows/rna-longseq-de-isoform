@@ -13,8 +13,6 @@ from snakemake.exceptions import WorkflowError
 # global list of valid suffixes
 exts = (".fastq", ".fq", ".fastq.gz", ".fq.gz")
 
-validate(config, schema="../schemas/config.schema.yaml")
-
 samples = (
     pd.read_csv(
         os.path.join(
@@ -40,18 +38,23 @@ samples_file = os.path.join(
 validate(samples, schema="../schemas/samples.schema.yaml")
 validate(config, schema="../schemas/config.schema.yaml")
 
+
 # flair uses the values of condition1 in its file naming scheme, therefore we extract them as wildcards from samples
-condition_val = samples["condition"].unique().tolist()
-condition_value1, condition_value2 = condition_val[0], condition_val[1]
-condition_samples = {
-    cond: samples[samples["condition"] == cond]["sample"].tolist()
-    for cond in condition_val
-}
-if config["isoform_analysis"]["FLAIR"]:
-    if len(condition_val) != 2:
+def get_conditions():
+    return samples["condition"].unique().tolist()
+
+
+def get_condition_values():
+    conditions = get_conditions()
+    # we only support 2 conditions for the isoform analysis
+    # previous code checked whether the isoform analysis was enabled,
+    # but this is not necessary, because the function is only called when the
+    # isoform analysis is enabled.
+    if len(conditions) != 2:
         raise ValueError(
             "If you want to perform differential isoform analysis, 'condition' in samples.csv must have exactly two distinct values."
         )
+    return conditions[0], conditions[1]
 
 
 def get_reference_files(config):
@@ -61,31 +64,19 @@ def get_reference_files(config):
     ref = config.get("ref", {})
     genome_exts = (".fa", ".fna", ".fasta")
     annotation_exts = (".gtf", ".gff", ".gff3")
-    # Validate genome and annotation files
-    genome_path = ref.get("genome")
-    genome = (
-        genome_path
-        if genome_path
-        and Path(genome_path).exists()
-        and Path(genome_path).suffix.lower() in genome_exts
-        else None
-    )
-    annotation_path = ref.get("annotation")
-    annotation = (
-        annotation_path
-        if annotation_path
-        and Path(annotation_path).exists()
-        and Path(annotation_path).suffix.lower() in annotation_exts
-        else None
-    )
-    if genome and annotation:
-        return {"genome": genome, "annotation": annotation}
 
+    # Validate genome and annotation files
+    def valid_path(path, exts):
+        return path and Path(path).exists() and Path(path).suffix.lower() in exts
+
+    genome_path = ref.get("genome")
+    annotation_path = ref.get("annotation")
     accession = ref.get("accession")
     ensembl_species = ref.get("ensembl_species")
+
     files = {}
-    if genome:
-        files["genome"] = genome
+    if valid_path(genome_path, genome_exts):
+        files["genome"] = genome_path
     elif ensembl_species:
         files["genome"] = "references/ensembl_genome.fa"
     elif accession:
@@ -95,8 +86,8 @@ def get_reference_files(config):
             "No valid genome source: provide local genome path, Ensembl parameters, or NCBI accession."
         )
 
-    if annotation:
-        files["annotation"] = annotation
+    if valid_path(annotation_path, annotation_exts):
+        files["annotation"] = annotation_path
     elif ensembl_species:
         files["annotation"] = "references/ensembl_annotation.gff3"
     elif accession:
@@ -152,17 +143,19 @@ def aggregate_input(samples):
 
 # Obtain all pairwise contrasts from samples.csv for deseq2
 # https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#contrasts
-contrasts = []
-for factor in config["deseq2"]["design_factors"]:
-    # Extract all unique conditions for a factor
-    levels = samples[factor].unique().tolist()
-    # For each combination of two conditions create a contrast dict
-    # e.g.: [{"factor": "condition", "prop_a": "male", "prop_b": "female"}]
-    for i in range(len(levels)):
-        for j in range(i + 1, len(levels)):
-            contrasts.append(
-                {"factor": factor, "prop_a": levels[i], "prop_b": levels[j]}
-            )
+def get_contrasts():
+    contrasts = []
+    for factor in config["deseq2"]["design_factors"]:
+        # Extract all unique conditions for a factor
+        levels = samples[factor].unique().tolist()
+        # For each combination of two conditions create a contrast dict
+        # e.g.: [{"factor": "condition", "prop_a": "male", "prop_b": "female"}]
+        for i in range(len(levels)):
+            for j in range(i + 1, len(levels)):
+                contrasts.append(
+                    {"factor": factor, "prop_a": levels[i], "prop_b": levels[j]}
+                )
+    return contrasts
 
 
 # load variables for pca to consider
@@ -198,16 +191,12 @@ def rule_all_input():
         expand("counts/{sample}_salmon/quant.sf", sample=samples["sample"])
     )
     all_input.append("merged/all_counts_gene.tsv")
-    all_input.extend(
-        [
+    for c in get_contrasts():
+        all_input.append(
             expand("de_analysis/{factor}_{prop_a}_vs_{prop_b}_l2fc.tsv", **c)[0]
-            for c in contrasts
-        ]
-    )
-    all_input.extend(
-        expand("de_analysis/pca_{variable}.svg", variable=get_pca_variables())
-    )
+        )
     if config["isoform_analysis"]["FLAIR"] == True:
+        condition_value1, condition_value2 = get_condition_values()
         all_input.extend(
             expand(
                 "iso_analysis/diffexp/genes_deseq2_{condition_value1}_v_{condition_value2}.tsv",
@@ -218,12 +207,10 @@ def rule_all_input():
         all_input.append("iso_analysis/report/isoforms")
         all_input.append("iso_analysis/report/usage")
     if config["protein_annotation"]["lambda"] == True:
-        all_input.extend(
-            [
+        for c in get_contrasts():
+            all_input.append(
                 expand(
                     "protein_annotation/proteins_{factor}_{prop_a}_vs_{prop_b}.csv", **c
                 )[0]
-                for c in contrasts
-            ]
-        )
+            )
     return all_input

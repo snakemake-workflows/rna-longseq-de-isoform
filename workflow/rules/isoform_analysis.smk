@@ -200,11 +200,10 @@ rule flair_diffexp:
 
 rule flair_plot_isoforms:
     input:
-        genes=expand(
-            "iso_analysis/diffexp/genes_deseq2_{condition_value1}_v_{condition_value2}.tsv",
-            condition_value1=condition_value1,
-            condition_value2=condition_value2,
-        ),
+        genes=lambda wildcards: [
+            f"iso_analysis/diffexp/genes_deseq2_{condition_value1}_v_{condition_value2}.tsv"
+            for condition_value1, condition_value2 in [get_condition_values()]
+        ],
         isob="iso_analysis/collapse/flair.isoforms.bed",
         counts_matrix="iso_analysis/quantify/flair.counts.tsv",
     output:
