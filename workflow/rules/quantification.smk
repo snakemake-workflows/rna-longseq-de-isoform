@@ -1,11 +1,15 @@
+import os
+
+
 localrules:
-    merge_counts,
+    merge_read_counts,
+    transcriptid_to_gene,
 
 
 rule count_reads:
     input:
         bam="alignments/{sample}.bam",
-        trs="transcriptome/transcriptome.fa",
+        trs="transcriptome/corrected_transcriptome.fa",
     output:
         tsv="counts/{sample}_salmon/quant.sf",
     params:
@@ -15,6 +19,11 @@ rule count_reads:
         "logs/salmon/{sample}.log",
     conda:
         "../envs/salmon.yml"
+    threads: 8
+    resources:
+        mem_mb_per_cpu=lambda wildcards, input, threads: max(
+            1800, int(((os.path.getsize(input[0]) >> 20) * 2) / threads)
+        ),
     shell:
         """
         salmon --no-version-check quant --ont -p {threads} \
@@ -22,7 +31,7 @@ rule count_reads:
         """
 
 
-rule merge_counts:
+rule merge_read_counts:
     input:
         count_tsvs=expand("counts/{sample}_salmon/quant.sf", sample=samples["sample"]),
     output:
@@ -33,3 +42,27 @@ rule merge_counts:
         "../envs/pandas.yml"
     script:
         "../scripts/merge_count_tsvs.py"
+
+
+rule transcriptid_to_gene:
+    input:
+        all_counts="merged/all_counts.tsv",
+        annotation="references/standardized_genomic.gff",
+    output:
+        all_counts="merged/all_counts_gene.tsv",
+        plot=report(
+            "merged/transcriptid_to_gene_plot.svg",
+            category="Quality control",
+            subcategory="Transcript Naming",
+            caption="../report/name_stats.rst",
+            labels={
+                "model": "Matplotlib",
+                "figure": "Naming Stats",
+            },
+        ),
+    log:
+        "logs/transcriptid_to_gene.log",
+    conda:
+        "../envs/pydeseq2.yml"
+    script:
+        "../scripts/transcriptid_to_gene.py"

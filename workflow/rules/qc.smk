@@ -1,9 +1,12 @@
+import os
+
+
 localrules:
-    qm_report,
+    alignment_qa_report,
 
 
 # QC and metadata with NanoPlot
-rule plot_samples:
+rule sample_qa_plot:
     input:
         fastq=lambda wildcards: get_mapped_reads_input(
             samples["sample"][wildcards.sample]
@@ -25,12 +28,17 @@ rule plot_samples:
         "logs/NanoPlot/{sample}.log",
     conda:
         "../envs/nanoplot.yml"
+    threads: 4
+    resources:
+        mem_mb=lambda wildcards, input: max(
+            1800, int(((os.path.getsize(input[0]) >> 20) * 0.2))
+        ),
     shell:
         "NanoPlot --threads {threads} --tsv_stats --format svg "
         "--fastq {input.fastq} --outdir {params.outdir} 2> {log}"
 
 
-rule plot_all_samples:
+rule total_sample_qa_plot:
     input:
         aggregate_input(samples["sample"]),
     output:
@@ -56,7 +64,7 @@ rule plot_all_samples:
         "--fastq {input} --outdir {params.outdir} 2> {log}"
 
 
-rule map_qc:
+rule alignment_qa:
     input:
         bam="sorted_alignments/{sample}_sorted.bam",
     output:
@@ -68,9 +76,9 @@ rule map_qc:
 
 
 # this is a dummy rule to create input for the report because the QualiMap wrapper only accepts directories as valid output
-rule qm_report:
+rule alignment_qa_report:
     input:
-        map_qc=rules.map_qc.output,
+        map_qc=rules.alignment_qa.output,
     output:
         qm_report=report(
             "qualimap/{sample}/qualimapReport.html",
@@ -99,5 +107,9 @@ rule bam_stats:
         "logs/samtools/bamstats_{sample}.log",
     params:
         extra=config["samtools"]["bamstats_opts"],
+    resources:
+        mem_mb_per_cpu=lambda wildcards, input, threads: max(
+            1800, int(((os.path.getsize(input[0]) >> 20) * 0.2) / threads)
+        ),
     wrapper:
         "v3.13.4/bio/samtools/stats"

@@ -1,17 +1,17 @@
 localrules:
     reads_manifest,
+    gff_to_gtf,
     concatenate_beds,
-    plot_isoforms,
+    flair_plot_isoforms,
     iso_analysis_report,
 
 
 # Construct a flair readable TSV file for samples
 rule reads_manifest:
     output:
-        "iso_analysis/reads_manifest.tsv",
+        temp("iso_analysis/reads_manifest.tsv"),
     params:
         samples=samples,
-        inputdir=config["inputdir"],
     log:
         "logs/flair/reads_manifest.log",
     conda:
@@ -24,14 +24,14 @@ rule gff_to_gtf:
     input:
         "references/standardized_genomic.gff",
     output:
-        "references/standardized_genomic.gtf",
+        temp("references/standardized_genomic.gtf"),
     log:
         "logs/gffread/gff_to_gtf.log",
     conda:
         "../envs/gffread.yml"
     shell:
         """
-        gffread -t {threads} -E {input} -T -o {output} &> {log}    
+        gffread -E {input} -T -o {output} &> {log}    
         """
 
 
@@ -40,7 +40,7 @@ rule bam_to_bed:
         sbam="sorted_alignments/{sample}_sorted.bam",
         sbami="sorted_alignments/{sample}_sorted.bam.bai",
     output:
-        "iso_analysis/beds/{sample}.bed",
+        temp("iso_analysis/beds/{sample}.bed"),
     log:
         "logs/flair/bam2bed_{sample}.log",
     conda:
@@ -53,7 +53,7 @@ rule concatenate_beds:
     input:
         expand("iso_analysis/beds/{sample}.bed", sample=samples["sample"]),
     output:
-        "iso_analysis/beds/all_samples.bed",
+        temp("iso_analysis/beds/all_samples.bed"),
     log:
         "logs/flair/concatenate_beds.log",
     conda:
@@ -66,14 +66,14 @@ rule build_flair_genome_index:
     input:
         target="references/genomic.fa",
     output:
-        index="index/flair_genome_index.mmi",
+        index=temp("index/flair_genome_index.mmi"),
     params:
         extra=config["minimap2"]["index_opts"],
     log:
         "logs/flair/index.log",
     threads: 4
     wrapper:
-        "v3.13.4/bio/minimap2/index"
+        "v7.6.0/bio/minimap2/index"
 
 
 rule flair_align:
@@ -82,7 +82,9 @@ rule flair_align:
         sample=expand("filter/{sample}_filtered.fq", sample=samples["sample"]),
         index="index/flair_genome_index.mmi",
     output:
-        flair_beds="iso_analysis/align/flair.bed",
+        flair_beds=temp("iso_analysis/align/flair.bed"),
+        flair_bam=temp("iso_analysis/align/flair.bam"),
+        flair_bam_bai=temp("iso_analysis/align/flair.bam.bai"),
     params:
         outdir=lambda wildcards, output: output[0][:-4],
     log:
@@ -103,7 +105,7 @@ rule flair_correct:
         flair_beds="iso_analysis/align/flair.bed",
         annotation="references/standardized_genomic.gtf",
     output:
-        beds_cor="iso_analysis/align/flair_all_corrected.bed",
+        beds_cor=temp("iso_analysis/align/flair_all_corrected.bed"),
     params:
         outdir=lambda wildcards, output: output[0][:-18],
     log:
@@ -125,8 +127,8 @@ rule flair_collapse:
         annotation="references/standardized_genomic.gtf",
         sample=expand("filter/{sample}_filtered.fq", sample=samples["sample"]),
     output:
-        isob="iso_analysis/collapse/flair.isoforms.bed",
-        isof="iso_analysis/collapse/flair.isoforms.fa",
+        isob=temp("iso_analysis/collapse/flair.isoforms.bed"),
+        isof=temp("iso_analysis/collapse/flair.isoforms.fa"),
     params:
         outdir=lambda wildcards, output: output[0][:-13],
         qscore=config["isoform_analysis"]["qscore"],
@@ -149,7 +151,7 @@ rule flair_quantify:
         isof="iso_analysis/collapse/flair.isoforms.fa",
         isob="iso_analysis/collapse/flair.isoforms.bed",
     output:
-        counts_matrix="iso_analysis/quantify/flair.counts.tsv",
+        counts_matrix=temp("iso_analysis/quantify/flair.counts.tsv"),
     params:
         # FLAIR adds ".counts.tsv" to its --output flag.
         outdir=lambda wildcards, output: output[0][:-11],
@@ -196,13 +198,12 @@ rule flair_diffexp:
         """
 
 
-rule plot_isoforms:
+rule flair_plot_isoforms:
     input:
-        genes=expand(
-            "iso_analysis/diffexp/genes_deseq2_{condition_value1}_v_{condition_value2}.tsv",
-            condition_value1=condition_value1,
-            condition_value2=condition_value2,
-        ),
+        genes=lambda wildcards: [
+            f"iso_analysis/diffexp/genes_deseq2_{condition_value1}_v_{condition_value2}.tsv"
+            for condition_value1, condition_value2 in [get_condition_values()]
+        ],
         isob="iso_analysis/collapse/flair.isoforms.bed",
         counts_matrix="iso_analysis/quantify/flair.counts.tsv",
     output:
@@ -218,7 +219,7 @@ rule plot_isoforms:
 # dummy rule for output generation
 rule iso_analysis_report:
     input:
-        in_dir=rules.plot_isoforms.output,
+        in_dir=rules.flair_plot_isoforms.output,
     output:
         isoforms=report(
             directory("iso_analysis/report/isoforms"),

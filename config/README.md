@@ -35,7 +35,10 @@ Since Salmon requires transcriptomic alignments for quantification, a transcript
   - `species`: Name of the species.
   - `genome`: Path to the genome file (FASTA format, can be omitted if remote retrieval through accession number is prefered).
   - `annotation`: Path to the annotation file (GFF or GTF format, can be omitted if remote retrieval through accession number is prefered).
-  - `accession`: NCBI accession number (used if local files are not provided).
+  - `accession`: NCBI accession number (used if remote NCBI data is prefered).
+  - `ensembl_species`: Ensembl species identifier (used if remote Ensembl data is prefered).
+  - `build`: Ensembl data release build(only required if using Ensembl download)
+  - `release`: Ensembl data release number (only required if using Ensembl download)
 
 ### Read Filtering
 
@@ -74,17 +77,17 @@ Transcripts are quantified using Salmon in alignment-based mode. TO ensure accur
 ### Differential Expression Analysis (DESeq2)
 
 Differential expression analysis is performed using PyDESeq2 to model raw read counts wtih a negative binomial distribution, estimating dispersion parameters to identify differentially expressed genes. See the [PyDESeq2 documentation](https://pydeseq2.readthedocs.io/en/stable/index.html) for more details.
+
 - **deseq2**:
-  - `fit_type`: Type of fitting of dispersions to the mean intensity. `parametric`: fit a dispersion-mean relation via a robust gamma-family GLM. `mean`: use the mean of gene-wise dispersion estimates. Will set the fit type for the DEA and the vst transformation. If needed, it can be set separately for each method.
-  - `design_factors`: List of design factors for the analysis.
+  - `design_factors`: List of categorical factors used in the model (e.g. condition). These must appear as columns in your samples.csv.
+  - `batch_effect`: List of variables representing batch or technical effects to correct for during normalization.
+ - `fit_type`: Design formula for DESeq2. If left empty (""), the workflow automatically constructs a formula combining all batch_effect and design_factors with interactions.
   - `lfc_null`: The (log2) log fold change under the null hypothesis for Wald test.
   - `alt_hypothesis`: The alternative hypothesis for computing wald p-values. By default, the normal Wald test assesses deviation of the estimated log fold change from the null hypothesis, as given by `lfc_null`. The alternative hypothesis corresponds to what the user wants to find rather than the null hypothesis.
-  - `point_width`: Marker size for MA-plot
   - `mincount`: Minimum count threshold, genes below the threshold will be removed from analysis.
   - `alpha`: Type I error cutoff value.
   - `threshold_plot`: Number of top differentially expressed genes to plot in additional heatmap.
   - `colormap`: Colormap for heatmaps.
-  - `figtype`: Figure output format (e.g., `png`).
 
 ### Isoform Analysis (FLAIR)
 
@@ -95,4 +98,13 @@ FLAIR is used to identify alternative splice isoforms in full-length transcripts
   - `qscore`: Minimum MAPQ for read alignment. `--quality` for FLAIR modules.
   - `exp_thresh`: Minimum read count expression threshold for differential expression analysis. Genes with less counts will be removed form analysis.
   - `col_opts`: Additional options for flair collapse module.
+
+### Protein Annotation (lambda)
+
+Lambda aligns sequences of differentially expressed genes or transcripts against indexed protein databases (e.g. UniProt). This process is similar to BLAST, enabling identification of similar proteins and functional annotation of transcripts.
+
+- **Protein Annotation**:
+  - `lambda`: Enable lambda Sequence alignment (`true` or `false`).
+  - `uniref`: URL of the pre-formatted indexed UniRef database from the [lambda wiki](https://github.com/seqan/lambda/wiki/Pre%E2%80%90built-Database-Indexes).
+  - `num_matches`: Maximum number of proteins that have been identififed per sequence.
 

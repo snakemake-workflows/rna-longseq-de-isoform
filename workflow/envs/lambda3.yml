@@ -2,4 +2,4 @@ channels:
     - conda-forge
     - bioconda
 dependencies:
-    - ensureconda=1.4.4
+    - lambda>=3.1.0

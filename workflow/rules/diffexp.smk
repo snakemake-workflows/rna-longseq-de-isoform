@@ -1,64 +1,102 @@
-rule de_analysis:
+localrules:
+    deseq2_init,
+    deseq2,
+    pca,
+
+
+# TODO: add mincount from config to discard loci with fewer counts.
+rule deseq2_init:
     input:
-        all_counts="merged/all_counts.tsv",
+        all_counts="merged/all_counts_gene.tsv",
+        samples=samples_file,
     output:
-        dispersion_graph=report(
-            f"de_analysis/dispersion_graph.{config['deseq2']['figtype']}",
-            category="DGE Results",
-            caption="../report/dispersion_graph.rst",
-            labels={
-                "figure": "Dispersion graph",
-            },
-        ),
-        ma_graph=report(
-            f"de_analysis/ma_graph.{config['deseq2']['figtype']}",
+        "de_analysis/all.rds",
+        "de_analysis/normcounts.tsv",
+    log:
+        "logs/deseq2-init.log",
+    conda:
+        "../envs/deseq2.yml"
+    script:
+        "../scripts/deseq2-init.R"
+
+
+rule deseq2:
+    input:
+        "de_analysis/all.rds",
+    output:
+        table="de_analysis/{factor}_{prop_a}_vs_{prop_b}_l2fc.tsv",
+        ma_plot=report(
+            f"de_analysis/{{factor}}_{{prop_a}}_vs_{{prop_b}}_MA_plot.svg",
             category="DGE Results",
             caption="../report/ma_graph.rst",
             labels={
                 "figure": "MA plot",
             },
         ),
-        de_heatmap=report(
-            f"de_analysis/heatmap.{config['deseq2']['figtype']}",
-            category="DGE Results",
-            caption="../report/heatmap.rst",
-            labels={
-                "figure": "Gene heatmap",
-            },
-        ),
-        correlation_matrix=report(
-            f"de_analysis/correlation_matrix.{config['deseq2']['figtype']}",
+        sample_heatmap=report(
+            f"de_analysis/{{factor}}_{{prop_a}}_vs_{{prop_b}}_sample_heatmap.svg",
             category="DGE Results",
             caption="../report/correlation_matrix.rst",
             labels={
                 "figure": "Correlation matrix",
             },
         ),
-        normalized_counts=report("de_analysis/normalized_counts.csv"),
-        de_top_heatmap=report(
-            f"de_analysis/heatmap_top.{config['deseq2']['figtype']}",
+        count_heatmap=report(
+            f"de_analysis/{{factor}}_{{prop_a}}_vs_{{prop_b}}_count_heatmap.svg",
+            category="DGE Results",
+            caption="../report/heatmap.rst",
+            labels={
+                "figure": "Gene heatmap",
+            },
+        ),
+        top_count_heatmap=report(
+            f"de_analysis/{{factor}}_{{prop_a}}_vs_{{prop_b}}_top_count_heatmap.svg",
             category="DGE Results",
             caption="../report/heatmap_top.rst",
             labels={
                 "figure": "Top gene heatmap",
             },
         ),
-        sorted_normalized_counts=report("de_analysis/sorted_normalized_counts.csv"),
-        lfc_analysis="de_analysis/lfc_analysis.csv",
-        volcano_plot=report(
-            f"de_analysis/volcano_plot.{config['deseq2']['figtype']}",
+        dispersion_plot=report(
+            f"de_analysis/{{factor}}_{{prop_a}}_vs_{{prop_b}}_dispersion_plot.svg",
             category="DGE Results",
-            caption="../report/volcano_plot.rst",
+            caption="../report/dispersion_graph.rst",
             labels={
-                "figure": "Volcano plot",
+                "figure": "Dispersion graph",
             },
         ),
     params:
-        samples=samples,
+        factor="{factor}",
+        prop_a="{prop_a}",
+        prop_b="{prop_b}",
+        colormap=config["deseq2"]["colormap"],
+        alpha=config["deseq2"]["alpha"],
+        lfc_null=config["deseq2"]["lfc_null"],
+        alt_hypothesis=config["deseq2"]["alt_hypothesis"],
+        threshold_plot=config["deseq2"]["threshold_plot"],
     log:
-        "logs/de_analysis.log",
-    threads: 8
+        "logs/deseq2_{factor}_{prop_a}_vs_{prop_b}.log",
     conda:
-        "../envs/pydeseq2.yml"
+        "../envs/deseq2.yml"
     script:
-        "../scripts/de_analysis.py"
+        "../scripts/deseq2.R"
+
+
+rule pca:
+    input:
+        "de_analysis/all.rds",
+    output:
+        report(
+            f"de_analysis/pca_{{variable}}.svg",
+            category="DGE Results",
+            caption="../report/pca.rst",
+            labels={
+                "figure": "PCA plot: {variable}",
+            },
+        ),
+    log:
+        "logs/deseq2_pca_{variable}.log",
+    conda:
+        "../envs/deseq2.yml"
+    script:
+        "../scripts/pca.R"

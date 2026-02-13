@@ -1,0 +1,4 @@
+channels:
+    - conda-forge
+dependencies:
+    - wget>=1.21.4   # latest on conda-forge as of May 2025

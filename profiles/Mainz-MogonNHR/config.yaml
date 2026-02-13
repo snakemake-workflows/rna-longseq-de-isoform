@@ -1,0 +1,71 @@
+default-resources:
+    slurm_account: "nhr-zdvhpc"
+    slurm_partition: "smallcpu"
+    mem_mb_per_cpu: 1800
+    runtime: "30m"
+    clusters: "mogonnhr"
+
+set-resources:
+    filter_reads:
+        runtime: "2h"
+    build_minimap_index:
+        mem_mb_per_cpu: 3600
+    map_reads:
+        runtime: "3h"
+        slurm_partition: "smallcpu" # needs benchmarking
+    sample_qa_plot:
+        runtime: "2h"
+    total_sample_qa_plot:
+        runtime: "3h"
+        mem_mb_per_cpu: 3600
+    alignment_qa:
+        runtime: "1h"
+    bam_sort:
+        mem_mb_per_cpu: 4800
+        runtime: "2h"
+    sam_to_bam:
+        runtime: "90m"
+    count_reads:
+        runtime: "1h"
+    diffexp_analysis:
+        mem_mb_per_cpu: 5000
+        runtime: "1h"
+    build_flair_genome_index:
+        mem_mb_per_cpu: 3600
+    flair_align:
+        mem_mb_per_cpu: 2500
+        runtime: 300
+    flair_correct:
+        runtime: 180
+    flair_collapse:
+        cpus_per_task: 32
+        mem_mb_per_cpu: 3600
+        runtime: "2h"
+    flair_quantify:
+        cpus_per_task: 32
+        runtime: "2h"
+    flair_diffexp:
+        mem_mb_per_cpu: 5000
+        runtime: "12h"
+    lambda_gene_annotation:
+        mem_mb_per_cpu: 7200
+
+
+set-threads:
+    build_minimap_index: 4
+    map_reads: 32
+    sample_qa_plot: 4
+    total_sample_qa_plot: 8
+    alignment_qa: 8
+    bam_sort: 8
+    bam_index: 8
+    bam_stats: 8
+    count_reads: 8
+    diffexp_analysis: 8
+    build_flair_genome_index: 4
+    flair_align: 32
+    flair_correct: 8
+    flair_collapse: 32
+    flair_quantify: 32
+    flair_diffexp: 8
+    lambda_gene_annotation: 32

@@ -1,10 +1,10 @@
-samples: samples.csv
-
-
 ## General Workflow Parameters:
 
+# sample information and experimental design
+samples: samples.csv
 # this is the input directory. All samples are looked for in this directory
 inputdir: "/lustre/project/nhr-zdvhpc/transcriptome_data"
+
 
 ## Workflow-specific Parameters:
 
@@ -18,9 +18,13 @@ ref:
     # Annotation file (supported extensions: .gff, .gtf, case-insensitive)
     # may be a path or left empty, if download using an accession number is preferred
     annotation: "/lustre/project/nhr-zdvhpc/transcriptome_data/GCA_917627325.4_PGI_CHIRRI_v4_genomic.gff"
-    # Remote reference data
-    # NCBI accession number of the reference data set; can be left empty if both reference files are available locally"
+    # Remote reference data, choose either NCBI or ensembl
+    # NCBI GenBank accession number of the reference data set; can be left empty if both reference files are available locally
     accession: "GCA_917627325.4"
+    # Ensembl-specific parameters; must provide ensembl_species, build, and release to enable Ensembl downloads
+    ensembl_species: ""  # e.g., "homo_sapiens"
+    build: ""  # e.g., "GRCh38"
+    release: ""  # e.g., "105"
 
 read_filter:
     # Minimum read length; set 0 to keep all reads.
@@ -53,21 +57,26 @@ quant:
     # Salmon library type (Default: U)
     salmon_libtype: "U"
 
-# This section defines the pyDESeq2 plot and data handling parameters
+# This section defines the DESeq2 plot and data handling parameters
 deseq2:
-    # normalization fit type, must be 'parametric' or 'mean'
-    fit_type: "mean"
-    # the "design factors" are the confounding variables to be adjusted fr
+    # the "design factors" are the confounding variables to be adjusted for
     # during normalization. They must be given in the configuration (samples.csv).
-    design_factors: 
+    design_factors:
         - "condition"
     #
-    # the "continous factors" are non-categorial factors to be considered
+    # the "continuous factors" are non-categorical factors to be considered
     #continuous_factors:
-    #    - 
-    #
+    #    -
+    # Factors representing batch or technical effects to correct for
+    batch_effect:
+        - "batch"
+    # If left empty ("") the design formula is constructed automatically as:
+    # "batch + condition_1 * condition_2" (with all interactions)
+    # Otherwise, specify manually e.g. :
+    # fit_type: "batch + condition1 + condition2".
+    fit_type: ""
     # The (log2) log fold change under the null hypothesis. (default: 0).
-    lfc_null: 0.5
+    lfc_null: 1.0
     #
     # The alternative hypothesis for computing wald p-values. By default,
     # the normal Wald test assesses deviation of the estimated log fold
@@ -76,11 +85,6 @@ deseq2:
     # The alternative hypothesis corresponds to what the user wants to
     # find rather than the null hypothesis. (default: None).
     alt_hypothesis: "greaterAbs"
-    #
-    # The marker size in points**2 (typographic points are 1/72 in.).
-    # Default is rcParams['lines.markersize'] ** 2.# minimum count to
-    # be considered for subsequent analysis
-    point_width: 20
     #
     # we disrecard loci with count number lower 'mincount'
     mincount: 10
@@ -93,10 +97,8 @@ deseq2:
     threshold_plot: 10
     #
     # the heatmap color map
-    # see https://seaborn.pydata.org/tutorial/color_palettes.htm for an overview
-    colormap: "flare"
-    #plot figure type
-    figtype: "png"
+    # see https://r-graph-gallery.com/38-rcolorbrewers-palettes.html for an overview
+    colormap: "Blues"
 
 ## Differential Isoform Analysis
 
@@ -107,9 +109,22 @@ deseq2:
 isoform_analysis:
     # Enables FLAIR Isoform Analysis if 'true'
     FLAIR: true
-    # Minimum MAPQ of read assignment to an isoform (default 1).
+    # Minimum MAPQ of read assignment to an isoform (default: 1).
     qscore: 1
     # min read count expression threshold. Isoforms which contain fewer than 'exp_thresh' (Default=10) reads in both conditions are filtered out.
     exp_thresh: 10
-    # 'flair_collapse' options. '--stringent' for full-length supporting reads (>=80% coverage)
-    col_opts: "--annotation_reliant --generate_map --stringent"
+    # 'flair_collapse' options
+    # '--annotation-reliant' makes FLAIR align reads to the annotation before identifying novel transcripts for the remaining reads
+    # '--generate-map' to generate a txt file of read-isoform assignments
+    # '--stringent' for full-length supporting reads (>=80% coverage)
+    col_opts: "--annotation_reliant generate --generate_map --stringent"
+
+
+# Query genes to identify similar proteins using "lambda"
+protein_annotation:
+    # Enables lambda sequence alignment if 'true'
+    lambda: true
+    # Pre-formatted UniProt Reference Cluster database (default: UniRef50)
+    uniref: "https://ftp.imp.fu-berlin.de/pub/lambda/index/lambda3/gen_0/uniref50_20230713.lba.gz"
+    # maximum number of protein matches returned per sequence (default: 3)
+    num_matches: 3

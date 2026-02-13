@@ -1,4 +1,4 @@
-$schema: "http://json-schema.org/draft-07/schema#"
+$schema: "https://json-schema.org/draft/2020-12/schema"
 
 description: snakemake configuration file
 type: object
@@ -9,10 +9,6 @@ properties:
     type: string
     description: "Path of sample '.csv' file"
 
-  inputdir:
-    type: string
-    description: "Path of sample fasta file directory"
-
   ref:
     type: object
     properties:
@@ -22,6 +18,20 @@ properties:
         type: string
       accession:
         type: string
+      ensembl_species:
+        type: string
+      build:
+        type: string
+      release:
+        type: string
+    allOf:
+      - if:
+          properties:
+            ensembl_species:
+              type: string
+              minLength: 1
+        then:
+          required: ["build", "release"]
 
   read_filter:
     type: object
@@ -67,8 +77,11 @@ deseq2:
   properties:
     fit_type:
       type: string
-      enum: ["parametric","mean"]
     design_factors:
+      type: array
+      items:
+        type: string
+    batch_effect:
       type: array
       items:
         type: string
@@ -77,9 +90,6 @@ deseq2:
     alt_hypothesis:
       type: string
       enum: ["greaterAbs", "lessAbs", "greater", "less"]
-    point_width:
-      type: integer
-      minimum: 1
     alpha:
       type: number
       minimum: 0.0
@@ -88,8 +98,7 @@ deseq2:
       type: integer
     colormap:
       type: string
-    figtype:
-      type: string
+
 
 isoform_analysis:
   type: object
@@ -104,10 +113,38 @@ isoform_analysis:
       minimum: 0
     col_opts:
       type: string
+  required:
+    - FLAIR
+  allOf:
+    - if:
+        properties:
+          FLAIR:
+            const: true
+      then:
+        required: ["qscore","exp_thresh","col_opts"]
+
+protein_annotation:
+  type: object
+  properties:
+    lambda:
+      type: boolean
+    uniref:
+      type: string
+    num_matches:
+      type: integer
+      minimum: 1
+  required:
+    - lambda
+  allOf:
+    - if:
+        properties:
+          lambda:
+            const: true
+      then:
+        required: ["uniref","num_matches"]
 
 required:
   - samples
-  - inputdir
   - ref
   - read_filter
   - minimap2
@@ -115,3 +152,4 @@ required:
   - quant 
   - deseq2
   - isoform_analysis
+  - protein_annotation

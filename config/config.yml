@@ -2,33 +2,32 @@
 
 # sample information and experimental design
 samples: samples.csv
-# this is the input directory. All samples are looked for in this directory
-inputdir: "./ngs-test-data/reads"
-
 
 ## Workflow-specific Parameters:
 
 # Define reference genome/transcriptome
 ref:
-    # species
-    species: "Homo sapiens"
-    # Genome FA or FASTA or FNA
-    genome: "./ngs-test-data/ref/genome.chr21.fa"
-    # Annotation GFF or GTF
-    annotation: "./ngs-test-data/ref/annotation.chr21.gtf"    
-    # NCBI accession number of the reference data set.
-    # empty, because every real reference is too big.
-    accession: ""
-    # Ensembl-specific parameters
-    ensembl_species: ""
-    build: ""
-    release: ""
-
+    species: "Chironomus riparius"
+    # Local reference data
+    # Genome file path (supported extensions: .fa, .fna, .fasta, case-insensitive)
+    # may be a path or left empty, if download using an accession number is preferred
+    genome: "/path/to/genome"
+    # Annotation file (supported extensions: .gff, .gtf, case-insensitive)
+    # may be a path or left empty, if download using an accession number is preferred
+    annotation: "/path/to/annotation"
+    # Remote reference data, choose either NCBI or ensembl
+    # NCBI GenBank accession number of the reference data set; can be left empty if both reference files are available locally
+    accession: "NCBI_ACCESSION_PLACEHOLDER"
+    # Ensembl-specific parameters; must provide ensembl_species, build, and release to enable Ensembl downloads
+    ensembl_species: ""  # e.g., "homo_sapiens"
+    build: ""  # e.g., "GRCh38"
+    release: ""  # e.g., "105"
 
 read_filter:
     # Minimum read length; set 0 to keep all reads.
-    min_length: 10
+    min_length: 0
 
+# minimap2 alignment parameters
 minimap2:
     # Minimap2 indexing options
     index_opts: ""
@@ -55,7 +54,6 @@ quant:
     # Salmon library type (Default: U)
     salmon_libtype: "U"
 
-
 # This section defines the DESeq2 plot and data handling parameters
 deseq2:
     # the "design factors" are the confounding variables to be adjusted for
@@ -68,14 +66,14 @@ deseq2:
     #    -
     # Factors representing batch or technical effects to correct for
     batch_effect:
-        - ""
+        - "batch"
     # If left empty ("") the design formula is constructed automatically as:
     # "batch + condition_1 * condition_2" (with all interactions)
     # Otherwise, specify manually e.g. :
     # fit_type: "batch + condition1 + condition2".
     fit_type: ""
     # The (log2) log fold change under the null hypothesis. (default: 0).
-    lfc_null: 0
+    lfc_null: 1.0
     #
     # The alternative hypothesis for computing wald p-values. By default,
     # the normal Wald test assesses deviation of the estimated log fold
@@ -89,7 +87,7 @@ deseq2:
     mincount: 10
     #
     # Type I error cutoff value:
-    alpha: 0.99
+    alpha: 0.05
     #
     # in addition to the full heatmap, plot the top number of different
     # values, ranked by the top ratio between the two traits
@@ -106,7 +104,7 @@ deseq2:
 #     2. In 'samples.csv: Refrain from using underscores when naming samples. The 'sample' column may contain underscores, but be aware that underscores will be removed from the name for isoform quantification steps.
 #     3. In this file: the variable 'FLAIR' below must be:'true'. This is a check to determine if users are aware of the constraints and wish to proceed.
 isoform_analysis:
-    # Enables FLAIR Isoform Analysis if 'true'
+    # Enables FLAIR Isoform Analysis if 'true' (Default:'false').
     FLAIR: false
     # Minimum MAPQ of read assignment to an isoform (default: 1).
     qscore: 1
@@ -118,11 +116,12 @@ isoform_analysis:
     # '--stringent' for full-length supporting reads (>=80% coverage)
     col_opts: "--annotation_reliant generate --generate_map --stringent"
 
+
 # Query genes to identify similar proteins using "lambda"
 protein_annotation:
-    # Enables lambda sequence alignment if 'true'
-    lambda: true
+    # Enables lambda sequence alignment if 'true' (Default: 'false').
+    lambda: false
     # Pre-formatted UniProt Reference Cluster database (default: UniRef50)
-    uniref: "https://ftp.imp.fu-berlin.de/pub/lambda/index/lambda3/gen_0/uniprot_sprot_20230713.lba.gz"
+    uniref: "https://ftp.imp.fu-berlin.de/pub/lambda/index/lambda3/gen_0/uniref50_20230713.lba.gz"
     # maximum number of protein matches returned per sequence (default: 3)
     num_matches: 3
