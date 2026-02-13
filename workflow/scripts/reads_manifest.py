@@ -1,24 +1,37 @@
-import sys
 import os
 from pathlib import Path
-import pandas as pd
+import re
+import sys
+
 
 log_file = open(snakemake.log[0], "w")
 
 sys.stderr = sys.stdout = log_file
 
 samples_df = snakemake.params.samples[["sample", "condition", "batch"]]
-inputdir = snakemake.params.inputdir
 
 exts = (".fastq", ".fq", ".fastq.gz", ".fq.gz")
 
 
-def get_sample_path(sample_name, inputdir, exts):
-    path = Path(os.path.join(inputdir, sample_name))
-    for ext in exts:
-        if os.path.exists(str(path) + ext):
-            return str(path) + ext
-    return "File not found"
+def get_sample_path(sample_name, exts):
+    # Check for 'raw' directory first, otherwise traverse all directories
+    base_path = Path.cwd()
+    raw_dir = base_path / "raw"
+    pattern = rf"^{re.escape(sample_name)}(?![a-zA-Z0-9]).*"
+    extensions = "|".join([re.escape(ext) for ext in exts])
+    sample_regex = re.compile(f"{pattern}({extensions})$")
+
+    search_path = raw_dir if raw_dir.exists() else base_path
+
+    for root, dirs, files in os.walk(search_path):
+        for file in files:
+            if sample_regex.match(file):
+                return os.path.join(root, file)
+    raise FileNotFoundError(
+        f"No file found for sample '{sample_name}' "
+        f"under the search path {search_path} "
+        f"with extensions {exts}"
+    )
 
 
 # remove underscores from the name field because flair does not accept them
@@ -34,7 +47,7 @@ if samples_df["sample_clean"].duplicated().any():
 
 # get the absolute  filepath for each sample
 samples_df["sample_path"] = samples_df["sample"].apply(
-    lambda x: get_sample_path(x, snakemake.params.inputdir, exts)
+    lambda x: get_sample_path(x, exts)
 )
 
 samples_df[["sample_clean", "condition", "batch", "sample_path"]].to_csv(

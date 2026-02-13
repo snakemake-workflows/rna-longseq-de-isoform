@@ -17,8 +17,10 @@ rule standardize_gff:
         "Standardizing GFF format for isoform analysis compatibility"
     shell:
         """
-        agat_convert_sp_gxf2gxf.pl --gff {input} -o {output} &> {log} &&
-        cat genomic.agat.log >> {log} && rm genomic.agat.log
+        agat_convert_sp_gxf2gxf.pl --gff {input} -o {output} &> {log};
+        if [ -f genomic.agat.log ]; then
+           cat genomic.agat.log >> {log} && rm genomic.agat.log
+        fi
         """
 
 
