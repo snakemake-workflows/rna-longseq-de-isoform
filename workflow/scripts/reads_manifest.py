@@ -18,7 +18,9 @@ def get_sample_path(sample_name, exts):
     # Check for 'raw' directory first, otherwise traverse all directories
     base_path = Path.cwd()
     raw_dir = base_path / "raw"
-    sample_regex = re.compile(rf"^{re.escape(sample_name)}.*({'|'.join([re.escape(ext) for ext in exts])})$")   
+    sample_regex = re.compile(
+        rf"^{re.escape(sample_name)}.*({'|'.join([re.escape(ext) for ext in exts])})$"
+    )
 
     search_path = raw_dir if raw_dir.exists() else base_path
 
