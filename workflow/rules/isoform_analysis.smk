@@ -12,7 +12,6 @@ rule reads_manifest:
         temp("iso_analysis/reads_manifest.tsv"),
     params:
         samples=samples,
-        inputdir=config["inputdir"],
     log:
         "logs/flair/reads_manifest.log",
     conda:
