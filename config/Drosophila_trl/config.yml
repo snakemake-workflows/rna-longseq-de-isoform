@@ -82,7 +82,7 @@ deseq2:
     # be considered for subsequent analysis
     point_width: 20
     #
-    # we disrecard loci with count number lower 'mincount'
+    # we disregard loci with count number lower 'mincount'
     mincount: 10
     #
     # Type I error cutoff value:
