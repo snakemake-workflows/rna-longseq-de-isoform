@@ -48,7 +48,7 @@ def get_condition_values():
     conditions = get_conditions()
     # we only support 2 conditions for the isoform analysis
     # previous code checked whether the isoform analysis was enabled,
-    # but this is not necessary, because the function is only called when the 
+    # but this is not necessary, because the function is only called when the
     # isoform analysis is enabled.
     if len(conditions) != 2:
         raise ValueError(
