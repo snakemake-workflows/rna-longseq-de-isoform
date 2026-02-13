@@ -62,7 +62,7 @@ deseq2:
     design_factors:
         - "condition"
     #
-    # the "continous factors" are non-categorial factors to be considered
+    # the "continuous factors" are non-categorial factors to be considered
     #continuous_factors:
     #    -
     #
