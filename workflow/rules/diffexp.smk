@@ -1,6 +1,7 @@
 localrules:
     deseq2_init,
     deseq2,
+    pca,
 
 
 # TODO: add mincount from config to discard loci with fewer counts.
@@ -79,3 +80,23 @@ rule deseq2:
         "../envs/deseq2.yml"
     script:
         "../scripts/deseq2.R"
+
+
+rule pca:
+    input:
+        "de_analysis/all.rds",
+    output:
+        report(
+            f"de_analysis/pca_{{variable}}.svg",
+            category="DGE Results",
+            caption="../report/pca.rst",
+            labels={
+                "figure": "PCA plot: {variable}",
+            },
+        ),
+    log:
+        "logs/deseq2_pca_{variable}.log",
+    conda:
+        "../envs/deseq2.yml"
+    script:
+        "../scripts/pca.R"
