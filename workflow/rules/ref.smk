@@ -7,12 +7,6 @@ localrules:
     get_genome,
 
 
-# the download rules may fail frequently due to network issues. The ruleorder
-# directive ensures that Snakemake try those rules in succession until one works.
-ruleorder: download_ncbi_genome > download_ensembl_genome > get_genome
-ruleorder: download_ncbi_annotation > download_ensembl_annotation > get_annotation
-
-
 rule download_ncbi_genome:
     output:
         "references/ncbi_dataset_genome.zip",
