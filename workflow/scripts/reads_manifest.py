@@ -3,7 +3,6 @@ from pathlib import Path
 import re
 import sys
 
-import pandas as pd
 
 log_file = open(snakemake.log[0], "w")
 
