@@ -6,11 +6,16 @@ localrules:
     get_annotation,
     get_genome,
 
+# the download rules may fail frequently due to network issues. The ruleorder
+# directive ensures that Snakemake try those rules in sucession until one works.
+ruleorder: download_ncbi_genome > download_ensembl_genome > get_genome
+ruleorder: download_ncbi_annotation > download_ensembl_annotation > get_annotation
 
 rule download_ncbi_genome:
     output:
-        temp("references/ncbi_dataset_genome.zip"),
-    cache: True
+        "references/ncbi_dataset_genome.zip"
+    retries: 3
+    cache: "omit-software"
     params:
         accession=config["ref"]["accession"],
     log:
@@ -25,8 +30,9 @@ rule download_ncbi_genome:
 
 rule download_ncbi_annotation:
     output:
-        temp("references/ncbi_dataset_annotation.zip"),
-    cache: True
+        "references/ncbi_dataset_annotation.zip"
+    retries: 3
+    cache: "omit-software"
     params:
         accession=config["ref"]["accession"],
     log:
@@ -41,7 +47,9 @@ rule download_ncbi_annotation:
 
 rule download_ensembl_genome:
     output:
-        temp("references/ensembl_genome.fa"),
+        "references/ensembl_genome.fa",
+    retries: 3
+    cache: "omit-software"
     params:
         species=config["ref"]["ensembl_species"],
         datatype="dna",
@@ -49,14 +57,14 @@ rule download_ensembl_genome:
         release=config["ref"]["release"],
     log:
         "logs/refs/download_ensembl_genome.log",
-    cache: "omit-software"  # save space and time with between workflow caching (see docs)
     wrapper:
         "v7.5.0/bio/reference/ensembl-sequence"
 
 
 rule download_ensembl_annotation:
     output:
-        temp("references/ensembl_annotation.gff3"),
+        "references/ensembl_annotation.gff3"
+    retries: 3
     params:
         species=config["ref"]["ensembl_species"],
         build=config["ref"]["build"],
@@ -71,8 +79,10 @@ rule download_ensembl_annotation:
 rule get_genome:
     input:
         lambda wildcards: get_reference_files(config).get("genome"),
+    retries: 3
     output:
-        temp("references/genomic.fa"),
+        "references/genomic.fa"
+    cache: "omit-software"
     params:
         accession=config["ref"]["accession"],
     log:
@@ -86,8 +96,10 @@ rule get_genome:
 rule get_annotation:
     input:
         lambda wildcards: get_reference_files(config).get("annotation"),
+    retries: 3
     output:
-        temp("references/genomic.gff"),
+        "references/genomic.gff"
+    cache: "omit-software"
     params:
         accession=config["ref"]["accession"],
     log:
