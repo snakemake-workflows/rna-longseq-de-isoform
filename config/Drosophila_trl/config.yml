@@ -68,7 +68,6 @@ deseq2:
     #
     # The (log2) log fold change under the null hypothesis. (default: 0).
     lfc_null: 1.0
-    point_width: 20
     #
     # The alternative hypothesis for computing wald p-values. By default,
     # the normal Wald test assesses deviation of the estimated log fold
