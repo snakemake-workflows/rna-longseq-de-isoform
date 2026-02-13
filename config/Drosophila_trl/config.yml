@@ -130,8 +130,8 @@ protein_annotation:
     num_matches: 3
 
 # Enrichment Analysis Parameters
-enrichment:
-    # Enable enrichment analysis if 'true'
-    perform_enrichment: true
-    # minimum number of genes to consider per pathway (default: 3)
-    min_genes: 3
+#enrichment:
+#    # Enable enrichment analysis if 'true'
+#    perform_enrichment: true
+#    # minimum number of genes to consider per pathway (default: 3)
+#    min_genes: 3
