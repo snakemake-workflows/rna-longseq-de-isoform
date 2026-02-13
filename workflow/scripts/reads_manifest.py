@@ -1,6 +1,8 @@
-import sys
 import os
 from pathlib import Path
+import re
+import sys
+
 import pandas as pd
 
 log_file = open(snakemake.log[0], "w")
@@ -16,12 +18,13 @@ def get_sample_path(sample_name, exts):
     # Check for 'raw' directory first, otherwise traverse all directories
     base_path = Path.cwd()
     raw_dir = base_path / "raw"
+    sample_regex = re.compile(rf"^{re.escape(sample_name)}.*({'|'.join([re.escape(ext) for ext in exts])})$")   
 
     search_path = raw_dir if raw_dir.exists() else base_path
 
     for root, dirs, files in os.walk(search_path):
         for file in files:
-            if file.startswith(sample_name) and file.endswith(exts):
+            if sample_regex.match(file):
                 return os.path.join(root, file)
     raise FileNotFoundError(
         f"No file found for sample '{sample_name}' "
