@@ -113,9 +113,9 @@ def get_mapped_reads_input(sample):
     # Check for 'raw' directory first, otherwise traverse all directories
     base_path = Path.cwd()
     raw_dir = base_path / "raw"
-    
+
     search_path = raw_dir if raw_dir.exists() else base_path
-    
+
     for root, dirs, files in os.walk(search_path):
         for file in files:
             if file.startswith(sample) and file.endswith(exts):
@@ -130,9 +130,9 @@ def aggregate_input(samples):
     # Check for 'raw' directory first, otherwise traverse all directories
     base_path = Path.cwd()
     raw_dir = base_path / "raw"
-    
+
     search_path = raw_dir if raw_dir.exists() else base_path
-    
+
     valids = list()
     for sample in samples:
         for root, dirs, files in os.walk(search_path):

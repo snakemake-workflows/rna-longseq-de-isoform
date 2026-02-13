@@ -6,14 +6,16 @@ localrules:
     get_annotation,
     get_genome,
 
+
 # the download rules may fail frequently due to network issues. The ruleorder
 # directive ensures that Snakemake try those rules in sucession until one works.
 ruleorder: download_ncbi_genome > download_ensembl_genome > get_genome
 ruleorder: download_ncbi_annotation > download_ensembl_annotation > get_annotation
 
+
 rule download_ncbi_genome:
     output:
-        "references/ncbi_dataset_genome.zip"
+        "references/ncbi_dataset_genome.zip",
     retries: 3
     cache: "omit-software"
     params:
@@ -30,7 +32,7 @@ rule download_ncbi_genome:
 
 rule download_ncbi_annotation:
     output:
-        "references/ncbi_dataset_annotation.zip"
+        "references/ncbi_dataset_annotation.zip",
     retries: 3
     cache: "omit-software"
     params:
@@ -63,7 +65,7 @@ rule download_ensembl_genome:
 
 rule download_ensembl_annotation:
     output:
-        "references/ensembl_annotation.gff3"
+        "references/ensembl_annotation.gff3",
     retries: 3
     params:
         species=config["ref"]["ensembl_species"],
@@ -81,7 +83,7 @@ rule get_genome:
         lambda wildcards: get_reference_files(config).get("genome"),
     retries: 3
     output:
-        "references/genomic.fa"
+        "references/genomic.fa",
     cache: "omit-software"
     params:
         accession=config["ref"]["accession"],
@@ -98,7 +100,7 @@ rule get_annotation:
         lambda wildcards: get_reference_files(config).get("annotation"),
     retries: 3
     output:
-        "references/genomic.gff"
+        "references/genomic.gff",
     cache: "omit-software"
     params:
         accession=config["ref"]["accession"],
