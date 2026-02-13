@@ -16,14 +16,18 @@ def get_sample_path(sample_name, exts):
     # Check for 'raw' directory first, otherwise traverse all directories
     base_path = Path.cwd()
     raw_dir = base_path / "raw"
-    
+
     search_path = raw_dir if raw_dir.exists() else base_path
-    
+
     for root, dirs, files in os.walk(search_path):
         for file in files:
             if file.startswith(sample_name) and file.endswith(exts):
                 return os.path.join(root, file)
-    return "File not found"
+    raise FileNotFoundError(
+        f"No file found for sample '{sample_name}' "
+        f"under the search path {search_path} "
+        f"with extensions {exts}"
+    )
 
 
 # remove underscores from the name field because flair does not accept them
