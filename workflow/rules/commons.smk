@@ -46,7 +46,11 @@ def get_conditions():
 
 def get_condition_values():
     conditions = get_conditions()
-    if config["isoform_analysis"]["FLAIR"] and len(conditions) != 2:
+    # we only support 2 conditions for the isoform analysis
+    # previous code checked whether the isoform analysis was enabled,
+    # but this is not necessary, because the function is only called when the 
+    # isoform analysis is enabled.
+    if len(conditions) != 2:
         raise ValueError(
             "If you want to perform differential isoform analysis, 'condition' in samples.csv must have exactly two distinct values."
         )
