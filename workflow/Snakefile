@@ -26,9 +26,6 @@ include: "rules/isoform_analysis.smk"
 include: "rules/proteinanno.smk"
 
 
-inputdir = config["inputdir"]
-
-
 onstart:
     print("\n--- Analysis started ---\n")
 

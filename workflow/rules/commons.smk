@@ -7,6 +7,7 @@ from itertools import product
 import pandas as pd
 from snakemake.remote import FTP
 from snakemake.utils import validate
+from snakemake.io import directory
 from snakemake.exceptions import WorkflowError
 
 # global list of valid suffixes
@@ -109,32 +110,43 @@ def get_reference_files(config):
 
 
 def get_mapped_reads_input(sample):
-    path = Path(os.path.join(config["inputdir"], sample))
-    for extension in exts:
-        # we need to append the extension with +, because
-        # path.with_suffix might consider everything after a . in
-        # the file name a suffix!
-        if os.path.exists(str(path) + extension):
-            return str(path) + extension
+    # Check for 'raw' directory first, otherwise traverse all directories
+    base_path = Path.cwd()
+    raw_dir = base_path / "raw"
 
+    search_path = raw_dir if raw_dir.exists() else base_path
+
+    for root, dirs, files in os.walk(search_path):
+        for file in files:
+            if file.startswith(sample) and file.endswith(exts):
+                path = Path(os.path.join(root, file))
+                return path
     raise WorkflowError(
         f"No valid sample found for sample: '{sample}' with possible extension '{exts}'"
     )
 
 
 def aggregate_input(samples):
-    # possible extensions:
-    valids = list()
-    for sample, ext in product(samples, exts):
-        path = Path(os.path.join(config["inputdir"], sample))
-        # we need to append the extension with +, because
-        # path.with_suffix might consider everything after a . in
-        # the file name a suffix!
-        if os.path.exists(str(path) + ext):
-            valids.append(str(path) + ext)
+    # Check for 'raw' directory first, otherwise traverse all directories
+    base_path = Path.cwd()
+    raw_dir = base_path / "raw"
 
+    search_path = raw_dir if raw_dir.exists() else base_path
+
+    valids = list()
+    for sample in samples:
+        for root, dirs, files in os.walk(search_path):
+            for file in files:
+                if sample in file and file.endswith(exts):
+                    valids.append(Path(os.path.join(root, file)))
     if not len(valids):
-        raise WorkflowError(f"no valid samples found, allowed extensions are: '{exts}'")
+        raise WorkflowError(
+            f"no valid samples found, allowed extensions are: '{exts}'\n"
+            f"Searched in: {search_path}\n"
+            f"Current working directory: {base_path}\n"
+            f"Note: If running 'snakemake --report', make sure to run from the same directory "
+            f"where the workflow was executed, or use --directory flag to specify the working directory."
+        )
     return valids
 
 

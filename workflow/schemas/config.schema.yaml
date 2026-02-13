@@ -9,10 +9,6 @@ properties:
     type: string
     description: "Path of sample '.csv' file"
 
-  inputdir:
-    type: string
-    description: "Path of sample fasta file directory"
-
   ref:
     type: object
     properties:
@@ -149,7 +145,6 @@ protein_annotation:
 
 required:
   - samples
-  - inputdir
   - ref
   - read_filter
   - minimap2
