@@ -24,7 +24,6 @@ include: "rules/quantification.smk"
 include: "rules/diffexp.smk"
 include: "rules/isoform_analysis.smk"
 include: "rules/proteinanno.smk"
-include: "rules/enrichment.smk"
 
 
 onstart:
