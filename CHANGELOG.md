@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.5.1](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.5.0...v2.5.1) (2026-02-16)
+
+
+### Bug Fixes
+
+* fixed and updated version number for ncbi-datasets-cli and unzip ([#149](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/149)) ([f4136fb](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/f4136fb7afe7aead5d00ec020997d9e6988d2502))
+* plot isoform performance issue ([#152](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/152)) ([4ac1bb7](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/4ac1bb7551e3a820de36c435b64dee57e9c90dcc))
+* removed 'inputdir' config variable - more flexible, now ([#150](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/150)) ([d24e009](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/d24e009eb84a49f628e4a935f2bd041f7f890e26))
+
 ## [2.5.0](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.4.2...v2.5.0) (2025-12-09)
 
 
