@@ -103,3 +103,6 @@ if failed:
 
 log_file.close()
 
+if failed:
+    sys.exit(1)
+
