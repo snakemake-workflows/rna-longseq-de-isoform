@@ -2,6 +2,7 @@ import sys
 import os
 import pandas as pd
 import subprocess
+from multiprocessing import Pool, cpu_count
 
 log_file = open(snakemake.log[0], "w")
 sys.stderr = sys.stdout = log_file
@@ -43,11 +44,56 @@ def run_plot_script(isoforms_bed, counts_matrix, gene_name, out_dir):
         )
         if result.stderr:
             print(result.stderr, file=sys.stderr)
+        return (gene_name, "Success", None)
     except subprocess.CalledProcessError as e:
-        raise RuntimeError(
-            f"Failed to run plot_isoform_usage for gene {gene_name}: {e}"
+        error_msg = f"Failed to run plot_isoform_usage for gene {gene_name}: {e}"
+        return (gene_name, "Failed", error_msg)
+
+
+def _run_plot_script_worker(args):
+    """Wrapper function for multiprocessing to handle a single gene."""
+    isoforms_bed, counts_matrix, gene_name, out_dir = args
+    try:
+        result = subprocess.run(
+            [
+                "plot_isoform_usage",
+                isoforms_bed,
+                counts_matrix,
+                gene_name,
+                "-o",
+                f"{out_dir}/{gene_name}",
+            ],
+            check=True,
+            text=True,
+            capture_output=True,
         )
+        if result.stderr:
+            print(result.stderr)
+        return (gene_name, "Success", None)
+    except subprocess.CalledProcessError as e:
+        error_msg = f"Failed to run plot_isoform_usage for gene {gene_name}: {e}"
+        return (gene_name, "Failed", error_msg)
 
 
-for gene in get_gene_names(de_gene_list):
-    run_plot_script(isoforms_bed, counts_matrix, gene, out_dir)
+# Get the number of worker from Snakemake's threads setting.
+num_workers = snakemake.threads if snakemake.threads > 0 else cpu_count()
+
+# Prepare arguments for each gene
+genes = list(get_gene_names(de_gene_list))
+args_list = [
+    (isoforms_bed, counts_matrix, gene, out_dir) for gene in genes
+]
+
+# Run in parallel
+with Pool(num_workers) as pool:
+    results = pool.map(_run_plot_script_worker, args_list)
+
+# Log results
+for gene_name, status, error_msg in results:
+    if status == "Success":
+        print(f"{gene_name}: Successfully processed")
+    else:
+        print(f"{gene_name}: {error_msg}", file=sys.stderr)
+
+log_file.close()
+
