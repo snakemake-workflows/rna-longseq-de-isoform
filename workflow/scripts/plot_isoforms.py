@@ -73,6 +73,9 @@ def _run_plot_script_worker(args):
     except subprocess.CalledProcessError as e:
         error_msg = f"Failed to run plot_isoform_usage for gene {gene_name}: {e}"
         return (gene_name, "Failed", error_msg)
+    except Exception as e:
+        error_msg = f"Unexpected error for gene {gene_name}: {e}"
+        return (gene_name, "Failed", error_msg)
 
 
 # Get the number of worker from Snakemake's threads setting.
