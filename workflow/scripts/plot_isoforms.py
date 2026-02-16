@@ -89,11 +89,17 @@ with Pool(num_workers) as pool:
     results = pool.map(_run_plot_script_worker, args_list)
 
 # Log results
+failed = list()
 for gene_name, status, error_msg in results:
     if status == "Success":
         print(f"{gene_name}: Successfully processed")
     else:
         print(f"{gene_name}: {error_msg}", file=sys.stderr)
+        failed.append(gene_name)
+
+if failed:
+    failed_genes = ", ".join(failed)
+    print(f"Failed to process {len(failed)} gene(s): {failed_genes}", file=sys.stderr)
 
 log_file.close()
 
