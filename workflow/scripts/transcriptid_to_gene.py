@@ -93,13 +93,11 @@ pct = round(mapped / total * 100, 2)
 if total > mapped:
     warnings.warn("Some transcripts could not be named.")
 #
-print(
-    f"""
+print(f"""
     Num total transcripts with greater than 0 counts: {total}
     Num renamed to include gene name: {mapped}
     Percent renamed: ({pct}%)
-    """
-)
+    """)
 
 # Generate pie chart
 sizes = [mapped, total - mapped]

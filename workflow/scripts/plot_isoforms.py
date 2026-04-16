@@ -20,7 +20,7 @@ def get_gene_names(de_gene_list):
         df = pd.read_csv(de_gene_list, sep="\t")
         if df.empty:
             raise ValueError("Empty gene list file")
-        return (gene for gene in df.iloc[:,0])
+        return (gene for gene in df.iloc[:, 0])
     except (pd.errors.EmptyDataError, pd.errors.ParserError) as e:
         raise ValueError(f"Failed to parse gene list file: {e}")
     except FileNotFoundError:
@@ -83,9 +83,7 @@ num_workers = snakemake.threads if snakemake.threads > 0 else cpu_count()
 
 # Prepare arguments for each gene
 genes = list(get_gene_names(de_gene_list))
-args_list = [
-    (isoforms_bed, counts_matrix, gene, out_dir) for gene in genes
-]
+args_list = [(isoforms_bed, counts_matrix, gene, out_dir) for gene in genes]
 
 # Run in parallel
 with Pool(num_workers) as pool:
@@ -108,4 +106,3 @@ log_file.close()
 
 if failed:
     sys.exit(1)
-
