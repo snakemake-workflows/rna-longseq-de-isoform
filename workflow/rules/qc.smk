@@ -22,8 +22,6 @@ rule sample_qa_plot:
                 "figure": "{sample}",
             },
         ),
-    params:
-        outdir=lambda wildcards: f"NanoPlot/{wildcards.sample}",
     log:
         "logs/NanoPlot/{sample}.log",
     conda:
@@ -33,6 +31,8 @@ rule sample_qa_plot:
         mem_mb=lambda wildcards, input: max(
             1800, int(((os.path.getsize(input[0]) >> 20) * 0.2))
         ),
+    params:
+        outdir=lambda wildcards: f"NanoPlot/{wildcards.sample}",
     shell:
         "NanoPlot --threads {threads} --tsv_stats --format svg "
         "--fastq {input.fastq} --outdir {params.outdir} 2> {log}"
@@ -52,13 +52,13 @@ rule total_sample_qa_plot:
                 "figure": "All samples",
             },
         ),
-    # This parameter is in line with the Snakemake docs 8.20.3 guideline on how to avoid having parameters as output prefixes
-    params:
-        outdir=lambda wildcards, output: output[0][:-21],
     log:
         "logs/NanoPlot/all_samples.log",
     conda:
         "../envs/nanoplot.yml"
+    # This parameter is in line with the Snakemake docs 8.20.3 guideline on how to avoid having parameters as output prefixes
+    params:
+        outdir=lambda wildcards, output: output[0][:-21],
     shell:
         "NanoPlot --threads {threads} --tsv_stats --format svg "
         "--fastq {input} --outdir {params.outdir} 2> {log}"
@@ -105,11 +105,11 @@ rule bam_stats:
         "QC/bamstats/{sample}.txt",
     log:
         "logs/samtools/bamstats_{sample}.log",
-    params:
-        extra=config["samtools"]["bamstats_opts"],
     resources:
         mem_mb_per_cpu=lambda wildcards, input, threads: max(
             1800, int(((os.path.getsize(input[0]) >> 20) * 0.2) / threads)
         ),
+    params:
+        extra=config["samtools"]["bamstats_opts"],
     wrapper:
         "v3.13.4/bio/samtools/stats"
