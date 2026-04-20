@@ -3,11 +3,11 @@ rule build_minimap_index:  ## build minimap2 index
         target="transcriptome/corrected_transcriptome.fa",
     output:
         index=temp("index/transcriptome_index.mmi"),
-    params:
-        extra=config["minimap2"]["index_opts"],
     log:
         "logs/minimap2/index.log",
     threads: 4
+    params:
+        extra=config["minimap2"]["index_opts"],
     wrapper:
         "v7.6.0/bio/minimap2/index"
 
@@ -21,8 +21,8 @@ rule map_reads:
         temp("alignments/{sample}.sam"),
     log:
         "logs/minimap2/mapping_{sample}.log",
+    threads: 32
     params:
         extra=f"-p {config['minimap2']['secondary_score_ratio']} -N {config['minimap2']['maximum_secondary']} {config['minimap2']['opts']}",
-    threads: 32
     wrapper:
         "v7.6.0/bio/minimap2/aligner"

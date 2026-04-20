@@ -12,9 +12,6 @@ rule count_reads:
         trs="transcriptome/corrected_transcriptome.fa",
     output:
         tsv="counts/{sample}_salmon/quant.sf",
-    params:
-        outdir=lambda wildcards: f"counts/{wildcards.sample}_salmon",
-        libtype=config["quant"]["salmon_libtype"],
     log:
         "logs/salmon/{sample}.log",
     conda:
@@ -24,6 +21,9 @@ rule count_reads:
         mem_mb_per_cpu=lambda wildcards, input, threads: max(
             1800, int(((os.path.getsize(input[0]) >> 20) * 2) / threads)
         ),
+    params:
+        outdir=lambda wildcards: f"counts/{wildcards.sample}_salmon",
+        libtype=config["quant"]["salmon_libtype"],
     shell:
         """
         salmon --no-version-check quant --ont -p {threads} \

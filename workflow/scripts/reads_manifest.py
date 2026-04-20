@@ -3,7 +3,6 @@ from pathlib import Path
 import re
 import sys
 
-
 log_file = open(snakemake.log[0], "w")
 
 sys.stderr = sys.stdout = log_file
@@ -38,12 +37,10 @@ def get_sample_path(sample_name, exts):
 samples_df["sample_clean"] = samples_df["sample"].str.replace("_", "", regex=False)
 # Verify no duplicate sample names were created by the cleaning
 if samples_df["sample_clean"].duplicated().any():
-    raise ValueError(
-        """Exchanging '_' to '' in sample names created duplicates.
+    raise ValueError("""Exchanging '_' to '' in sample names created duplicates.
            Please ensure original sample names 
            will remain unique after removing underscores.
-        """
-    )
+        """)
 
 # get the absolute  filepath for each sample
 samples_df["sample_path"] = samples_df["sample"].apply(

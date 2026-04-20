@@ -9,12 +9,12 @@ localrules:
 rule reads_manifest:
     output:
         temp("iso_analysis/reads_manifest.tsv"),
-    params:
-        samples=samples,
     log:
         "logs/flair/reads_manifest.log",
     conda:
         "../envs/pandas.yml"
+    params:
+        samples=samples,
     script:
         "../scripts/reads_manifest.py"
 
@@ -66,11 +66,11 @@ rule build_flair_genome_index:
         target="references/genomic.fa",
     output:
         index=temp("index/flair_genome_index.mmi"),
-    params:
-        extra=config["minimap2"]["index_opts"],
     log:
         "logs/flair/index.log",
     threads: 4
+    params:
+        extra=config["minimap2"]["index_opts"],
     wrapper:
         "v7.6.0/bio/minimap2/index"
 
@@ -84,12 +84,12 @@ rule flair_align:
         flair_beds=temp("iso_analysis/align/flair.bed"),
         flair_bam=temp("iso_analysis/align/flair.bam"),
         flair_bam_bai=temp("iso_analysis/align/flair.bam.bai"),
-    params:
-        outdir=lambda wildcards, output: output[0][:-4],
     log:
         "logs/flair/align.log",
     conda:
         "../envs/flair.yml"
+    params:
+        outdir=lambda wildcards, output: output[0][:-4],
     shell:
         """
         flair align --reads {input.sample} --genome {input.genome}  \
@@ -105,12 +105,12 @@ rule flair_correct:
         annotation="references/standardized_genomic.gtf",
     output:
         beds_cor=temp("iso_analysis/align/flair_all_corrected.bed"),
-    params:
-        outdir=lambda wildcards, output: output[0][:-18],
     log:
         "logs/flair/correct.log",
     conda:
         "../envs/flair.yml"
+    params:
+        outdir=lambda wildcards, output: output[0][:-18],
     shell:
         """
         flair correct --query {input.flair_beds} --genome {input.genome}  \
@@ -128,14 +128,14 @@ rule flair_collapse:
     output:
         isob=temp("iso_analysis/collapse/flair.isoforms.bed"),
         isof=temp("iso_analysis/collapse/flair.isoforms.fa"),
-    params:
-        outdir=lambda wildcards, output: output[0][:-13],
-        qscore=config["isoform_analysis"]["qscore"],
-        opts=config["isoform_analysis"]["col_opts"],
     log:
         "logs/flair/collapse.log",
     conda:
         "../envs/flair.yml"
+    params:
+        outdir=lambda wildcards, output: output[0][:-13],
+        qscore=config["isoform_analysis"]["qscore"],
+        opts=config["isoform_analysis"]["col_opts"],
     shell:
         """
         flair collapse --genome {input.genome} --gtf {input.annotation} --query {input.beds} \
@@ -151,15 +151,15 @@ rule flair_quantify:
         isob="iso_analysis/collapse/flair.isoforms.bed",
     output:
         counts_matrix=temp("iso_analysis/quantify/flair.counts.tsv"),
+    log:
+        "logs/flair/quantify.log",
+    conda:
+        "../envs/flair.yml"
     params:
         # FLAIR adds ".counts.tsv" to its --output flag.
         outdir=lambda wildcards, output: output[0][:-11],
         tmp_dir="iso_analysis/quantify/tmp",
         qscore=config["isoform_analysis"]["qscore"],
-    log:
-        "logs/flair/quantify.log",
-    conda:
-        "../envs/flair.yml"
     shell:
         """
         flair quantify --reads_manifest {input.reads_manifest} --isoforms {input.isof} \
@@ -182,13 +182,13 @@ rule flair_diffexp:
         ),
         isoforms_deseq2_QCplots="iso_analysis/diffexp/isoforms_deseq2_QCplots_{condition_value1}_v_{condition_value2}.pdf",
         isoforms_drimseq="iso_analysis/diffexp/isoforms_drimseq_{condition_value1}_v_{condition_value2}.tsv",
-    params:
-        outdir=lambda wildcards, output: os.path.dirname(output[0]),
-        exp_thresh=config["isoform_analysis"]["exp_thresh"],
     log:
         "logs/flair/diffexp_{condition_value1}_v_{condition_value2}.log",
     conda:
         "../envs/flair.yml"
+    params:
+        outdir=lambda wildcards, output: os.path.dirname(output[0]),
+        exp_thresh=config["isoform_analysis"]["exp_thresh"],
     shell:
         """
         flair diffexp --counts_matrix {input.counts_matrix}  --out_dir {params.outdir} \
@@ -207,11 +207,11 @@ rule flair_plot_isoforms:
         counts_matrix="iso_analysis/quantify/flair.counts.tsv",
     output:
         out_dir=directory("iso_analysis/plots"),
-    threads: 4
     log:
         "logs/flair/plot_isoforms.log",
     conda:
         "../envs/flair.yml"
+    threads: 4
     script:
         "../scripts/plot_isoforms.py"
 

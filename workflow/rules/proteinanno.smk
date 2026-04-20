@@ -7,12 +7,12 @@ localrules:
 rule get_indexed_protein_db:
     output:
         temp("protein_annotation/index/UniRef.lba.gz"),
-    params:
-        ref=f'{config["protein_annotation"]["uniref"]}',
     log:
         "logs/lambda/get_indexed_db.log",
     conda:
         "../envs/wget.yml"
+    params:
+        ref=f'{config["protein_annotation"]["uniref"]}',
     shell:
         """
         mkdir -p $(dirname {output}) && \
@@ -48,12 +48,12 @@ rule lambda_gene_annotation:
                 "list": "lambda_results",
             },
         ),
-    params:
-        num_matches=f'{config["protein_annotation"]["num_matches"]}',
     log:
         "logs/lambda/blast_genes_protein_annotation/{factor}_{prop_a}_vs_{prop_b}_de_genes.fa.log",
     conda:
         "../envs/lambda3.yml"
+    params:
+        num_matches=f'{config["protein_annotation"]["num_matches"]}',
     shell:
         "lambda3 searchp -q {input.query} -i {input.indexed_db} -o {output} -n {params.num_matches} 2> {log}"
 
