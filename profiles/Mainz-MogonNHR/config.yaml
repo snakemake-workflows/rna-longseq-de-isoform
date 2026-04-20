@@ -15,6 +15,7 @@ set-resources:
         slurm_partition: "smallcpu" # needs benchmarking
     sample_qa_plot:
         runtime: "2h"
+        mem_mb_per_cpu: 3600
     total_sample_qa_plot:
         runtime: "3h"
         mem_mb_per_cpu: 3600
@@ -34,9 +35,9 @@ set-resources:
         mem_mb_per_cpu: 3600
     flair_align:
         mem_mb_per_cpu: 2500
-        runtime: 300
+        runtime: "4h"
     flair_correct:
-        runtime: 180
+        runtime: "3h"
     flair_collapse:
         cpus_per_task: 32
         mem_mb_per_cpu: 3600
@@ -44,6 +45,7 @@ set-resources:
     flair_quantify:
         cpus_per_task: 32
         runtime: "2h"
+        mem_mb_per_cpu: 3600
     flair_diffexp:
         mem_mb_per_cpu: 5000
         runtime: "12h"
