@@ -2,7 +2,6 @@ localrules:
     reads_manifest,
     gff_to_gtf,
     concatenate_beds,
-    flair_plot_isoforms,
     iso_analysis_report,
 
 
@@ -208,6 +207,7 @@ rule flair_plot_isoforms:
         counts_matrix="iso_analysis/quantify/flair.counts.tsv",
     output:
         out_dir=directory("iso_analysis/plots"),
+    threads: 4
     log:
         "logs/flair/plot_isoforms.log",
     conda:
