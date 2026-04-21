@@ -49,9 +49,9 @@ rule correct_transcriptome:
         temp("transcriptome/corrected_transcriptome.fa"),
     log:
         "logs/gffreadcorrect_transcriptome.log",
-    threads: 1
     conda:
         "../envs/gffread.yml"
+    threads: 1
     shell:
         """
         sed 's/ /_/g' {input} > {output} 2> {log}
@@ -65,11 +65,11 @@ rule filter_reads:
         ),
     output:
         temp("filter/{sample}_filtered.fq"),
-    message:
-        f"Filtering with read length >= {config['read_filter']['min_length']}."
     log:
         "logs/filter_reads/{sample}.log",
     conda:
         "../envs/biopython.yml"
+    message:
+        f"Filtering with read length >= {config['read_filter']['min_length']}."
     script:
         "../scripts/read_filter.py"

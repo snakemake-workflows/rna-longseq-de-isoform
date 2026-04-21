@@ -65,6 +65,10 @@ rule deseq2:
                 "figure": "Dispersion graph",
             },
         ),
+    log:
+        "logs/deseq2_{factor}_{prop_a}_vs_{prop_b}.log",
+    conda:
+        "../envs/deseq2.yml"
     params:
         factor="{factor}",
         prop_a="{prop_a}",
@@ -74,10 +78,6 @@ rule deseq2:
         lfc_null=config["deseq2"]["lfc_null"],
         alt_hypothesis=config["deseq2"]["alt_hypothesis"],
         threshold_plot=config["deseq2"]["threshold_plot"],
-    log:
-        "logs/deseq2_{factor}_{prop_a}_vs_{prop_b}.log",
-    conda:
-        "../envs/deseq2.yml"
     script:
         "../scripts/deseq2.R"
 

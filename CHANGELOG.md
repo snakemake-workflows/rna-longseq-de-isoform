@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.5.1...v2.6.0) (2026-04-20)
+
+
+### Features
+
+* paper data ([#153](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/153)) ([448a6ea](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/448a6ea4ead12f04fb7aed1043bdd57a2aaada57))
+
 ## [2.5.1](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.5.0...v2.5.1) (2026-02-16)
 
 
