@@ -16882,6 +16882,97 @@ DOI: 10.1007/978-3-030-30760-8_6</dc:description>
         <z:linkMode>1</z:linkMode>
         <link:type>application/pdf</link:type>
     </z:Attachment>
+    <bib:Data rdf:about="https://zenodo.org/doi/10.5281/zenodo.3552717">
+        <z:itemType>computerProgram</z:itemType>
+        <dc:publisher>
+           <foaf:Organization><foaf:name>Zenodo</foaf:name></foaf:Organization>
+        </dc:publisher>
+        <z:programmers>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Jacques Dainat</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Robrecht Cannoodt</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>André Soares</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Daniel García Ruano</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Darío Hereñú</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Dr. K. D. Murray</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Ed Davis</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Ivan Ugrin</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Kathryn Crouch</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Lucile Soler</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>pascal-git</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Zachary Zollman</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>tayyrov</foaf:surname></foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </z:programmers>
+        <prism:edition>v1.6.1</prism:edition>
+        <dc:title>NBISweden/AGAT: AGAT v1.6.1</dc:title>
+        <dcterms:abstract>Removal of Temp::Dir::Tiny for conda packaging
+
+Fix displayed version used in the AGAT header
+
+Avoid race condition crash, throw a warning instead</dcterms:abstract>
+        <dc:date>2026-01-13</dc:date>
+        <z:shortTitle>NBISweden/AGAT</z:shortTitle>
+        <z:libraryCatalog>DOI.org (Datacite)</z:libraryCatalog>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://zenodo.org/doi/10.5281/zenodo.3552717</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-03-04 09:53:45</dcterms:dateSubmitted>
+        <dc:rights>GNU General Public License v3.0 only</dc:rights>
+        <dc:description>DOI: 10.5281/ZENODO.3552717</dc:description>
+    </bib:Data>
     <z:Collection rdf:about="#collection_1">
         <dc:title>HPC Teaching Paper</dc:title>
         <dcterms:hasPart rdf:resource="#item_104"/>
@@ -16947,6 +17038,7 @@ DOI: 10.1007/978-3-030-30760-8_6</dc:description>
         <dcterms:hasPart rdf:resource="https://www.nature.com/articles/s41592-025-02623-4"/>
         <dcterms:hasPart rdf:resource="https://peerj.com/articles/cs-1159"/>
         <dcterms:hasPart rdf:resource="https://journals.sagepub.com/doi/10.3233/ISU-2010-0613"/>
+        <dcterms:hasPart rdf:resource="https://zenodo.org/doi/10.5281/zenodo.3552717"/>
     </z:Collection>
     <z:Collection rdf:about="#collection_3">
         <dc:title>Masterarbeit_Yannic_Eising</dc:title>
