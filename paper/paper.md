@@ -136,8 +136,5 @@ The `profile_directory` contains a template configuration for the cluster "Mogon
 
 For detailed information about these and additional options, see the [Snakemake command-line options](https://snakemake.readthedocs.io/en/stable/executing/cli.html#all-options).
 
-# Acknowledgements
-
-Any?
 
 # References
