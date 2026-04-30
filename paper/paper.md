@@ -126,7 +126,7 @@ snakemake -j unlimited \                    # Run snakemake with no job limit
 --workflow-profile <profile_dir> \          # Use a specific Snakemake profile
 --configfile ../config/<config_file> \      # Specify the main config file
 --directory <results_dir> \                 # Set working directory
---sdm_conda \                               # Enable conda software deployment
+--sdm conda \                               # Enable conda software deployment
 --conda_prefix <conda_envs_dir>             # Custom prefix for conda environments
 ```
 
