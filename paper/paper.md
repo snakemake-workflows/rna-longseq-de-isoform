@@ -75,7 +75,7 @@ Prior to downstream analysis, reads undergo a configurable quality control step.
 
 ## Transcriptome Alignment and Differential Expression Analysis
 
-Reads passing quality filters are aligned to the reference transcriptome by `minimap2` [@li_minimap2_2018]. Following alignment, read counts per transcript are computed and used for differential expression analysis using DESeq2 [@zhu_heavy-tailed_2019;@love_moderated_2014]. Any report of this workflow includes a cross-correlation analysis, a heatmap of expression changes and a principle component analysis as implemented in DESeq2.
+Reads passing quality filters are aligned to the reference transcriptome by `minimap2` [@li_minimap2_2018]. Following alignment, read counts per transcript are computed and used for differential expression analysis using DESeq2 [@zhu_heavy-tailed_2019;@love_moderated_2014]. Any report of this workflow includes a cross-correlation analysis, a heatmap of expression changes and a principal component analysis as implemented in DESeq2.
 
 ## Alternative Splicing Analysis
 
@@ -93,13 +93,17 @@ When reference data are incomplete, unannotated, or of uncertain quality, the wo
 - We defined all download and data preparation rules to be locally executed. This means that when using an HPC cluster (or a similar environment), such work items are not submitted as a batch job, but executed on a cluster's login node . Such jobs do not merit cluster execution as they take less than a minute. These include `download_ncbi_annotation` (download of the annotation data for a particular organism), `get_annotation` (the extraction of the actual annotation from such a download), `standardize_gff` (standardization of a gff file using the `agat` software [@dainat_agat_2022]·), `genome_to_transcriptome` (for the differential expression analysis we only need transcriptome data), `correct_transcriptome` (due to different formats for transcriptome, we need to standardize this format, too) and `download_ncbi_genome`, `get_genome` for the genome data, too.
 - Eventually, the `deseq2_init`, `deseq2` and `alignment_qa_report` (the alignment quality assessment report) are carried out locally, too. 
 
-## Example Dataset and 
+## Example Dataset and Results
 
 
 A complete example run using six RNA-Seq Nanopore sequencing datasets of reduced size is provided for easy testing at https://doi.org/10.5281/zenodo.18801920. The dataset is furthermore described as a nanopub [@groth_anatomy_2010;@bucur_nanopublication-based_2023] https://w3id.org/np/RAADj5Q7GRdIUraoI2xTbMhe_fF97e4nr6olQlFI8Sfnk as is the workflow itself: https://w3id.org/np/RAjHDlPDghZzc9ZvQ3uJQNJ9Jd_KAYzZt7dk5PXKgjRyE .
 
-An analysis report example for those data is available at https://doi.org/10.5281/zenodo.18860872 - a corresponding nanopub description at xxx (needs assertion template to be published)
+An analysis report example for those data is available at https://doi.org/10.5281/zenodo.18860872 - a corresponding nanopub description at https://w3id.org/np/RApK8IUY9KJJkFoasvMJhPQQtT8VvN0IQ__hAxKOeeIuk based upon this template https://w3id.org/np/RAOT7z3RA0XYlHIikne8rfUUYZrtHyrzXBD1HpI_GvcRk
 
+https://w3id.org/np/RAK9xz_ccnu0Xhs4vX2KtqCxX44mmSt6nq-ePLeewMrFE (needs assertion template to be published)
+
+
+![A tiny knowledgegraph summarizing the example analyis with all nanopublication IDs we mentioned. It has been produced with the Snakemake reporter plugin for Nanopublications (https://doi.org/10.5281/zenodo.19684066)\label{fig:knowledge_graph}](dependency_knowledgegraph.svg)
 
 # Usage
 
@@ -108,12 +112,13 @@ The workflow uses three configuration files to enable its full functionality:
 1. **`samples.csv`**
 contains sample metadata, including sample IDs and experimental conditions.
 2. **`config/config.yaml`**
-Defines general workflow behavior, rule-specific options, and paths to input data.
+Defines general workflow behaviour, rule-specific options, and paths to input data.
 3. **`profile/config.yaml`**
 Stores cluster-specific variables, enabling resource allocation settings tailored to your computing environment.
 
 
 ### Running the workflow
+
 The workflow can be started by executing the following Snakemake command:
 
 ```
