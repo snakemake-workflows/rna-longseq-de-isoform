@@ -103,7 +103,7 @@ An analysis report example for those data is available at https://doi.org/10.528
 https://w3id.org/np/RAK9xz_ccnu0Xhs4vX2KtqCxX44mmSt6nq-ePLeewMrFE (needs assertion template to be published)
 
 
-![A tiny knowledgegraph summarizing the example analyis with all nanopublication IDs we mentioned. It has been produced with the Snakemake reporter plugin for Nanopublications (https://doi.org/10.5281/zenodo.19684066)\label{fig:knowledge_graph}](dependency_knowledgegraph.svg)
+![A tiny knowledgegraph summarizing the example analyis with all nanopublication IDs we mentioned. It has been produced with the Snakemake reporter plugin for Nanopublications (https://doi.org/10.5281/zenodo.19684066)\label{fig:knowledge_graph}](dependency_knowledgegraph.pdf)
 
 # Usage
 
