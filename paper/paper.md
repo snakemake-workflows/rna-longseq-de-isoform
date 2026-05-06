@@ -59,7 +59,7 @@ A distinctive feature of our workflow is its capability to operate on ill-annota
 To support these cases, the workflow includes optional local alignments using tools such as BLAST [@altschul_basic_1990;@camacho_blast_2009] or lambda [@Hauswedell2024-ph], enabling the functional annotation of transcripts by identifying putative gene functions.
 This enhances interpretability in non-model organisms and supports exploratory analyses in less-characterized transcriptomes.
 
-By leveraging Snakemake’s robust workflow management capabilities [@molder_sustainable_2021], our workflow offers transparent provenance tracking, efficient resource handling, and reproducible execution.
+By leveraging Snakemake’s robust workflow management capabilities [@molder_sustainable_2025], our workflow offers transparent provenance tracking, efficient resource handling, and reproducible execution.
 It provides a flexible foundation for advanced long-read transcriptomic analyses and fills a critical gap in the ecosystem of accessible, reproducible, and extensible workflows for Nanopore RNA sequencing data.
 
 ## Implementation
