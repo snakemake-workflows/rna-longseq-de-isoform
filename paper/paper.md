@@ -100,7 +100,7 @@ A complete example run using six RNA-Seq Nanopore sequencing datasets of reduced
 
 An analysis report example for those data is available at https://doi.org/10.5281/zenodo.18860872 - a corresponding nanopublication at\newline https://w3id.org/np/RApK8IUY9KJJkFoasvMJhPQQtT8VvN0IQ__hAxKOeeIuk . The nanopublication template to define reports is\newline https://w3id.org/np/RAOT7z3RA0XYlHIikne8rfUUYZrtHyrzXBD1HpI_GvcRk.
 
-The entire workflow configuration is deposited as a standalone nanopublication at https://w3id.org/np/RAmgzfta63xx0wWc_zzQVm7kwOc4tsEOA0JJJCfsiLL1g using the Snakemake reporter plugin for nanopublications (https://doi.org/10.5281/zenodo.19684066). The entire relationship between data, the workflow, its configuration and the final report is depicted in \autoref{fig.knowledge_graph}.
+The entire workflow configuration is deposited as a standalone nanopublication at https://w3id.org/np/RAmgzfta63xx0wWc_zzQVm7kwOc4tsEOA0JJJCfsiLL1g using the Snakemake reporter plugin for nanopublications (https://doi.org/10.5281/zenodo.19684066). The entire relationship between data, the workflow, its configuration and the final report is depicted in \autoref{fig:knowledge_graph}.
 
 
 ![A tiny knowledgegraph summarizing the example analyis with all nanopublication IDs we mentioned. It has been produced with the Snakemake reporter plugin for Nanopublications. Note the the w3id.org prefixes have been omitted.\label{fig:knowledge_graph}](dependency_knowledgegraph.svg)
