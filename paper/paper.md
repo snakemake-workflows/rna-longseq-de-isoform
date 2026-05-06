@@ -98,7 +98,7 @@ When reference data are incomplete, unannotated, or of uncertain quality, the wo
 
 A complete example run using six RNA-Seq Nanopore sequencing datasets of reduced size is provided for easy testing at https://doi.org/10.5281/zenodo.18801920. The dataset is furthermore described as a nanopublication [@groth_anatomy_2010;@bucur_nanopublication-based_2023]: https://w3id.org/np/RAADj5Q7GRdIUraoI2xTbMhe_fF97e4nr6olQlFI8Sfnk. So is the workflow itself:\newline https://w3id.org/np/RAjHDlPDghZzc9ZvQ3uJQNJ9Jd_KAYzZt7dk5PXKgjRyE.
 
-An analysis report example for those data is available at https://doi.org/10.5281/zenodo.18860872\newline- a corresponding nanopublication at\newline https://w3id.org/np/RApK8IUY9KJJkFoasvMJhPQQtT8VvN0IQ__hAxKOeeIuk . The nanopublication template to define reports is\newline https://w3id.org/np/RAOT7z3RA0XYlHIikne8rfUUYZrtHyrzXBD1HpI_GvcRk.
+An analysis report example for those data is available at\newline https://doi.org/10.5281/zenodo.18860872\newline- a corresponding nanopublication at\newline https://w3id.org/np/RApK8IUY9KJJkFoasvMJhPQQtT8VvN0IQ__hAxKOeeIuk . The nanopublication template to define reports is\newline https://w3id.org/np/RAOT7z3RA0XYlHIikne8rfUUYZrtHyrzXBD1HpI_GvcRk.
 
 The entire workflow configuration is deposited as a standalone nanopublication at https://w3id.org/np/RAmgzfta63xx0wWc_zzQVm7kwOc4tsEOA0JJJCfsiLL1g using the Snakemake reporter plugin for nanopublications (https://doi.org/10.5281/zenodo.19684066). The entire relationship between data, the workflow, its configuration and the final report is depicted in \autoref{fig:knowledge_graph}.
 
