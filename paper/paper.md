@@ -49,7 +49,7 @@ Long-read sequencing technologies, such as Oxford Nanopore Technologies (ONT), h
 This advancement facilitates more accurate analyses of differential gene expression [@dong_long_2021] and alternative splicing events, both of which are essential for understanding transcriptomic complexity and functional genomics.
 However, analysing long-read transcriptomic data remains technically challenging due to the intricacies of read preprocessing, isoform-level quantification, and the need for reproducible and scalable computational workflows.
 
-Several existing tools, such as FLAIR [@tang_full-length_2020-1], provide frameworks for isoform-level analysis of long-read transcriptomic data.
+Several existing tools, such as FLAIR [@tang_full-length_2020], provide frameworks for isoform-level analysis of long-read transcriptomic data.
 While these tools offer powerful features, they often rely on manual configuration, may not fully support reproducible execution across computing environments, and frequently lack integration with high-performance computing (HPC) infrastructure.
 
 To address these gaps, we present a Snakemake-based workflow that automates the analysis of Nanopore long-read sequencing data with a focus on differential gene expression and alternative splicing detection.
