@@ -96,14 +96,14 @@ When reference data are incomplete, unannotated, or of uncertain quality, the wo
 ## Example Dataset and Results
 
 
-A complete example run using six RNA-Seq Nanopore sequencing datasets of reduced size is provided for easy testing at https://doi.org/10.5281/zenodo.18801920. The dataset is furthermore described as a nanopub [@groth_anatomy_2010;@bucur_nanopublication-based_2023] https://w3id.org/np/RAADj5Q7GRdIUraoI2xTbMhe_fF97e4nr6olQlFI8Sfnk as is the workflow itself: https://w3id.org/np/RAjHDlPDghZzc9ZvQ3uJQNJ9Jd_KAYzZt7dk5PXKgjRyE .
+A complete example run using six RNA-Seq Nanopore sequencing datasets of reduced size is provided for easy testing at https://doi.org/10.5281/zenodo.18801920. The dataset is furthermore described as a nanopublication [@groth_anatomy_2010;@bucur_nanopublication-based_2023]: https://w3id.org/np/RAADj5Q7GRdIUraoI2xTbMhe_fF97e4nr6olQlFI8Sfnk. So is the workflow itself: https://w3id.org/np/RAjHDlPDghZzc9ZvQ3uJQNJ9Jd_KAYzZt7dk5PXKgjRyE .
 
-An analysis report example for those data is available at https://doi.org/10.5281/zenodo.18860872 - a corresponding nanopub description at https://w3id.org/np/RApK8IUY9KJJkFoasvMJhPQQtT8VvN0IQ__hAxKOeeIuk based upon this template https://w3id.org/np/RAOT7z3RA0XYlHIikne8rfUUYZrtHyrzXBD1HpI_GvcRk
+An analysis report example for those data is available at https://doi.org/10.5281/zenodo.18860872 - a corresponding nanopublication at\newline https://w3id.org/np/RApK8IUY9KJJkFoasvMJhPQQtT8VvN0IQ__hAxKOeeIuk . The nanopublication template to define reports is https://w3id.org/np/RAOT7z3RA0XYlHIikne8rfUUYZrtHyrzXBD1HpI_GvcRk.
 
-https://w3id.org/np/RAK9xz_ccnu0Xhs4vX2KtqCxX44mmSt6nq-ePLeewMrFE (needs assertion template to be published)
+The entire workflow configuration is deposited as a standalone nanopublication at https://w3id.org/np/RAmgzfta63xx0wWc_zzQVm7kwOc4tsEOA0JJJCfsiLL1g using the Snakemake reporter plugin for nanopublications (https://doi.org/10.5281/zenodo.19684066). The entire relationship between data, the workflow, its configuration and the final report is depicted in \autoref{fig.knowledge_graph}.
 
 
-![A tiny knowledgegraph summarizing the example analyis with all nanopublication IDs we mentioned. It has been produced with the Snakemake reporter plugin for Nanopublications (https://doi.org/10.5281/zenodo.19684066)\label{fig:knowledge_graph}](dependency_knowledgegraph.svg)
+![A tiny knowledgegraph summarizing the example analyis with all nanopublication IDs we mentioned. It has been produced with the Snakemake reporter plugin for Nanopublications. Note the the w3id.org prefixes have been omitted.\label{fig:knowledge_graph}](dependency_knowledgegraph.svg)
 
 # Usage
 
