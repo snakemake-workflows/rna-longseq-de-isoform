@@ -66,7 +66,14 @@ write.table(
 # Variance Stabilizing Transformation
 # https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#extracting-transformed-values
 nsb = sum(rowMeans(counts(dds, normalized = TRUE)) > snakemake@config[["deseq2"]][["mincount"]])
-vsd <- vst(dds, blind = FALSE, nsub = nsb)
+vsd <-tryCatch({
+    vst(dds, blind = FALSE, nsub = nsb)
+}, error = function(e) {
+    message("Error in vst(): ", e$message)
+    message("Falling back to variance stabilizing transformation.")
+    varianceStabilizingTransformation(dds, blind = FALSE, fitType = "mean")
+}) 
+
 # Obtain sample to smaple dists
 sampleDists <- dist(t(assay(vsd)))
 # Generate sample dist matrix

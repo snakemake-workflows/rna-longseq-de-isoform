@@ -24,10 +24,13 @@ rule count_reads:
     params:
         outdir=lambda wildcards: f"counts/{wildcards.sample}_salmon",
         libtype=config["quant"]["salmon_libtype"],
+        longreads=lambda wildcards: (
+            "--ont" if config["quant"]["long_read"] in [True, "true", "True"] else ""
+        ),
     shell:
         """
-        salmon --no-version-check quant --ont -p {threads} \
-        -t {input.trs} -l {params.libtype} -a {input.bam} -o {params.outdir} 2> {log}
+        salmon --no-version-check quant -p {threads} {params.longreads} \
+            -t {input.trs} -l {params.libtype} -a {input.bam} -o {params.outdir} 2>{log}
         """
 
 

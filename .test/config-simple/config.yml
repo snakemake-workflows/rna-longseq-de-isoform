@@ -54,7 +54,8 @@ samtools:
 quant:
     # Salmon library type (Default: U)
     salmon_libtype: "U"
-
+    # long read support
+    long_read: False
 
 # This section defines the DESeq2 plot and data handling parameters
 deseq2:
