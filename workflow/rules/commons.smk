@@ -187,9 +187,7 @@ def rule_all_input():
     all_input.extend(
         expand("qualimap/{sample}/qualimapReport.html", sample=samples["sample"])
     )
-    all_input.extend(
-        expand("counts/{sample}_salmon/quant.sf", sample=samples["sample"])
-    )
+    all_input.extend(expand("counts/{sample}/{sample}.quant", sample=samples["sample"]))
     all_input.append("merged/all_counts_gene.tsv")
     for c in get_contrasts():
         all_input.append(

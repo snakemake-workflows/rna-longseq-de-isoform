@@ -50,8 +50,9 @@ samtools:
 
 # salmon quantification parameters
 quant:
-    # Salmon library type (Default: U)
-    salmon_libtype: "U"
+    # oarfish seq-tech, possible values ont-cdna, ont-drna, pac-bio, pac-bio-hifi
+    oarfish_seqtech: "ont-drna"
+    long_read: true
 
 # This section defines the pyDESeq2 plot and data handling parameters
 deseq2:

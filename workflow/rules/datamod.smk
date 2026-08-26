@@ -17,9 +17,9 @@ rule standardize_gff:
         "Standardizing GFF format for isoform analysis compatibility"
     shell:
         """
-        agat_convert_sp_gxf2gxf.pl --gff {input} -o {output} &> {log};
+        agat_convert_sp_gxf2gxf.pl --gff {input} -o {output} &>{log}
         if [ -f genomic.agat.log ]; then
-           cat genomic.agat.log >> {log} && rm genomic.agat.log
+            cat genomic.agat.log >>{log} && rm genomic.agat.log
         fi
         """
 
@@ -38,7 +38,7 @@ rule genome_to_transcriptome:
     threads: 1
     shell:
         """
-        gffread -w {output.transcriptome} -g {input.genome} {input.annotation} &> {log}
+        gffread -w {output.transcriptome} -g {input.genome} {input.annotation} &>{log}
         """
 
 
@@ -54,7 +54,7 @@ rule correct_transcriptome:
     threads: 1
     shell:
         """
-        sed 's/ /_/g' {input} > {output} 2> {log}
+        sed 's/ /_/g' {input} >{output} 2>{log}
         """
 
 
