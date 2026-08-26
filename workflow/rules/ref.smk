@@ -12,15 +12,14 @@ rule download_ncbi_genome:
         "references/ncbi_dataset_genome.zip",
     log:
         "logs/refs/download_ncbi_genome.log",
-    cache: "omit-software"
-    retries: 3
+    #retries: 3
     conda:
         "../envs/reference.yml"
     params:
         accession=config["ref"]["accession"],
     shell:
         """
-        datasets download genome accession {params.accession} --include genome &> {log} && mv ncbi_dataset.zip {output}
+        datasets download genome accession {params.accession} --include genome --filename {output} --no-progressbar &> {log}
         """
 
 
@@ -29,7 +28,6 @@ rule download_ncbi_annotation:
         "references/ncbi_dataset_annotation.zip",
     log:
         "logs/refs/download_ncbi_annotation.log",
-    cache: "omit-software"
     retries: 3
     conda:
         "../envs/reference.yml"
@@ -37,7 +35,7 @@ rule download_ncbi_annotation:
         accession=config["ref"]["accession"],
     shell:
         """
-        datasets download genome accession {params.accession} --include gff3 &> {log} && mv ncbi_dataset.zip {output}
+        datasets download genome accession {params.accession} --include gff3 --filename {output} --no-progressbar &> {log}
         """
 
 
@@ -46,7 +44,6 @@ rule download_ensembl_genome:
         "references/ensembl_genome.fa",
     log:
         "logs/refs/download_ensembl_genome.log",
-    cache: "omit-software"
     retries: 3
     params:
         species=config["ref"]["ensembl_species"],
@@ -62,7 +59,6 @@ rule download_ensembl_annotation:
         "references/ensembl_annotation.gff3",
     log:
         "logs/refs/download_ensembl_annotation.log",
-    cache: "omit-software"  # save space and time with between workflow caching (see docs)
     retries: 3
     params:
         species=config["ref"]["ensembl_species"],
@@ -79,7 +75,6 @@ rule get_genome:
         "references/genomic.fa",
     log:
         "logs/refs/get_genome.log",
-    cache: "omit-software"
     retries: 3
     conda:
         "../envs/reference.yml"
@@ -96,7 +91,6 @@ rule get_annotation:
         "references/genomic.gff",
     log:
         "logs/refs/get_annotation.log",
-    cache: "omit-software"
     retries: 3
     conda:
         "../envs/reference.yml"
