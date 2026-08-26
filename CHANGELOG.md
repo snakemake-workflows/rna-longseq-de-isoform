@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.6.1](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.6.0...v2.6.1) (2026-08-26)
+
+
+### Bug Fixes
+
+* vst failure ([#155](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/155)) ([8634d80](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/8634d802c5770ae80858b1fe801d9d88245799d0))
+* vst failure and salmon functionality ([#157](https://github.com/snakemake-workflows/rna-longseq-de-isoform/issues/157)) ([3bda24f](https://github.com/snakemake-workflows/rna-longseq-de-isoform/commit/3bda24f0d3f1608db89a418b19bbaf62e3aee266))
+
 ## [2.6.0](https://github.com/snakemake-workflows/rna-longseq-de-isoform/compare/v2.5.1...v2.6.0) (2026-04-20)
 
 
