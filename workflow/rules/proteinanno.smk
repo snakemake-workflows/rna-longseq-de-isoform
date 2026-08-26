@@ -15,8 +15,8 @@ rule get_indexed_protein_db:
         ref=f'{config["protein_annotation"]["uniref"]}',
     shell:
         """
-        mkdir -p $(dirname {output}) && \
-        wget -nv -O {output} {params.ref} 2> {log}
+        mkdir -p $(dirname {output}) \
+            && wget -nv -O {output} {params.ref} 2>{log}
         """
 
 

@@ -14,14 +14,14 @@ dfs = {x: pd.read_csv(x, sep="\t") for x in snakemake.input}
 ndfs = []
 for x, df in dfs.items():
     # Transform counts to integers:
-    df = df.rename(columns={"NumReads": "Count", "Name": "Reference"})
-    df.Count = np.array(df.Count, dtype=int)
+    df = df.rename(columns={"tname": "Reference","len": "length", "num_reads": "count"})
+    df["count"] = np.array(df["count"], dtype=int)
     # Take only non-zero counts:
-    df = df[df.Count > 0]
-    df = df[["Reference", "Count"]]
-    df = df.sort_values(by=["Count"], ascending=False)
+    df = df[df["count"] > 0]
+    df = df[["Reference", "count"]]
+    df = df.sort_values(by=["count"], ascending=False)
     name = path.dirname(x).rsplit("/", 1)[1].split("_salmon")[0]
-    df = df.rename(columns={"Count": name})
+    df = df.rename(columns={"count": name})
     ndfs.append(df)
 dfs = ndfs
 
