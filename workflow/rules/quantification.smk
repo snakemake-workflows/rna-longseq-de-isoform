@@ -10,33 +10,34 @@ rule count_reads:
     input:
         bam="alignments/{sample}.bam",
         trs="transcriptome/corrected_transcriptome.fa",
+        annotation="references/standardized_genomic.gff",
     output:
-        tsv="counts/{sample}_salmon/quant.sf",
+        quant="counts/{sample}/{sample}.quant",
     log:
-        "logs/salmon/{sample}.log",
+        "logs/count_reads/{sample}.log",
     conda:
-        "../envs/salmon.yml"
+        "../envs/oarfish.yml"
     threads: 8
     resources:
         mem_mb_per_cpu=lambda wildcards, input, threads: max(
             1800, int(((os.path.getsize(input[0]) >> 20) * 2) / threads)
         ),
     params:
-        outdir=lambda wildcards: f"counts/{wildcards.sample}_salmon",
-        libtype=config["quant"]["salmon_libtype"],
-        longreads=lambda wildcards: (
-            "--ont" if config["quant"]["long_read"] in [True, "true", "True"] else ""
-        ),
+        outdir=lambda wildcards, output: os.path.splitext(output.quant)[0],
+        seqtech=config["quant"]["oarfish_seqtech"],
     shell:
         """
-        salmon --no-version-check quant -p {threads} {params.longreads} \
-            -t {input.trs} -l {params.libtype} -a {input.bam} -o {params.outdir} 2>{log}
+        oarfish -j {threads} -a {input.bam} -o {params.outdir} --seq-tech {params.seqtech} --quiet &>{log}
         """
+        #"""
+        #salmon --no-version-check quant -p {threads} {params.longreads} \
+        #    -t {input.trs} -l {params.libtype} -a {input.bam} -o {params.outdir} 2>{log}
+        #"""
 
 
 rule merge_read_counts:
     input:
-        count_tsvs=expand("counts/{sample}_salmon/quant.sf", sample=samples["sample"]),
+        count_tsvs=expand("counts/{sample}/{sample}.quant", sample=samples["sample"]),
     output:
         "merged/all_counts.tsv",
     log:
