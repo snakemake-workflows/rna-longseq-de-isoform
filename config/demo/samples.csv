@@ -1,7 +1,7 @@
 sample  condition	batch    platform    purity
-barcode10   wt  batch1   NANOPORE    1
-barcode12   wt  batch1   NANOPORE    1
-barcode13   wt  batch1   NANOPORE    1
-barcode11   mt  batch1   NANOPORE    1
-barcode15   mt  batch1   NANOPORE    1
-barcode16   mt  batch1   NANOPORE    1
+case_01   wt  batch1   NANOPORE    1
+case_02   wt  batch1   NANOPORE    1
+case_03   wt  batch1   NANOPORE    1
+control_01   mt  batch1   NANOPORE    1
+control_02   mt  batch1   NANOPORE    1
+control_03   mt  batch1   NANOPORE    1
