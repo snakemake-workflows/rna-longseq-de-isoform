@@ -29,10 +29,6 @@ rule count_reads:
         """
         oarfish -j {threads} -a {input.bam} -o {params.outdir} --seq-tech {params.seqtech} --quiet &>{log}
         """
-        #"""
-        #salmon --no-version-check quant -p {threads} {params.longreads} \
-        #    -t {input.trs} -l {params.libtype} -a {input.bam} -o {params.outdir} 2>{log}
-        #"""
 
 
 rule merge_read_counts:

@@ -12,14 +12,14 @@ rule download_ncbi_genome:
         "references/ncbi_dataset_genome.zip",
     log:
         "logs/refs/download_ncbi_genome.log",
-    #retries: 3
+    # retries: 3
     conda:
         "../envs/reference.yml"
     params:
         accession=config["ref"]["accession"],
     shell:
         """
-        datasets download genome accession {params.accession} --include genome --filename {output} --no-progressbar &> {log}
+        datasets download genome accession {params.accession} --include genome --filename {output} --no-progressbar &>{log}
         """
 
 
@@ -35,7 +35,7 @@ rule download_ncbi_annotation:
         accession=config["ref"]["accession"],
     shell:
         """
-        datasets download genome accession {params.accession} --include gff3 --filename {output} --no-progressbar &> {log}
+        datasets download genome accession {params.accession} --include gff3 --filename {output} --no-progressbar &>{log}
         """
 
 
